@@ -1,4 +1,20 @@
-Config {
-	-- appearance
-	
-	}
+Config { font = "Ubuntu Bold 9"
+       , bgColor  = "#282c34"
+       , fgColor  = "#ff6c6b"
+       , position = TopSize L 100 24
+       , lowerOnStart = True
+       , hideOnStart  = False
+       , allDesktops  = True
+       , persistent   = True
+       , commands = [ 
+			-- Script that dynamically adjusts xmobar padding depending on number of trayer icons.
+			Run Com ".config/xmobar/trayer-padding-icon.sh" [] "trayerpad" 20
+
+			-- Prints out the left side items such as workspaces, layout, etc.
+	                , Run XMonadLog
+                    ]
+       , sepChar  = "%"
+       , alignSep = "}{"
+       , template = " %XMonadLog% }{ %trayerpad%"
+       }
+

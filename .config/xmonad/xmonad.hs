@@ -2,6 +2,10 @@
 import XMonad
 
 -- Hooks
+import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.StatusBar
+import XMonad.Hooks.StatusBar.PP
 
 -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
@@ -38,10 +42,17 @@ myFocusColor = "#46d9ff"
 -- What to launch when the WM initializes
 myStartupHook :: X ()
 myStartupHook = do
+	spawn "killall trayer"			-- kill current trayer on each restart
 	spawnOnce "lxsession" 			-- start session manager
 	spawnOnce "picom" 			-- start the compositor
 	spawnOnce "nitrogen --restore &"	-- set the background image
 	spawnOnce "setxkbmap es &"		-- set the correct keyboard layout
+	spawnOnce "nm-applet"			-- start the network manager tray
+	spawnOnce "volumeicon"			-- start the volume icon tray
+
+	-- We killed any running trayer process earlier in the autostart, 
+	-- so now we sleep for 2 seconds and then restart trayer.
+	spawn ("sleep 2 && trayer --edge top --align right --widthtype request --padding 6 --SetDockType true --SetPartialStrut true --expand true --monitor 1 --transparent true --alpha 0 --tint 0x282c34 --height 22")
 
 -- Makes setting the spacingRaw simpler to write. 
 -- The spacingRaw module adds a configurable amount of space around windows.
@@ -70,30 +81,32 @@ myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 myKeys = [ ("M-p", spawn "keepassxc $HOME/Documents/database.kdbx")
     , ("M-f", spawn "firefox")
     , ("M-r", spawn "rofi -show combi -modes combi -combi-modes \"window,drun,run\"")
+    , ("M-q", spawn "xmonad --recompile; killall xmobar; xmonad --restart")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5")
     ]
 
+-- Override the default values of the record "def"
+myConfig = def
+	{ modMask 		= myModMask
+	, terminal 			= myTerminal
+	, startupHook		= myStartupHook
+	, workspaces		= myWorkspaces
+	, borderWidth		= myBorderWidth
+	, normalBorderColor		= myNormColor
+	, focusedBorderColor	= myFocusColor
+	, layoutHook 		= myLayout
+	}
+ 
+
 -- The main function
 main :: IO ()
 main = do
   -- Launching two instances of xmobar on their monitors.
-  -- xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.config/xmobar/xmobarrc")
-  -- xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/xmobarrc")
+  xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.config/xmobar/xmobarrc")
+  xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/xmobarrc")
 
-  -- Override the default values of the record "def"
-  -- Also applye the Java hack for JetBrains IDEs
-  xmonad $ javaHack $ def
-    { modMask 			= myModMask
-    , terminal 			= myTerminal
-    , startupHook		= myStartupHook
-    , workspaces		= myWorkspaces
-    , borderWidth		= myBorderWidth
-    , normalBorderColor		= myNormColor
-    , focusedBorderColor	= myFocusColor
-    , layoutHook 		= myLayout
-    }
-    `additionalKeysP`
-    myKeys
+  -- Apply the Java hack for JetBrains IDEs
+  xmonad $ ewmhFullscreen $ ewmh $ javaHack $ xmobarProp $ myConfig `additionalKeysP` myKeys
 
