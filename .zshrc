@@ -1,4 +1,4 @@
-### Exports
+# Exports
 export TERM="xterm-256color"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export WINIT_X11_SCALE_FACTOR=1
@@ -8,7 +8,16 @@ export MANPAGER="nvim +Man!" # Nvim as manpager
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-### PATH
+# ssh-add and ssh require an environment variable to know how
+# to talk to the ssh agent
+SSHAGENT=/usr/bin/ssh-agent
+SSHAGENTARGS="-s"
+if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
+    eval `$SSHAGENT $SSHAGENTARGS` > /dev/null 2>&1
+    trap "kill $SSH_AGENT_PID" 0
+fi
+
+# Paths
 if [ -d "$HOME/.bin" ] ;
   then PATH="$HOME/.bin:$PATH"
 fi
@@ -21,7 +30,7 @@ if [ -d "$HOME/Applications" ] ;
   then PATH="$HOME/Applications:$PATH"
 fi
 
-### SETTING OTHER ENVIRONMENT VARIABLES
+# Setting other enviroment variables
 if [ -z "$XDG_CONFIG_HOME" ] ; then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
