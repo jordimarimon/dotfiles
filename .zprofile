@@ -1,1 +1,1 @@
-startx
+exec startx >& ~/.xsession-errors
