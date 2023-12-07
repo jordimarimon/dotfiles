@@ -3,6 +3,8 @@ import XMonad
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops
+import XMonad.Hooks.ManageDocks (manageDocks)
+import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog, doFullFloat)
 
 -- Layouts modifiers
 import XMonad.Layout.LayoutModifier
@@ -70,12 +72,25 @@ myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 -- Custom keybindings
 myKeys = [ ("M-p", spawn "keepassxc $HOME/Documents/database.kdbx")
     , ("M-f", spawn "firefox")
-    , ("M-r", spawn "rofi -show combi -modes combi -combi-modes \"window,drun,run\"")
+    , ("M-r", spawn "rofi -show -show-icons")
     , ("M-q", spawn "xmonad --recompile; xmonad --restart")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5")
     ] 
+
+-- Programs that we don’t want xmonad to tile (programs that popup windows) 
+myManageHook :: ManageHook
+myManageHook = composeAll
+    [ className =? "Gimp"		--> doFloat
+    , className =? "confirm"		--> doFloat
+    , className =? "file_progress"	--> doFloat
+    , className =? "download"		--> doFloat
+    , className =? "error"		--> doFloat
+    , className =? "notification"	--> doFloat
+    , isDialog				--> doFloat
+    , isFullscreen			--> doFullFloat
+    ]
 
 -- The main function
 main :: IO ()
@@ -89,7 +104,8 @@ main = do
 	, borderWidth		= myBorderWidth
 	, normalBorderColor	= myNormColor
 	, focusedBorderColor	= myFocusColor
-	, layoutHook 		= myLayout
+	, layoutHook 		= myLayout			-- Use custom layouts
+	, manageHook		= myManageHook <+> manageDocks	-- Match on certain windows
 	}
 	`additionalKeysP` myKeys
 
