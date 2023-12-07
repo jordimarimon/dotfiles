@@ -2,6 +2,7 @@ configuration {
  modi: "window,drun,ssh,combi";
  font: "hack 10";
  combi-modi: "window,drun,ssh";
+ show-icons: true;
  }
 
 @theme "~/.config/rofi/themes/default.rasi"
