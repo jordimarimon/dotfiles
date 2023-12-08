@@ -9,8 +9,8 @@ export WINIT_X11_SCALE_FACTOR=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim +Man!" # Nvim as manpager
 
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
+# If not running interactively or it's a login shell, don't do anything
+[[ $- != *i* || -o login ]] && return
 
 # ssh-add and ssh require an environment variable to know how
 # to talk to the ssh agent
@@ -77,6 +77,7 @@ alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat="bat"
 alias vim="nvim"
 alias ls="lsd"
+alias logout="loginctl terminate-user $(whoami)"
 
 # Start PowerLevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
