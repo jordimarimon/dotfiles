@@ -5,8 +5,9 @@ import XMonad
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks (manageDocks)
 import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog, doFullFloat)
+import XMonad.Hooks.SetWMName
 
--- Layouts modifiers
+-- Layout
 import XMonad.Layout.LayoutModifier
 import XMonad.Layout.Spacing				-- Allows us to define the gap between windows in each layout
 import XMonad.Layout.LimitWindows (limitWindows)	-- Allows us to control the amount of windows in a given layout
@@ -45,6 +46,14 @@ myStartupHook = do
 	spawnOnce "picom" 			-- start the compositor
 	spawnOnce "nitrogen --restore &"	-- set the background image
 	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
+	spawnOnce "xsettingsd &"		-- set fonts for Java applications
+
+	-- The Java gui toolkit has a hardcoded list of so-called 
+	-- "non-reparenting" window managers. xmonad is not on 
+	-- this list (nor are many of the newer window managers).
+	-- In reality we're already using the JavaHack but still
+	-- we will add this to make sure that things don't break.
+	setWMName "LG3D"
 
 -- Makes setting the spacingRaw simpler to write. 
 -- The spacingRaw module adds a configurable amount of space around windows.
@@ -96,17 +105,16 @@ myManageHook = composeAll
 -- The main function
 main :: IO ()
 main = do
-  -- Apply the Java hack for JetBrains IDEs
-  xmonad . ewmhFullscreen . ewmh . javaHack $ def
-	{ modMask 		= myModMask
-	, terminal 		= myTerminal
-	, startupHook		= myStartupHook
-	, workspaces		= myWorkspaces
-	, borderWidth		= myBorderWidth
-	, normalBorderColor	= myNormColor
-	, focusedBorderColor	= myFocusColor
-	, layoutHook 		= myLayout			-- Use custom layouts
-	, manageHook		= myManageHook <+> manageDocks	-- Match on certain windows
-	}
-	`additionalKeysP` myKeys
+	xmonad . ewmhFullscreen . ewmh . javaHack $ def
+		{ modMask 		= myModMask
+		, terminal 		= myTerminal
+		, startupHook		= myStartupHook
+		, workspaces		= myWorkspaces
+		, borderWidth		= myBorderWidth
+		, normalBorderColor	= myNormColor
+		, focusedBorderColor	= myFocusColor
+		, layoutHook 		= myLayout			-- Use custom layouts
+		, manageHook		= myManageHook <+> manageDocks	-- Match on certain windows
+		}
+		`additionalKeysP` myKeys
 
