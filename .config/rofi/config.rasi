@@ -1,5 +1,5 @@
 configuration {
-	font: "hack 10";
+	font: "Roboto 13";
 	show-icons: true;
 	icon-them: "Papirus";
  }
