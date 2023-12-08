@@ -72,7 +72,7 @@ myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 -- Custom keybindings
 myKeys = [ ("M-p", spawn "keepassxc $HOME/Documents/database.kdbx")
     , ("M-f", spawn "firefox")
-    , ("M-r", spawn "rofi -show -show-icons")
+    , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "xmonad --recompile; xmonad --restart")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
