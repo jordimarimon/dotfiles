@@ -44,7 +44,7 @@ myStartupHook = do
 	spawnOnce "lxsession" 			-- start session manager
 	spawnOnce "picom" 			-- start the compositor
 	spawnOnce "nitrogen --restore &"	-- set the background image
-	spawnOnce "setxkbmap es &"		-- set the correct keyboard layout
+	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
 
 -- Makes setting the spacingRaw simpler to write. 
 -- The spacingRaw module adds a configurable amount of space around windows.
@@ -72,6 +72,7 @@ myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 -- Custom keybindings
 myKeys = [ ("M-p", spawn "keepassxc $HOME/Documents/database.kdbx")
     , ("M-f", spawn "firefox")
+    , ("M-b", spawn "$HOME/Applications/Bitwarden.AppImage")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "xmonad --recompile; xmonad --restart")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")

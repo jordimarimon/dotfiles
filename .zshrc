@@ -54,7 +54,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Path to your oh-my-zsh installation.
+# Path to the oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load
@@ -64,7 +64,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 DISABLE_UNTRACKED_FILES_DIRTY="true"
 
 # ZSH Plugins
-plugins=(git)
+plugins=(
+  git
+  zsh-autosuggestions
+)
 
 # Start Oh My Zsh
 source $ZSH/oh-my-zsh.sh
@@ -73,6 +76,7 @@ source $ZSH/oh-my-zsh.sh
 alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat="bat"
 alias vim="nvim"
+alias ls="lsd"
 
 # Start PowerLevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
