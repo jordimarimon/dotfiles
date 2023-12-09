@@ -77,7 +77,7 @@ myStartupHook = do
 	spawnOnce "cbatticon"			-- start the battery tray
 	spawnOnce "nm-applet"			-- start the network manager tray
 	spawnOnce "volumeicon"			-- start the volume tray
-	spawnOnce "redshift"			-- adjusts the color temperature of the screen
+	spawnOnce "redshift-gtk"		-- adjusts the color temperature of the screen
 	spawnOnce "dunst"			-- starts the notification server
 
 	-- The Java gui toolkit has a hardcoded list of so-called 
@@ -127,11 +127,8 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 myAditionalKeys :: [(String, X ())]
 myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/database.kdbx")
     , ("M-f", spawn "firefox")
-    , ("M-b", spawn "$HOME/Applications/Bitwarden.AppImage")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "killall xmobar; xmonad --recompile; xmonad --restart")
-    , ("M-m", spawn "$HOME/Scripts/search_man_pages.sh")
-    , ("M-S-t", spawn "$HOME/Applications/jetbrains-toolbox")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5")
