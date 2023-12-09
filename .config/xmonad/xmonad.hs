@@ -58,7 +58,7 @@ myFocusColor :: String
 myFocusColor = "#46d9ff"
 
 trayerRestartCommand :: [Char]
-trayerRestartCommand = "killall trayer; trayer --monitor 1 --edge top --align right --widthtype request --padding 7 --iconspacing 10 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2B2E37  --height 29 --distance 5 &"
+trayerRestartCommand = "killall trayer; trayer --monitor 1 --edge top --align right --widthtype request --padding 7 --iconspacing 10 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2B2E37  --height 30 --distance 5 &"
 
 -------------------------------------------------------------------------------
 -- START UP
@@ -76,7 +76,6 @@ myStartupHook = do
 	spawnOnce "xsettingsd &"		-- set fonts for Java applications
 	spawnOnce "cbatticon"			-- start the battery tray
 	spawnOnce "nm-applet"			-- start the network manager tray
-	spawnOnce "volumeicon"			-- start the volume tray
 	spawnOnce "redshift-gtk"		-- adjusts the color temperature of the screen
 	spawnOnce "dunst"			-- starts the notification server
 
