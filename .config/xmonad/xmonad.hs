@@ -122,7 +122,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Custom keybindings
 myAditionalKeys :: [(String, X ())]
-myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/Documents/database.kdbx")
+myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/database.kdbx")
     , ("M-f", spawn "firefox")
     , ("M-b", spawn "$HOME/Applications/Bitwarden.AppImage")
     , ("M-r", spawn "rofi -show drun")
