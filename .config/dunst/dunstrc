@@ -1,0 +1,76 @@
+[global]
+    ### Display ###
+    monitor = 1
+    notification_limit = 0
+    follow = none
+    width = 350
+    height = 350
+    origin = top-right
+    offset = 15x55
+    scale = 0
+    progress_bar = true      #example dunstify -h int:value:12
+    progress_bar_height = 10
+    progress_bar_frame_width = 1
+    progress_bar_min_width = 150
+    progress_bar_max_width = 400
+    indicate_hidden = yes
+    transparency = 0
+    separator_height = 3
+    padding = 20
+    horizontal_padding = 20
+    text_icon_padding = 0
+    frame_width = 3
+    frame_color = "#8BABF0"
+    separator_color = frame
+    sort = yes
+    font = Roboto 15
+    line_height = 0
+    markup = full
+    format = "<b>%s</b>\n%b"
+    alignment = center
+    vertical_alignment = center
+    show_age_threshold = 60
+    ellipsize = middle
+    ignore_newline = no
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+    icon_position = left
+    min_icon_size = 0
+    max_icon_size = 128
+    icon_path = /usr/share/icons/Papirus-Dark/32x32/status/:/usr/share/icons/Papirus-Dark/32x32/devices/
+    sticky_history = yes
+    history_length = 20
+    dmenu = /usr/bin/dmenu -p dunst:
+    browser = /usr/bin/xdg-open
+    always_run_script = true
+    title = Dunst
+    class = Dunst
+    corner_radius = 7
+    ignore_dbusclose = false
+    force_xwayland = false
+    force_xinerama = false
+
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
+
+[experimental]
+    per_monitor_dpi = false
+
+
+[urgency_low]
+    background = "#2B2E37"
+    foreground = "#929AAD"
+    timeout = 10
+
+[urgency_normal]
+    background = "#2B2E37"
+    foreground = "#929AAD"
+    timeout = 10
+
+[urgency_critical]
+    background = "#2B2E37"
+    foreground = "#929AAD"
+    frame_color = "#C45500"
+    timeout = 0

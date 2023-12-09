@@ -75,7 +75,8 @@ myStartupHook = do
 	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
 	spawnOnce "xsettingsd &"		-- set fonts for Java applications
 	spawnOnce "cbatticon"			-- start the battery icon
-	spawnOnce "redshift"			--  adjusts the color temperature of the screen 
+	spawnOnce "redshift"			-- adjusts the color temperature of the screen
+	spawnOnce "dunst"			-- starts the notification server
 
 	-- The Java gui toolkit has a hardcoded list of so-called 
 	-- "non-reparenting" window managers. xmonad is not on 
