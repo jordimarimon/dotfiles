@@ -22,26 +22,26 @@ if [ -z "$SSH_AUTH_SOCK" -a -x "$SSHAGENT" ]; then
 fi
 
 # Paths
-if [ -d "$HOME/.bin" ] ;
-  then PATH="$HOME/.bin:$PATH"
+if [ -d "$HOME/.bin" ]; then 
+  export PATH="$HOME/.bin:$PATH"
 fi
 
-if [ -d "$HOME/.local/bin" ] ;
-  then PATH="$HOME/.local/bin:$PATH"
+if [ -d "$HOME/.local/bin" ]; then 
+  export PATH="$HOME/.local/bin:$PATH"
 fi
 
-if [ -d "$HOME/Applications" ] ;
-  then PATH="$HOME/Applications:$PATH"
+if [ -d "$HOME/Applications" ]; then
+  export PATH="$HOME/Applications:$PATH"
 fi
 
 # Setting other enviroment variables
-if [ -z "$XDG_CONFIG_HOME" ] ; then
+if [ -z "$XDG_CONFIG_HOME" ]; then
     export XDG_CONFIG_HOME="$HOME/.config"
 fi
-if [ -z "$XDG_DATA_HOME" ] ; then
+if [ -z "$XDG_DATA_HOME" ]; then
     export XDG_DATA_HOME="$HOME/.local/share"
 fi
-if [ -z "$XDG_CACHE_HOME" ] ; then
+if [ -z "$XDG_CACHE_HOME" ]; then
     export XDG_CACHE_HOME="$HOME/.cache"
 fi
 
@@ -79,5 +79,22 @@ alias vim="nvim"
 alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
 
+# Node Options
+export NODE_OPTIONS=--max_old_space_size=4096
+
 # Start PowerLevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# NVM
+export NVM_DIR="$HOME/.config/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+
+# PyEnv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+
+# Elastic Beanstalk CLI
+export PATH="/home/jmarimon/.ebcli-virtual-env/executables:$PATH"
