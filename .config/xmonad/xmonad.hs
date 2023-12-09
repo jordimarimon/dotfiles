@@ -74,8 +74,6 @@ myStartupHook = do
 	spawnOnce "~/.fehbg &"			-- set last saved feh wallpaper
 	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
 	spawnOnce "xsettingsd &"		-- set fonts for Java applications
-	spawnOnce "nm-applet"			-- start the network manager
-	spawnOnce "volumeicon"			-- start the volume icon
 	spawnOnce "cbatticon"			-- start the battery icon
 	spawnOnce "redshift"			--  adjusts the color temperature of the screen 
 
