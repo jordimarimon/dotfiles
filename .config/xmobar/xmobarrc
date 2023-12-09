@@ -15,13 +15,10 @@ Config { font = "Roboto Bold 10"
        , allDesktops = True
        , persistent = False
        , hideOnStart = False
-       , iconRoot = ".config/xmonad/xmobar/icons/"
+       , iconRoot = ".config/xmobar/icons/"
        , commands =
          [ Run UnsafeStdinReader
          , Run Date "%a, %d %b   <fn=5>󰥔</fn>     %H:%M:%S" "date" 10
-	 , Run Com ".config/xmonad/xmobar/volume.sh" [] "volume" 10
-         , Run Com ".config/xmonad/xmobar/bluetooth.sh" [] "bluetooth" 10
-         , Run Com ".config/xmonad/xmobar/wifi.sh" [] "network" 10
 	 , Run Com ".config/xmobar/trayer-padding.sh" [] "trayerpad" 20
          ]
        , sepChar = "%"

@@ -74,7 +74,9 @@ myStartupHook = do
 	spawnOnce "~/.fehbg &"			-- set last saved feh wallpaper
 	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
 	spawnOnce "xsettingsd &"		-- set fonts for Java applications
-	spawnOnce "cbatticon"			-- start the battery icon
+	spawnOnce "cbatticon"			-- start the battery tray
+	spawnOnce "nm-applet"			-- start the network manager tray
+	spawnOnce "volumeicon"			-- start the volume tray
 	spawnOnce "redshift"			-- adjusts the color temperature of the screen
 	spawnOnce "dunst"			-- starts the notification server
 
@@ -129,8 +131,7 @@ myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/database.kdbx")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "killall xmobar; xmonad --recompile; xmonad --restart")
     , ("M-m", spawn "$HOME/Scripts/search_man_pages.sh")
-    , ("M-S-t", spawn trayerRestartCommand)
-    , ("M-t", spawn "$HOME/Applications/jetbrains-toolbox")
+    , ("M-S-t", spawn "$HOME/Applications/jetbrains-toolbox")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5")
@@ -218,7 +219,7 @@ main = do
 			-- Title of active window
 		        , ppTitle = \_ -> ""
 			-- Order of things (by default its: Workspaces + CurrentLayoutName + FocusedApplicationTitle + Extras)
-			, ppOrder = \(ws : l : _ : _) -> ws : ("<icon=/home/arch/.config/xmobar/icons/" ++ (map toLower l) ++ ".xpm/>") : []
+			, ppOrder = \(ws : l : _ : _) -> ws : ("<icon=/home/jmarimon/.config/xmobar/icons/" ++ (map toLower l) ++ ".xpm/>") : []
 			-- , ppOrder =  \(ws : l : _ : _) -> ws : l : [] 
 			, ppExtras  = []
 			}
