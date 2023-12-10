@@ -18,7 +18,7 @@ Config { font = "Roboto Bold 10"
        , iconRoot = ".config/xmobar/icons/"
        , commands =
          [ Run UnsafeStdinReader
-         , Run Date "%a, %d %b   <fn=5>󰥔</fn>     %H:%M:%S" "date" 10
+         , Run Date "%a, %d %b   <fn=5>󰥔</fn>     %H:%M" "date" 10
 	 , Run Com ".config/xmobar/trayer-padding.sh" [] "trayerpad" 20
          ]
        , sepChar = "%"
