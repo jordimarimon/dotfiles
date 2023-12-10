@@ -1,7 +1,13 @@
 configuration {
 	font: "Roboto 13";
 	show-icons: true;
-	icon-them: "Papirus";
+	icon-theme: "Papirus";
+	hover-select: false;
+	auto-select: false;
+	timeout {
+      		delay:  15;
+      		action: "kb-cancel";
+	}
  }
 
 @theme "~/.config/rofi/themes/default.rasi"

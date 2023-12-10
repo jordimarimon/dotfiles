@@ -128,9 +128,12 @@ myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/database.kdbx")
     , ("M-f", spawn "firefox")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "killall xmobar; xmonad --recompile; xmonad --restart")
+    , ("M-o", spawn "$HOME/Scripts/list-projects.sh")
     , ("<XF86AudioMute>", spawn "pamixer --toggle-mute")
     , ("<XF86AudioLowerVolume>", spawn "pamixer --decrease 5")
     , ("<XF86AudioRaiseVolume>", spawn "pamixer --increase 5")
+    , ("<XF86MonBrightnessUp>", spawn "brightnessctl set +10%")
+    , ("<XF86MonBrightnessDown>", spawn "brightnessctl set 10%-")
     , ("<Print>", spawn "flameshot gui")
     ]
 
