@@ -8,6 +8,8 @@ export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export WINIT_X11_SCALE_FACTOR=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim +Man!" # Nvim as manpager
+export XKB_DEFAULT_LAYOUT="es"
+export XKB_DEFAULT_VARIANT="qwerty"
 
 # If not running interactively or it's a login shell, don't do anything
 [[ $- != *i* || -o login ]] && return
