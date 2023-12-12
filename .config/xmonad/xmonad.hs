@@ -25,6 +25,7 @@ import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
 import XMonad.Layout.NoBorders
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.IndependentScreens
 
 -- Utilities
 import XMonad.Util.EZConfig (additionalKeysP)		-- Allows to have access to special keys and also create our own keybindings
@@ -186,9 +187,8 @@ wsIconEmpty  = "  <fn=2>\xf10c</fn>   "
 
 main :: IO ()
 main = do
-	-- Launching two instances of xmobar on their monitors
-	xmproc0 <- spawnPipe ("xmobar -x 0 $HOME/.config/xmobar/xmobarrc")
-	xmproc1 <- spawnPipe ("xmobar -x 1 $HOME/.config/xmobar/xmobarrc")
+	nScreens <- countScreens
+	xmprocs <- mapM (\i -> spawnPipe $ "xmobar -x " ++ show i ++ " $HOME/.config/xmobar/xmobarrc") [0..nScreens-1]
 
 	xmonad $ ewmhFullscreen $ ewmh $ javaHack $ docks $ def
 		{ modMask 		= myModMask
@@ -201,8 +201,8 @@ main = do
 		, layoutHook 		= myLayout			-- Use custom layouts
 		, manageHook		= myManageHook <+> manageDocks	-- Match on certain windows
 		, logHook		= dynamicLogWithPP $ xmobarPP
-			{ ppOutput = \x -> hPutStrLn xmproc0 x   -- xmobar on monitor 1
-					>> hPutStrLn xmproc1 x   -- xmobar on monitor 2
+			{ ppOutput = \x -> mapM_ (\handle -> hPutStrLn handle x) xmprocs
+			-- Separator between workspaces
 			, ppWsSep = ""
 			-- Current workspace
 			, ppCurrent = xmobarColor "#8BABF0" "" . clickable wsIconFull
