@@ -7,8 +7,8 @@ Config { font = "Roboto Bold 10"
           , "Hack 14"
           ]
        , border = NoBorder
-       , bgColor = "#2B2E37"
-       , fgColor = "#929AAD"
+       , bgColor = "#F5F5F5"
+       , fgColor = "#404040"
        , alpha = 255
        , position = TopSize L 100 40
        , lowerOnStart = True

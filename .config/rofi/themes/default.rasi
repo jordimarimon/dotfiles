@@ -1,98 +1,102 @@
 * {
-    font:   "IBM Plex Mono 12";
+	foreground: #9394A5;
+	background: #FAFAFA;
+	selected-bg: #DBEAFE;
+	selected-fg: #1D4ED8;
+	border: #E4E5F1;
 
-    nord0:     #2e3440;
-    nord1:     #3b4252;
-    nord2:     #434c5e;
-    nord3:     #4c566a;
-
-    nord4:     #d8dee9;
-    nord5:     #e5e9f0;
-    nord6:     #eceff4;
-
-    nord7:     #8fbcbb;
-    nord8:     #88c0d0;
-    nord9:     #81a1c1;
-    nord10:    #5e81ac;
-    nord11:    #bf616a;
-
-    nord12:    #d08770;
-    nord13:    #ebcb8b;
-    nord14:    #a3be8c;
-    nord15:    #b48ead;
-
-    background-color:   transparent;
-    text-color:         @nord4;
-    accent-color:       @nord8;
-
-    margin:     0px;
-    padding:    0px;
-    spacing:    0px;
+	border: 0;
+	margin: 0;
+	padding: 0;
+	spacing: 0;
 }
 
 window {
-    background-color:   @nord0;
-    border-color:       @accent-color;
+    	transparency: "real";
+    	background-color: @background;
+    	text-color: @foreground;
+	border:	1px;
+	border-color: @border;
+    	border-radius: 20px;
+	height:	46%;
+	width: 25%;
+    	location: center;
+    	x-offset: 0;
+    	y-offset: 0;
+}
 
-    location:   center;
-    width:      480px;
-    border:     1px;
+mainbox {
+	children:                       [ inputbar, listview ];
+	border:				0% 0% 0% 0%;
+	border-radius:                  0% 0% 0% 0%;
+	spacing:                       	0%;
+	padding:                        0%;
 }
 
 inputbar {
-    padding:    8px 12px;
-    spacing:    12px;
-    children:   [ prompt, entry ];
-}
-
-prompt, entry, element-text, element-icon {
-    vertical-align: 0.5;
+	children: [ prompt, entry ];
+    	expand: false;
+	border:	0% 0% 0% 0%;
+    	border-radius: 0px;
+	background-color: @background;
+    	margin: 0% 0% 0% 0%;
+    	padding: 1.5%;
 }
 
 prompt {
-    text-color: @accent-color;
+    	enabled: true;
+	padding: 0.30% 1% 0% -0.5%;
+	background-color: inherit;
+}
+
+entry {
+	background-color: inherit;
+    	expand: true;
+    	horizontal-align: 0;
+    	padding: 0.10% 0% 0% 0%;
+    	blink: true;
 }
 
 listview {
-    lines:      8;
-    columns:    1;
-
-    fixed-height:   false;
+	padding: 0px;
+	columns: 1;
+	lines: 5;
+	spacing: 0%;
+	cycle: false;
+	dynamic: true;
+	layout: vertical;
 }
 
 element {
-    padding:    8px;
-    spacing:    8px;
-}
-
-element normal urgent {
-    text-color: @nord13;
-}
-
-element normal active {
-    text-color: @accent-color;
-}
-
-element selected {
-    text-color: @nord0;
-}
-
-element selected normal {
-    background-color:   @accent-color;
-}
-
-element selected urgent {
-    background-color:   @nord13;
-}
-
-element selected active {
-    background-color:   @nord8;
+	children: [element-icon, element-text];
+	orientation: horizontal;
+	border-radius: 0%;
+	padding: 1% 0.5% 1% 0.5%;
 }
 
 element-icon {
-    size:   0.75em;
+	background-color: inherit;
+	text-color: inherit;
+	horizontal-align: 0.5;
+	vertical-align: 0.5;
+	size: 28px;
+	border: 0px;
+	padding: 0 10px 0 10px;
 }
 
 element-text {
-    text-color: inherit;
+	background-color: inherit;
+	text-color: inherit;
+	expand: true;
+	horizontal-align: 0;
+	vertical-align: 0.5;
+	margin: 0% 0.25% 0% 0.25%;
 }
+
+element selected {
+	text-color: @selected-fg;
+    	background-color: @selected-bg;
+	border:	0% 0% 0% 0%;
+    	border-radius: 0px;
+}
+

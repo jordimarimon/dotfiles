@@ -51,15 +51,15 @@ myBorderWidth :: Dimension
 myBorderWidth = 2
 
 -- Border color of normal windows
-myNormColor :: String       	
-myNormColor = "#282c34"
+myNormColor :: String
+myNormColor = "#EFF6FF"
 
 -- Border color of focused windows
 myFocusColor :: String     	
-myFocusColor = "#46d9ff"
+myFocusColor = "#2563EB"
 
 trayerRestartCommand :: [Char]
-trayerRestartCommand = "killall trayer; trayer --monitor 1 --edge top --align right --widthtype request --padding 7 --iconspacing 10 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x2B2E37  --height 30 --distance 5 &"
+trayerRestartCommand = "killall trayer; trayer --monitor 1 --edge top --align right --widthtype request --padding 7 --iconspacing 10 --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0xF5F5F5  --height 30 --distance 5 &"
 
 -------------------------------------------------------------------------------
 -- START UP
