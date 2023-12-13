@@ -20,7 +20,7 @@
     horizontal_padding = 20
     text_icon_padding = 0
     frame_width = 3
-    frame_color = "#8BABF0"
+    frame_color = "#F5F5F5"
     separator_color = frame
     sort = yes
     font = Roboto 15
@@ -38,7 +38,7 @@
     icon_position = left
     min_icon_size = 0
     max_icon_size = 128
-    icon_path = /usr/share/icons/Papirus-Dark/32x32/status/:/usr/share/icons/Papirus-Dark/32x32/devices/
+    icon_path = /usr/share/icons/Papirus-Light/32x32/status/:/usr/share/icons/Papirus-Light/32x32/devices/
     sticky_history = yes
     history_length = 20
     dmenu = /usr/bin/dmenu -p dunst:
@@ -60,17 +60,17 @@
 
 
 [urgency_low]
-    background = "#2B2E37"
-    foreground = "#929AAD"
+    background = "#F5F5F5"
+    foreground = "#404040"
     timeout = 10
 
 [urgency_normal]
-    background = "#2B2E37"
-    foreground = "#929AAD"
+    background = "#F5F5F5"
+    foreground = "#404040"
     timeout = 10
 
 [urgency_critical]
-    background = "#2B2E37"
-    foreground = "#929AAD"
+    background = "#F5F5F5"
+    foreground = "#404040"
     frame_color = "#C45500"
     timeout = 0

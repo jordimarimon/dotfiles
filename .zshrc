@@ -10,6 +10,7 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim +Man!" # Nvim as manpager
 export XKB_DEFAULT_LAYOUT="es"
 export XKB_DEFAULT_VARIANT="qwerty"
+export BAT_THEME="Catppuccin-latte"
 
 # If not running interactively or it's a login shell, don't do anything
 [[ $- != *i* || -o login ]] && return
@@ -77,7 +78,6 @@ source $ZSH/oh-my-zsh.sh
 # Aliases
 alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat="bat"
-alias vim="nvim"
 alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
 

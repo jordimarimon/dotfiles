@@ -190,10 +190,12 @@ require('lazy').setup({
 
   {
     -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    'catppuccin/nvim',
+    name = 'catppuccin',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      require('catppuccin').setup()
+      vim.cmd.colorscheme 'catppuccin-latte'
     end,
   },
 
@@ -204,7 +206,7 @@ require('lazy').setup({
     opts = {
       options = {
         icons_enabled = false,
-        theme = 'onedark',
+        theme = 'catppuccin-latte',
         component_separators = '|',
         section_separators = '',
       },
@@ -565,13 +567,13 @@ require('mason-lspconfig').setup()
 --  If you want to override the default filetypes that your language server will attach to you can
 --  define the property 'filetypes' to the map in question.
 local servers = {
-  -- clangd = {},
+  clangd = {},
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  -- tsserver = {},
-  -- html = { filetypes = { 'html', 'twig', 'hbs'} },
-
+  tsserver = {},
+  html = { filetypes = { 'html', 'twig', 'hbs'} },
+  -- hls = {},
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
