@@ -72,9 +72,9 @@ myStartupHook = do
 
 	spawnOnce "lxsession" 			-- start session manager
 	spawnOnce "picom" 			-- start the compositor
-	spawnOnce "~/.fehbg &"			-- set last saved feh wallpaper
+	spawnOnce "~/.fehbg"			-- set last saved feh wallpaper
 	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
-	spawnOnce "xsettingsd &"		-- set fonts for Java applications
+	spawnOnce "xsettingsd"			-- set fonts for Java applications
 	spawnOnce "cbatticon"			-- start the battery tray
 	spawnOnce "nm-applet"			-- start the network manager tray
 	spawnOnce "redshift-gtk"		-- adjusts the color temperature of the screen
@@ -125,8 +125,7 @@ myWorkspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 -- Custom keybindings
 myAditionalKeys :: [(String, X ())]
-myAditionalKeys = [ ("M-p", spawn "keepassxc $HOME/database.kdbx")
-    , ("M-f", spawn "firefox")
+myAditionalKeys = [ ("M-f", spawn "firefox")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "killall xmobar; xmonad --recompile; xmonad --restart")
     , ("M-o", spawn "$HOME/Scripts/list-projects.sh")
