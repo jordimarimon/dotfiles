@@ -1,0 +1,11 @@
+------------------------------------------------------------------------------
+name:               xmonad-config
+license:            NONE
+build-type:         Simple
+version:            0.1.0.0
+
+------------------------------------------------------------------------------
+executable xmonad-config
+  main-is: xmonad.hs
+  ghc-options: -Wdefault -Werror -fno-warn-missing-signatures
+  build-depends: base, xmonad, xmonad-contrib, containers

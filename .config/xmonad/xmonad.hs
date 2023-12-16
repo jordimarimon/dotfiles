@@ -1,14 +1,12 @@
 -- Base
 import XMonad
 import System.IO (hPutStrLn)
-import qualified XMonad.StackSet as W
 
 -- Hooks
 import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers (isFullscreen, isDialog, doFullFloat)
 import XMonad.Hooks.SetWMName
-import XMonad.Hooks.StatusBar
 import XMonad.Hooks.DynamicLog
 
 -- Data
@@ -18,8 +16,8 @@ import Data.Char (toLower)
 
 -- Layout
 import XMonad.Layout.LayoutModifier
-import XMonad.Layout.Spacing				-- Allows us to define the gap between windows in each layout
-import XMonad.Layout.LimitWindows (limitWindows)	-- Allows us to control the amount of windows in a given layout
+import XMonad.Layout.Spacing                            -- Allows us to define the gap between windows in each layout
+import XMonad.Layout.LimitWindows (limitWindows)        -- Allows us to control the amount of windows in a given layout
 import XMonad.Layout.Renamed
 import XMonad.Layout.Simplest
 import XMonad.Layout.SubLayouts
@@ -28,26 +26,25 @@ import XMonad.Layout.ResizableTile
 import XMonad.Layout.IndependentScreens
 
 -- Utilities
-import XMonad.Util.EZConfig (additionalKeysP)		-- Allows to have access to special keys and also create our own keybindings
-import XMonad.Util.SpawnOnce				-- Allows us to execute commands only once
-import XMonad.Util.Run (spawnPipe)			-- Allows us to run external applications
-import XMonad.Util.Hacks (javaHack)			-- Allows us to use some hacks to solve common problems
-import XMonad.Util.Loggers (logLayoutOnScreen, wrapL, xmobarColorL, logConst)
+import XMonad.Util.EZConfig (additionalKeysP)           -- Allows to have access to special keys and also create our own keybindings
+import XMonad.Util.SpawnOnce                            -- Allows us to execute commands only once
+import XMonad.Util.Run (spawnPipe)                      -- Allows us to run external applications
+import XMonad.Util.Hacks (javaHack)                     -- Allows us to use some hacks to solve common problems
 
 -------------------------------------------------------------------------------
 -- VARIABLES / UTILITY FUNCTIONS
 -------------------------------------------------------------------------------
 
 -- Sets modkey to super/windows key
-myModMask :: KeyMask		
+myModMask :: KeyMask
 myModMask = mod4Mask
 
 -- Sets default terminal
-myTerminal :: String		
+myTerminal :: String
 myTerminal = "alacritty"
 
 -- Sets border width for windows
-myBorderWidth :: Dimension  	
+myBorderWidth :: Dimension
 myBorderWidth = 2
 
 -- Border color of normal windows
@@ -55,7 +52,7 @@ myNormColor :: String
 myNormColor = "#EFF6FF"
 
 -- Border color of focused windows
-myFocusColor :: String     	
+myFocusColor :: String
 myFocusColor = "#2563EB"
 
 trayerRestartCommand :: [Char]
@@ -68,24 +65,24 @@ trayerRestartCommand = "killall trayer; trayer --monitor 1 --edge top --align ri
 -- What to launch when the WM initializes
 myStartupHook :: X ()
 myStartupHook = do
-	spawn trayerRestartCommand		-- restart trayer
+        spawn trayerRestartCommand              -- restart trayer
 
-	spawnOnce "lxsession" 			-- start session manager
-	spawnOnce "picom" 			-- start the compositor
-	spawnOnce "~/.fehbg"			-- set last saved feh wallpaper
-	spawnOnce "setxkbmap es"		-- set the correct keyboard layout
-	spawnOnce "xsettingsd"			-- set fonts for Java applications
-	spawnOnce "cbatticon"			-- start the battery tray
-	spawnOnce "nm-applet"			-- start the network manager tray
-	spawnOnce "redshift-gtk"		-- adjusts the color temperature of the screen
-	spawnOnce "dunst"			-- starts the notification server
+        spawnOnce "lxsession"                   -- start session manager
+        spawnOnce "picom"                       -- start the compositor
+        spawnOnce "~/.fehbg"                    -- set last saved feh wallpaper
+        spawnOnce "setxkbmap es"                -- set the correct keyboard layout
+        spawnOnce "xsettingsd"                  -- set fonts for Java applications
+        spawnOnce "cbatticon"                   -- start the battery tray
+        spawnOnce "nm-applet"                   -- start the network manager tray
+        spawnOnce "redshift-gtk"                -- adjusts the color temperature of the screen
+        spawnOnce "dunst"                       -- starts the notification server
 
-	-- The Java gui toolkit has a hardcoded list of so-called 
-	-- "non-reparenting" window managers. xmonad is not on 
-	-- this list (nor are many of the newer window managers).
-	-- In reality we're already using the JavaHack but still
-	-- we will add this to make sure that things don't break.
-	setWMName "LG3D"
+        -- The Java gui toolkit has a hardcoded list of so-called 
+        -- "non-reparenting" window managers. xmonad is not on 
+        -- this list (nor are many of the newer window managers).
+        -- In reality we're already using the JavaHack but still
+        -- we will add this to make sure that things don't break.
+        setWMName "LG3D"
 
 -------------------------------------------------------------------------------
 -- LAYOUTS
@@ -99,15 +96,15 @@ mySpacing i = spacingRaw False (Border i i i i) True (Border i i i i) True
 
 -- Defining the custom layout
 tall = renamed [Replace "tall"]
-	$ limitWindows 5
+        $ limitWindows 5
         $ smartBorders
         $ subLayout [] (smartBorders Simplest)
         $ mySpacing 8
         $ ResizableTall nmaster delta ratio []
-		where
-			nmaster = 1      -- Default number of windows in the master pane
-    			ratio   = 1/2    -- Default proportion of screen occupied by master pane
-    			delta   = 3/100  -- Percent of screen to increment by when resizing panes
+                where
+                        nmaster = 1      -- Default number of windows in the master pane
+                        ratio   = 1/2    -- Default proportion of screen occupied by master pane
+                        delta   = 3/100  -- Percent of screen to increment by when resizing panes
 
 myLayout = avoidStruts $ withBorder myBorderWidth tall ||| Full
 
@@ -144,14 +141,14 @@ myAditionalKeys = [ ("M-f", spawn "firefox")
 -- Programs that we don’t want xmonad to tile (programs that popup windows) 
 myManageHook :: ManageHook
 myManageHook = composeAll
-    [ className =? "Gimp"		--> doFloat
-    , className =? "confirm"		--> doFloat
-    , className =? "file_progress"	--> doFloat
-    , className =? "download"		--> doFloat
-    , className =? "error"		--> doFloat
-    , className =? "notification"	--> doFloat
-    , isDialog				--> doFloat
-    , isFullscreen			--> doFullFloat
+    [ className =? "Gimp"               --> doFloat
+    , className =? "confirm"            --> doFloat
+    , className =? "file_progress"      --> doFloat
+    , className =? "download"           --> doFloat
+    , className =? "error"              --> doFloat
+    , className =? "notification"       --> doFloat
+    , isDialog                          --> doFloat
+    , isFullscreen                      --> doFullFloat
     ]
 
 -------------------------------------------------------------------------------
@@ -186,43 +183,42 @@ wsIconEmpty  = "  <fn=2>\xf10c</fn>   "
 
 main :: IO ()
 main = do
-	nScreens <- countScreens
-	xmprocs <- mapM (\i -> spawnPipe $ "xmobar -x " ++ show i ++ " $HOME/.config/xmobar/xmobarrc") [0..nScreens-1]
+        nScreens <- countScreens
+        xmprocs <- mapM (\i -> spawnPipe $ "xmobar -x " ++ show i ++ " $HOME/.config/xmobar/xmobar.hs") [0..nScreens-1]
 
-	xmonad $ ewmhFullscreen $ ewmh $ javaHack $ docks $ def
-		{ modMask 		= myModMask
-		, terminal 		= myTerminal
-		, startupHook		= myStartupHook
-		, workspaces		= myWorkspaces
-		, borderWidth		= myBorderWidth
-		, normalBorderColor	= myNormColor
-		, focusedBorderColor	= myFocusColor
-		, layoutHook 		= myLayout			-- Use custom layouts
-		, manageHook		= myManageHook <+> manageDocks	-- Match on certain windows
-		, logHook		= dynamicLogWithPP $ xmobarPP
-			{ ppOutput = \x -> mapM_ (\handle -> hPutStrLn handle x) xmprocs
-			-- Separator between workspaces
-			, ppWsSep = ""
-			-- Current workspace
-			, ppCurrent = xmobarColor "#8BABF0" "" . clickable wsIconFull
-			-- Visible but not current workspace
-			, ppVisible = xmobarColor "#8691A8" "" . clickable wsIconFull
-			-- Hidden workspace
-			, ppHidden = xmobarColor "#555E70" "" . clickable wsIconHidden
-			-- Hidden workspaces (no windows)
-			, ppHiddenNoWindows = xmobarColor "#555E70" ""  . clickable wsIconEmpty
-			-- Separator character
-			, ppSep =  "   "
-			-- Urgent workspace
-			, ppUrgent = xmobarColor "#C45500" "" . clickable wsIconFull
-			-- Title of active window
-		        , ppTitle = \_ -> ""
-			-- Order of things (by default its: Workspaces + CurrentLayoutName + FocusedApplicationTitle + Extras)
-			, ppOrder = \(ws : l : _ : _) -> ws : ("<icon=/home/jmarimon/.config/xmobar/icons/" ++ (map toLower l) ++ ".xpm/>") : []
-			-- , ppOrder =  \(ws : l : _ : _) -> ws : l : [] 
-			, ppExtras  = []
-			}
-
-		}
-		`additionalKeysP` myAditionalKeys
+        xmonad $ ewmhFullscreen $ ewmh $ javaHack $ docks $ def
+                { modMask               = myModMask
+                , terminal              = myTerminal
+                , startupHook           = myStartupHook
+                , workspaces            = myWorkspaces
+                , borderWidth           = myBorderWidth
+                , normalBorderColor     = myNormColor
+                , focusedBorderColor    = myFocusColor
+                , layoutHook            = myLayout                      -- Use custom layouts
+                , manageHook            = myManageHook <+> manageDocks  -- Match on certain windows
+                , logHook               = dynamicLogWithPP $ xmobarPP
+                        { ppOutput = \x -> mapM_ (\handle -> hPutStrLn handle x) xmprocs
+                        -- Separator between workspaces
+                        , ppWsSep = ""
+                        -- Current workspace
+                        , ppCurrent = xmobarColor "#8BABF0" "" . clickable wsIconFull
+                        -- Visible but not current workspace
+                        , ppVisible = xmobarColor "#8691A8" "" . clickable wsIconFull
+                        -- Hidden workspace
+                        , ppHidden = xmobarColor "#555E70" "" . clickable wsIconHidden
+                        -- Hidden workspaces (no windows)
+                        , ppHiddenNoWindows = xmobarColor "#555E70" ""  . clickable wsIconEmpty
+                        -- Separator character
+                        , ppSep =  "   "
+                        -- Urgent workspace
+                        , ppUrgent = xmobarColor "#C45500" "" . clickable wsIconFull
+                        -- Title of active window
+                        , ppTitle = \_ -> ""
+                        -- Order of things (by default its: Workspaces + CurrentLayoutName + FocusedApplicationTitle + Extras)
+                        , ppOrder = \(ws : l : _ : _) -> ws : ("<icon=/home/jmarimon/.config/xmobar/icons/" ++ (map toLower l) ++ ".xpm/>") : []
+                        -- , ppOrder =  \(ws : l : _ : _) -> ws : l : [] 
+                        , ppExtras  = []
+                        }
+                }
+                `additionalKeysP` myAditionalKeys
 
