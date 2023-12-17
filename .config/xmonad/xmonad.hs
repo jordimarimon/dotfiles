@@ -213,10 +213,10 @@ main = do
                         -- Urgent workspace
                         , ppUrgent = xmobarColor "#C45500" "" . clickable wsIconFull
                         -- Title of active window
-                        , ppTitle = \_ -> ""
+                        , ppTitle = const ""
                         -- Order of things (by default its: Workspaces + CurrentLayoutName + FocusedApplicationTitle + Extras)
-                        , ppOrder = \(ws : l : _ : _) -> ws : ("<icon=/home/jmarimon/.config/xmobar/icons/" ++ (map toLower l) ++ ".xpm/>") : []
-                        -- , ppOrder =  \(ws : l : _ : _) -> ws : l : [] 
+                        , ppOrder = \(ws : l : _ : _) -> ws : ("<icon=" ++ (map toLower l) ++ ".xbm/>") : []
+                        -- Extra things to show in the status bar 
                         , ppExtras  = []
                         }
                 }
