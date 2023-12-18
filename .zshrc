@@ -38,6 +38,7 @@ alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat="bat"
 alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
+alias trash="gio trash"
 
 # Start PowerLevel10k
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

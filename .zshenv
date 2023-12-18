@@ -12,6 +12,9 @@ export XKB_DEFAULT_LAYOUT="es"
 export XKB_DEFAULT_VARIANT="qwerty"
 export BAT_THEME="Catppuccin-latte"
 export NODE_OPTIONS=--max_old_space_size=4096
+export HISTSIZE=500
+export SAVEHIST=500
+export HISTFILESIZE=500
 
 # Paths
 if [ -d "$HOME/.bin" ]; then 

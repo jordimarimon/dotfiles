@@ -8,7 +8,7 @@
     origin = top-right
     offset = 15x55
     scale = 0
-    progress_bar = true      #example dunstify -h int:value:12
+    progress_bar = true      
     progress_bar_height = 10
     progress_bar_frame_width = 1
     progress_bar_min_width = 150
@@ -23,7 +23,7 @@
     frame_color = "#F5F5F5"
     separator_color = frame
     sort = yes
-    font = Roboto 15
+    font = Roboto 13
     line_height = 0
     markup = full
     format = "<b>%s</b>\n%b"
@@ -37,7 +37,7 @@
     show_indicators = yes
     icon_position = left
     min_icon_size = 0
-    max_icon_size = 128
+    max_icon_size = 64
     icon_path = /usr/share/icons/Papirus-Light/32x32/status/:/usr/share/icons/Papirus-Light/32x32/devices/
     sticky_history = yes
     history_length = 20
