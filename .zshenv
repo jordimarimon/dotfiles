@@ -66,5 +66,8 @@ export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
-# ghcup-env
+# ghcup
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
+
+# Rust
+. "$HOME/.cargo/env"
