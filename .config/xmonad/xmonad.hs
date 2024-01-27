@@ -125,7 +125,7 @@ myAditionalKeys :: [(String, X ())]
 myAditionalKeys = [ ("M-f", spawn "firefox")
     , ("M-r", spawn "rofi -show drun")
     , ("M-q", spawn "killall xmobar; xmonad --recompile; xmonad --restart")
-    , ("M-o", spawn "$HOME/Scripts/list-projects.sh")
+    , ("M-o", spawn "$HOME/Scripts/open-jetbrains-project.sh")
     , ("<XF86AudioMute>", spawn "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle")
     , ("<XF86AudioLowerVolume>", spawn "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-")
     , ("<XF86AudioRaiseVolume>", spawn "wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ 5%+")
