@@ -568,13 +568,23 @@ require('mason-lspconfig').setup()
 --  define the property 'filetypes' to the map in question.
 local servers = {
   clangd = {},
-  -- gopls = {},
-  -- pyright = {},
+  gopls = {},
+  pyright = {},
   rust_analyzer = {},
   tsserver = {},
   html = { filetypes = { 'html', 'twig', 'hbs'} },
   hls = {},
-  angularls = { filetypes = { 'html', 'typescript'} },
+  angularls = {
+    cmd = {
+      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/bin/ngserver",
+      "--ngProbeLocations",
+      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/lib/node_modules/@angular/language-server/bin",
+      "--tsProbeLocations",
+      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/lib/node_modules/typescript/lib",
+      "--stdio",
+    },
+    filetypes = { 'html', 'typescript'},
+  },
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },

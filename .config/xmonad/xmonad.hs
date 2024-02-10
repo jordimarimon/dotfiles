@@ -74,6 +74,7 @@ myStartupHook = do
         spawnOnce "xsettingsd"                  -- set fonts for Java applications
         spawnOnce "cbatticon"                   -- start the battery tray
         spawnOnce "nm-applet"                   -- start the network manager tray
+        spawnOnce "blueman-applet"              -- start the bluetooth manager tray
         spawnOnce "redshift-gtk"                -- adjusts the color temperature of the screen
         spawnOnce "dunst"                       -- starts the notification server
 
@@ -147,6 +148,8 @@ myManageHook = composeAll
     , className =? "download"           --> doFloat
     , className =? "error"              --> doFloat
     , className =? "notification"       --> doFloat
+    , className =? "Tk"                 --> doFloat
+    , className =? "Toplevel"           --> doFloat
     , isDialog                          --> doFloat
     , isFullscreen                      --> doFullFloat
     ]
