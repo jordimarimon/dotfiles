@@ -33,6 +33,9 @@ plugins=(
 # Start Oh My Zsh
 source $ZSH/oh-my-zsh.sh
 
+# Export helper functions
+. $HOME/Scripts/utils.sh
+
 # Aliases
 alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias cat="bat"
