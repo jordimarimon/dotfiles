@@ -576,11 +576,11 @@ local servers = {
   hls = {},
   angularls = {
     cmd = {
-      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/bin/ngserver",
+      "/home/jmarimon/.config/nvm/versions/node/v20.12.0/bin/ngserver",
       "--ngProbeLocations",
-      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/lib/node_modules/@angular/language-server/bin",
+      "/home/jmarimon/.config/nvm/versions/node/v20.12.0/lib/node_modules/@angular/language-server/bin",
       "--tsProbeLocations",
-      "/home/jmarimon/.config/nvm/versions/node/v20.10.0/lib/node_modules/typescript/lib",
+      "/home/jmarimon/.config/nvm/versions/node/v20.12.0/lib/node_modules/typescript/lib",
       "--stdio",
     },
     filetypes = { 'html', 'typescript'},

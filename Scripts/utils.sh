@@ -60,3 +60,15 @@ function open_xlsx() {
 	bash -i -c "libreoffice --calc $file > /dev/null 2>&1; exit 0";
 	xdo show $window_id;
 }
+
+function open_notes() {
+	notes=($(ls "$HOME/Notes/"));
+
+	IFS=$'\n';
+	note=$(printf '%q' "`echo \"${notes[*]}\" | fzf`");
+	IFS=' ';
+
+	if [[ ! -z "$note" && "$note" != "''" ]]; then
+		nvim "$HOME/Notes/$note";
+	fi
+}

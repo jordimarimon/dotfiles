@@ -15,6 +15,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Export helper functions
+. $HOME/Scripts/utils.sh
+
 # Path to the oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -32,9 +35,6 @@ plugins=(
 
 # Start Oh My Zsh
 source $ZSH/oh-my-zsh.sh
-
-# Export helper functions
-. $HOME/Scripts/utils.sh
 
 # Aliases
 alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
