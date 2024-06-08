@@ -17,6 +17,10 @@ export HISTFILESIZE=$HISTSIZE
 export SAVEHIST=$HISTSIZE
 export HISTFILE=~/.zsh_history
 export HISTDUP=erase
+export FZF_DEFAULT_OPTS=" \
+--color=light,bg+:#ffffff,bg:-1,spinner:#000000,hl:#000000 \
+--color=fg:-1,header:#000000,info:#000000,pointer:#000000 \
+--color=marker:#000000,fg+:#000000,prompt:#000000,hl+:#000000"
 
 # Paths
 if [ -d "$HOME/.bin" ]; then 
