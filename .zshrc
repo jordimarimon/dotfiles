@@ -50,7 +50,7 @@ zinit cdreplay -q
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Keybindings
-bindkey -e
+bindkey -e # Emacs bindings (for vim it would be "bindkey -v")
 bindkey '^p' history-search-backward
 bindkey '^n' history-search-forward
 bindkey '^[w' kill-region
