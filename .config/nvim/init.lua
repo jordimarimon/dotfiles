@@ -194,7 +194,7 @@ require('lazy').setup({
     priority = 1000, -- make sure to load this before all the other start plugins
     config = function()
       require('github-theme').setup()
-      vim.cmd('colorscheme github_light')
+      vim.cmd('colorscheme github_light_default')
     end,
   },
 
@@ -281,6 +281,9 @@ vim.wo.number = true
 
 -- Set line numbers to be relative
 vim.wo.relativenumber = true
+
+-- Add support for hyperlinks
+vim.wo.conceallevel = 2
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
