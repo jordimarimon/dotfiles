@@ -21,6 +21,7 @@ require("lazy").setup({
   {import = "plugins.fugitive"},
   {import = "plugins.which-key"},
   {import = "plugins.harpoon"},
+  {import = "plugins.markdown"},
 }, {})
 
 -- define keymaps
