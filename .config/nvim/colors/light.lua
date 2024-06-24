@@ -4,6 +4,8 @@ local bg_visual = "#f7f6c8"
 local bg_status_line = "#f4f4f4"
 local bg_search = "#fcfc6a"
 local bg_match_paren = "#f4cca1"
+local bg_diff_line = "#e8e8fc"
+local bg_diff_text = "#d4d4fc"
 
 local fg = "#333333"
 local fg_info = "#2563EB"
@@ -77,8 +79,8 @@ vim.api.nvim_set_hl(0, "lCursor", {fg = fg})
 vim.api.nvim_set_hl(0, "MatchParen", {fg = fg, bg = bg_match_paren})
 vim.api.nvim_set_hl(0, "Comment", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "DiffAdd", {fg = fg_success})
-vim.api.nvim_set_hl(0, "DiffChange", {fg = fg, bg = bg_surface})
-vim.api.nvim_set_hl(0, "DiffText", {fg = fg, bg = bg_surface})
+vim.api.nvim_set_hl(0, "DiffChange", {fg = fg, bg = bg_diff_line})
+vim.api.nvim_set_hl(0, "DiffText", {fg = fg, bg = bg_diff_text})
 vim.api.nvim_set_hl(0, "DiffDelete", {fg = fg_error})
 vim.api.nvim_set_hl(0, "WinBar", {fg = fg})
 vim.api.nvim_set_hl(0, "WinBarNC", {fg = fg})

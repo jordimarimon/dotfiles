@@ -2,12 +2,12 @@
 
 
 commands=(\
-	"Open an application"\ 
-	"Open project with JetBrains IDE"\ 
-	"Open project with Neovim"\ 
+	"Open Application"\ 
+	"Open Project"\ 
 	"Open PDF"\ 
 	"Open XLSX"\ 
-	"Open Notes"\
+	"Open Notes"\ 
+	"Open DB"\
 );
 
 IFS=$'\n';
@@ -23,19 +23,20 @@ case "$choice" in
 		rofi -show drun;
 		;;
 	1)
-		alacritty -e zsh -i -c open_project_jetbrains;
-		;;
-	2)
 		alacritty -e zsh -i -c open_project_neovim;
 		;;
-	3)
+	2)
 		alacritty -e zsh -i -c open_pdf;
 		;;
-	4)
+	3)
 		alacritty -e zsh -i -c open_xlsx;
 		;;
-	5)
+	4)
 		alacritty -e zsh -i -c open_notes;
+		;;
+	5)
+		cd $HOME;
+		./Applications/dbeaver/dbeaver;
 		;;
 	*)
 		notify-send "Unknown option selected";

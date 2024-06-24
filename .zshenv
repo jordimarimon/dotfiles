@@ -65,9 +65,6 @@ eval "$(pyenv virtualenv-init -)"
 # Elastic Beanstalk CLI
 export PATH="$HOME/.ebcli-virtual-env/executables:$PATH"
 
-# JetBrains Toolbox
-export PATH="$PATH:$HOME/.local/share/JetBrains/Toolbox/scripts"
-
 # SDKMAN
 export SDKMAN_DIR="$HOME/.sdkman"
 [[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
