@@ -115,6 +115,9 @@ return {
 			tsserver = {},
 			pyright = {},
 			clangd = {},
+			tailwindcss = {
+				filetypes = {"html", "css", "sass", "scss", "njk", "nunjucks"}
+			},
 			lua_ls = {
 				on_init = function(client)
 					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
