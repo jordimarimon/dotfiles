@@ -1,5 +1,5 @@
 -- set the colorscheme
-vim.cmd.colorscheme('light')
+vim.cmd.colorscheme("light")
 
 -- define options
 require("options")

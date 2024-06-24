@@ -1,3 +1,0 @@
--- https://github.com/tpope/vim-dadbod
--- https://github.com/kndndrj/nvim-dbee
--- https://github.com/kristijanhusak/vim-dadbod-ui

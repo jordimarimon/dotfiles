@@ -109,6 +109,11 @@ return {
 			end,
 		})
 
+
+		vim.keymap.set("n", "<leader>sc", function()
+			vim.lsp.stop_client(vim.lsp.get_clients())
+		end, { desc = "[S]top [C]lients" })
+
 		-- LSP servers and clients are able to communicate to each other what features they support.
 		-- By default, Neovim doesn't support everything that is in the LSP specification.
 		-- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -117,7 +122,7 @@ return {
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 		-- LSP servers to enable
-		-- Additional override configuration in the following tables. 
+		-- Additional override configuration in the following tables.
 		-- Available keys are:
 		-- - cmd (table): Override the default command used to start the server
 		-- - filetypes (table): Override the default list of associated filetypes for the server

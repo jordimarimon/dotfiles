@@ -19,8 +19,7 @@ local fg_type = "#990000"
 local fg_error = "#dd0808"
 local fg_git_conflict = "#9203b2"
 
-vim.api.nvim_command("let g:colors_name = 'light'")
-
+vim.g.colors_name = "light"
 vim.o.background = "light"
 
 vim.api.nvim_set_hl(0, "Normal", {fg = fg, bg = bg})
