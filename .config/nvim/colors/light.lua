@@ -4,7 +4,7 @@ local bg_visual = "#f7f6c8"
 local bg_status_line = "#f4f4f4"
 local bg_search = "#fcfc6a"
 local bg_match_paren = "#f4cca1"
-local bg_diff_line = "#e8e8fc"
+local bg_diff_line = "#f2f2fc"
 local bg_diff_text = "#d4d4fc"
 
 local fg = "#333333"

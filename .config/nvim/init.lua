@@ -20,6 +20,7 @@ require("lazy").setup({
   {import = "plugins.which-key"},
   {import = "plugins.harpoon"},
   {import = "plugins.markdown"},
+  {import = "plugins.dap"},
 }, {})
 
 -- define keymaps

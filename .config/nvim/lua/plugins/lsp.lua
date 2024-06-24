@@ -10,6 +10,20 @@ return {
 
 		-- Useful status updates for LSP
 		{ "j-hui/fidget.nvim", opts = {} },
+
+		-- `lazydev` configures Lua LSP for the Neovim config, runtime and plugins
+		-- used for completion, annotations and signatures of Neovim apis
+		{
+			"folke/lazydev.nvim",
+			ft = "lua", -- only load on lua files
+			opts = {
+				library = {
+					-- Load luvit types when the `vim.uv` word is found
+					{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				},
+			},
+		},
+		{ "Bilal2453/luvit-meta", lazy = true },
 	},
 	config = function()
 		--  This function gets run when an LSP attaches to a particular buffer.
@@ -134,25 +148,7 @@ return {
 			pyright = {},
 			clangd = {},
 			phpactor = {},
-			lua_ls = {
-				on_init = function(client)
-					client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
-						runtime = {
-							version = "LuaJIT"
-						},
-						-- Make the server aware of Neovim runtime files
-						workspace = {
-							checkThirdParty = false,
-							library = {
-								vim.env.VIMRUNTIME
-							},
-						},
-					})
-				end,
-				settings = {
-					Lua = {},
-				},
-			},
+			lua_ls = {},
 		}
 
 		require("mason").setup()
