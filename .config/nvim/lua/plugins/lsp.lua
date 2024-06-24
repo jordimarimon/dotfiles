@@ -111,10 +111,11 @@ return {
 		-- - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 		-- - settings (table): Override the default settings passed when initializing the server.
 		local servers = {
-			-- TODO: User TypeScript local language server
 			tsserver = {},
+			angularls = {},
 			pyright = {},
 			clangd = {},
+			phpactor = {},
 			tailwindcss = {
 				filetypes = {"html", "css", "sass", "scss", "njk", "nunjucks"}
 			},
@@ -138,27 +139,6 @@ return {
 				},
 			},
 		}
-
-		-- TODO: Use TypeScript local language server
-		--  Angular LSP
-		local angular_project_dir = vim.fs.dirname(vim.fs.find("angular.json", { upward = true })[1])
-		local node_root = vim.fs.dirname(vim.fs.dirname(vim.fn.exepath("node")))
-		if angular_project_dir then
-			local angular_lsp_path = vim.fn.exepath("ngserver")
-			local ts_lib_path = angular_project_dir .. "/node_modules/typescript/lib"
-			local cmd = {
-				angular_lsp_path, "--stdio",
-				"--tsProbeLocations", ts_lib_path,
-				"--ngProbeLocations", node_root .. "/lib/node_modules/@angular/language-server/bin",
-			}
-
-			servers.angularls = {
-				cmd = cmd,
-				on_new_config = function(new_config)
-					new_config.cmd = cmd
-				end,
-			}
-		end
 
 		require("mason-lspconfig").setup {
 			handlers = {
