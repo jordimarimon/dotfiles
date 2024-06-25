@@ -15,7 +15,7 @@ local fg_comment = "#b0b0b0"
 local fg_function = "#1504a5"
 local fg_string = "#03770d"
 local fg_number = "#009999"
-local fg_type = "#990000"
+local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_git_conflict = "#9203b2"
 
@@ -83,6 +83,7 @@ vim.api.nvim_set_hl(0, "DiffText", {fg = fg, bg = bg_diff_text})
 vim.api.nvim_set_hl(0, "DiffDelete", {fg = fg_error})
 vim.api.nvim_set_hl(0, "WinBar", {fg = fg})
 vim.api.nvim_set_hl(0, "WinBarNC", {fg = fg})
+vim.api.nvim_set_hl(0, "WinSeparator", {fg = fg})
 vim.api.nvim_set_hl(0, "RedrawDebugNormal", {fg = fg})
 vim.api.nvim_set_hl(0, "Folded", {fg = fg, bg = bg_surface})
 vim.api.nvim_set_hl(0, "WildMenu", {fg = fg, bg = bg_surface})
@@ -92,4 +93,5 @@ vim.api.nvim_set_hl(0, "Removed", {fg = fg_error})
 vim.api.nvim_set_hl(0, "Changed", {fg = fg_info})
 vim.api.nvim_set_hl(0, "NeoTreeTitleBar", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "NeoTreeGitConflict", {fg = fg_git_conflict})
+vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 
