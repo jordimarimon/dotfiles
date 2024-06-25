@@ -3,9 +3,6 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
--- Nerd Font installed and selected in the terminal
-vim.g.have_nerd_font = true
-
 -- Set highlight on search
 vim.opt.hlsearch = false
 
