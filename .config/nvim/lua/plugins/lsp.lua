@@ -128,6 +128,25 @@ return {
 			vim.lsp.stop_client(vim.lsp.get_clients())
 		end, { desc = "[S]top [C]lients" })
 
+		-- Define borders for the floating windows
+		vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+			vim.lsp.handlers.hover, {
+				border = "single",
+			}
+		)
+
+		vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+			vim.lsp.handlers.signature_help, {
+				border = "single"
+			}
+		)
+
+		vim.diagnostic.config({ float = { border="single" } })
+
+		require('lspconfig.ui.windows').default_options = {
+			border = "single"
+		}
+
 		-- LSP servers and clients are able to communicate to each other what features they support.
 		-- By default, Neovim doesn't support everything that is in the LSP specification.
 		-- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.

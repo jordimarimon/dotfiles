@@ -94,4 +94,6 @@ vim.api.nvim_set_hl(0, "Changed", {fg = fg_info})
 vim.api.nvim_set_hl(0, "NeoTreeTitleBar", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "NeoTreeGitConflict", {fg = fg_git_conflict})
 vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
+vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
+vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
 

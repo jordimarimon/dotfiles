@@ -23,7 +23,13 @@ return {
 					luasnip.lsp_expand(args.body)
 				end,
 			},
+
 			completion = { completeopt = "menu,menuone,noinsert" },
+
+			window = {
+				completion = cmp.config.window.bordered(),
+				documentation = cmp.config.window.bordered(),
+			},
 
 			-- See `:help ins-completion`
 			mapping = cmp.mapping.preset.insert {
