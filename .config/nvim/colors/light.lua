@@ -1,13 +1,14 @@
 local bg = "none"
 local bg_surface = "#efefef"
 local bg_visual = "#f7f6c8"
-local bg_status_line = "#f4f4f4"
+local bg_status_line = "#040299"
 local bg_search = "#fcfc6a"
 local bg_match_paren = "#f4cca1"
-local bg_diff_line = "#f2f2fc"
+local bg_diff_line = "none"
 local bg_diff_text = "#d4d4fc"
 
 local fg = "#333333"
+local fg_status_line = "#FFFFFF"
 local fg_info = "#2563EB"
 local fg_success = "#03770d"
 local fg_warn = "#938c02"
@@ -51,8 +52,8 @@ vim.api.nvim_set_hl(0, "Statement", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "Directory", {fg = fg})
 vim.api.nvim_set_hl(0, "Visual", {fg = fg, bg = bg_visual})
 vim.api.nvim_set_hl(0, "VisualNC", {fg = fg, bg = bg_visual})
-vim.api.nvim_set_hl(0, "StatusLine", {fg = fg, bg = bg_status_line})
-vim.api.nvim_set_hl(0, "StatusLineNC", {fg = fg, bg = bg_status_line})
+vim.api.nvim_set_hl(0, "StatusLine", {fg = fg_status_line, bg = bg_status_line})
+vim.api.nvim_set_hl(0, "StatusLineNC", {fg = fg_status_line, bg = bg_status_line})
 vim.api.nvim_set_hl(0, "Error", {fg = fg_error})
 vim.api.nvim_set_hl(0, "ErrorMsg", {fg = fg_error})
 vim.api.nvim_set_hl(0, "NormalFloat", {fg = fg, bg = bg})
@@ -96,4 +97,5 @@ vim.api.nvim_set_hl(0, "NeoTreeGitConflict", {fg = fg_git_conflict})
 vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
+vim.api.nvim_set_hl(0, "WarningMsg", {fg = fg_warn})
 

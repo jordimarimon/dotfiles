@@ -196,8 +196,8 @@ return {
 			require("typescript-tools").setup {}
 			require("lspconfig")["typescript-tools"].launch()
 
-			vim.keymap.set("n", "<leader>to", vim.cmd.TSToolsOrganizeImports, { desc = "[T]ypeScript [O]rganize imports" })
-			vim.keymap.set("n", "<leader>tr", vim.cmd.TSToolsRemoveUnused, { desc = "[T]ypeScript [R]emove unused statements" })
+			vim.keymap.set("n", "<leader>ti", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[T]ypeScript remove [i]mports" })
+			vim.keymap.set("n", "<leader>tu", vim.cmd.TSToolsRemoveUnused, { desc = "[T]ypeScript remove [U]nused statements" })
 			vim.keymap.set("n", "<leader>ta", vim.cmd.TSToolsAddMissingImports, { desc = "[T]ypeScript [A]dd missing imports" })
 			vim.keymap.set("n", "<leader>tr", vim.cmd.TSToolsRenameFile, { desc = "[T]ypeScript [R]ename file" })
 		end

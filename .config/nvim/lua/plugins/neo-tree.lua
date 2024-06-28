@@ -20,7 +20,6 @@ return {
 				mappings = {
 					["\\"] = "close_window",
 					["H"] = "toggle_hidden",
-					["I"] = "toggle_gitignore",
 				},
 			},
 		},
