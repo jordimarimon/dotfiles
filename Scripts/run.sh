@@ -6,8 +6,7 @@ commands=(\
 	"Open Project"\ 
 	"Open PDF"\ 
 	"Open XLSX"\ 
-	"Open Notes"\ 
-	"Open DB"\
+	"Open Notes"
 );
 
 IFS=$'\n';
@@ -33,10 +32,6 @@ case "$choice" in
 		;;
 	4)
 		alacritty -e zsh -i -c open_notes;
-		;;
-	5)
-		cd $HOME;
-		./Applications/dbeaver/dbeaver;
 		;;
 	*)
 		notify-send "Unknown option selected";
