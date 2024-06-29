@@ -21,6 +21,7 @@ require("lazy").setup({
   {import = "plugins.harpoon"},
   {import = "plugins.markdown"},
   {import = "plugins.dap"},
+  {import = "plugins.database"},
 }, {ui = {border = "single"}})
 
 -- define keymaps

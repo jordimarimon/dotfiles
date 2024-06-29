@@ -8,7 +8,7 @@ return {
 		--  - va)  - [V]isually select [A]round [)]paren
 		--  - yinq - [Y]ank [I]nside [N]ext [']quote
 		--  - ci'  - [C]hange [I]nside [']quote
-		require('mini.ai').setup { n_lines = 500 }
+		require('mini.ai').setup({ n_lines = 500 })
 
 		-- Add/delete/replace surroundings (brackets, quotes, etc.)
 		--
@@ -18,8 +18,8 @@ return {
 		require('mini.surround').setup()
 
 		-- Simple and easy statusline.
-		local statusline = require 'mini.statusline'
-		statusline.setup { use_icons = true }
+		local statusline = require('mini.statusline')
+		statusline.setup({ use_icons = true })
 
 		-- You can configure sections in the statusline by overriding their
 		-- default behavior. For example, here we set the section for
