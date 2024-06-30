@@ -74,7 +74,7 @@ return {
 		vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = "[S]earch Recent Files ('.' for repeat)" })
 		vim.keymap.set("n", "<leader>sb", builtin.buffers, { desc = "[S]earch [B]uffers" })
 
-		vim.keymap.set("n", "<leader>/", function()
+		vim.keymap.set("n", "<leader><leader>", function()
 			-- You can pass additional configuration to Telescope to change the theme, layout, etc.
 			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
 			  winblend = 10,
