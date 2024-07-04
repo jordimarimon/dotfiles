@@ -172,7 +172,11 @@ return {
 				lua_ls = {},
 			}
 
-			require("mason").setup()
+			require("mason").setup({
+				ui = {
+					border = "single",
+				},
+			})
 
 			require("mason-lspconfig").setup {
 				ensure_installed = vim.tbl_keys(servers),

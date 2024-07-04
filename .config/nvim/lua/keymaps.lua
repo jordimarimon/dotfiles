@@ -25,3 +25,6 @@ vim.keymap.set("n", "<leader>st", vim.cmd.TodoTelescope, { desc = "[S]earch [T]o
 vim.keymap.set("n", "]t", function() todo_comments.jump_next() end, { desc = "Next todo comment" })
 vim.keymap.set("n", "[t", function() todo_comments.jump_prev() end, { desc = "Previous todo comment" })
 
+-- Copy current buffer path to system clipboard
+vim.keymap.set("n", "<leader>cf", function() vim.fn.setreg("+", vim.fn.expand('%')) end, { desc = "[C]opy [F]ile path" })
+
