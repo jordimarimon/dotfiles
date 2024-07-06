@@ -1,0 +1,168 @@
+* {
+	border: none;
+	border-radius: 10px;
+	font-family: "JetbrainsMono Nerd Font";
+	font-size: 15px;
+	min-height: 10px;
+}
+
+window {}
+
+window#waybar {
+	background-color: #FFFFFF;
+	border-radius: 15px;
+	margin-top: 6px;
+}
+
+window#waybar.hidden {
+	opacity: 0.2;
+}
+
+#window {
+	padding-left: 10px;
+	padding-right: 10px;
+	border-radius: 10px;
+	transition: none;
+	color: transparent;
+	background: transparent;
+}
+
+#workspaces {
+	margin: 6px 6px 6px 6px;
+	border-radius: 18px;
+	background: #EFEFF2;
+	transition: none;
+	padding-left: 12px;
+	padding-right: 6px;
+}
+
+#workspaces button {
+	transition: none;
+	color: #03038C;
+	background: transparent;
+	margin-right: 10px;
+}
+
+#workspaces button:hover {
+	background: transparent;
+	border: none;
+	outline: none;
+	box-shadow: none;
+}
+
+#workspaces button.persistent {
+	transition: none;
+	color: #01011c;
+	background: transparent;
+	font-size: 4px;
+}
+
+#workspaces button.empty {
+	color: #583794;
+	font-size: 2px;
+	transition: none;
+	background: transparent;
+}
+
+#workspaces button.active {
+	transition: none;
+	color: #e0af68;
+	background: transparent;
+	font-size: 4px;
+}
+
+#network {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 6px;
+	border-radius: 18px;
+	font-size: 14px;
+	font-weight:bold;
+	transition: none;
+	color: #e0af68;
+	background: #FFFFFF;
+}
+
+#wireplumber {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 6px;
+	border-radius: 18px;
+	font-size: 14px;
+	font-weight: bold;
+	transition: none;
+	color: #000000;
+	background: #FFFFFF;
+}
+
+#wireplumber.muted {
+	font-size: 16px;
+}
+
+#battery {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 6px;
+	border-radius: 18px;
+	transition: none;
+	font-size: 14px;
+	font-weight: bold;
+	color: #000000;
+	background: #FFFFFF;
+}
+
+#battery.charging,
+#battery.plugged {
+	color: #000000;
+	background-color: transparent;
+}
+
+#battery.critical:not(.charging) {
+	background-color: #FFFFFF;
+	color: #000000;
+}
+
+#clock {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-right: 10px;
+	margin-bottom: 6px;
+	border-radius: 18px;
+	transition: none;
+	font-size: 14px;
+	font-weight: bold;
+	color: #000000;
+	background: #FFFFFF;
+}
+
+#custom-launcher {
+	font-size: 18px;
+	margin-left: 10px;
+	padding-left: 10px;
+	padding-right: 5px;
+	border-radius: 10px;
+	transition: none;
+	color: #210af0;
+	background: transparent;
+}
+
+#tray {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	margin-bottom: 0px;
+	padding-right: 10px;
+	border-radius: 10px;
+	transition: none;
+	color: #000000;
+	background: #FFFFFF;
+}
+

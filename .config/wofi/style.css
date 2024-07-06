@@ -13,12 +13,13 @@
     font-family: "Roboto";
     font-size: 18px;
     min-height: 60px;
-    margin: 5px;
+    margin: 0;
+    padding: 0 24px;
     border: none;
     outline: none;
     color: --wofi-color0;
     border-radius: 0;
-    background-color: --wofi-color2;
+    background-color: --wofi-color1;
 }
 
 #input:focus {
@@ -39,6 +40,7 @@
     min-height: 50px;
     padding: 8px 16px;
     background-color: --wofi-color1;
+    border-top: 1px solid --wofi-color2;
 }
 
 #entry:selected {
