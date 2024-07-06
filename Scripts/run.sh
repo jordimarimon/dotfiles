@@ -10,16 +10,23 @@ commands=(\
 );
 
 IFS=$'\n';
-choice=$(echo "${commands[*]}" | rofi -dmenu -i -l 20 -format 'i' -p "Run: ");
+choice=$(echo "${commands[*]}" | wofi --dmenu -i);
 IFS=' ';
 
 if [ -z "$choice" ]; then
 	exit 0;
 fi
 
-case "$choice" in
+index=""
+for i in "${!commands[@]}"; do
+	if [[ "${commands[$i]}" = "${choice}" ]]; then
+		index="$i"
+	fi
+done
+
+case "$index" in
 	0)
-		rofi -show drun;
+		wofi --show drun;
 		;;
 	1)
 		alacritty -e zsh -i -c open_project_neovim;

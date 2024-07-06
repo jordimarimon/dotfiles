@@ -1,0 +1,61 @@
+#window {
+    background-color: --wofi-color1;
+    color: --wofi-color0;
+    outline: none;
+}
+
+#outer-box {
+    background-color: --wofi-color1;
+    border: 2px solid --wofi-color0;
+}
+
+#input {
+    font-family: "Roboto";
+    font-size: 18px;
+    min-height: 60px;
+    margin: 5px;
+    border: none;
+    outline: none;
+    color: --wofi-color0;
+    border-radius: 0;
+    background-color: --wofi-color2;
+}
+
+#input:focus {
+    border: none;
+    outline: none;
+    box-shadow: none;
+}
+
+#scroll {
+
+}
+
+#inner-box {
+
+}
+
+#entry {
+    min-height: 50px;
+    padding: 8px 16px;
+    background-color: --wofi-color1;
+}
+
+#entry:selected {
+    background-color: blue;
+}
+
+#text {
+    font-family: "Roboto";
+    font-size: 18px;
+    color: --wofi-color0;
+}
+
+#text:selected {
+    color: --wofi-color1;
+}
+
+#img {
+    margin-right: 10px;
+}
+

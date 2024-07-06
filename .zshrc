@@ -77,6 +77,7 @@ alias cat="bat"
 alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
 alias trash="gio trash"
+alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 
 # Shell integrations
 eval "$(fzf --zsh)"
