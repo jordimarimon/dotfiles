@@ -81,7 +81,7 @@ window#waybar.hidden {
 	font-size: 14px;
 	font-weight:bold;
 	transition: none;
-	color: #e0af68;
+	color: #000000;
 	background: #FFFFFF;
 }
 
@@ -101,6 +101,21 @@ window#waybar.hidden {
 
 #wireplumber.muted {
 	font-size: 16px;
+}
+
+
+#bluetooth {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 6px;
+	border-radius: 18px;
+	font-size: 14px;
+	font-weight:bold;
+	transition: none;
+	color: #000000;
+	background: #FFFFFF;
 }
 
 #battery {
@@ -152,6 +167,18 @@ window#waybar.hidden {
 	transition: none;
 	color: #210af0;
 	background: transparent;
+}
+
+#custom-updates {
+	margin-top: 6px;
+	margin-left: 8px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-bottom: 0px;
+	border-radius: 10px;
+	transition: none;
+	color: #000000;
+	background: #FFFFFF;
 }
 
 #tray {

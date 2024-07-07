@@ -4,7 +4,8 @@
 	"margin-top": 10,
 
 	"modules-left": [
-		"custom/launcher"
+		"custom/launcher",
+		"custom/updates"
 	],
 
 	"modules-center": [
@@ -14,6 +15,7 @@
 	"modules-right": [
 		"wireplumber",
 		"network",
+		"bluetooth",
 		"battery",
 		"clock"
 	],
@@ -22,6 +24,13 @@
 		"tooltip": false,
 		"format": " ",
 		"on-click": "~/Scripts/run.sh"
+	},
+
+	"custom/updates": {
+		"tooltip": "false",
+		"format": " {}",
+		"exec": "checkupdates | wc -l",
+		"interval": 3600
 	},
 
 	"hyprland/workspaces": {
@@ -68,6 +77,16 @@
 		"tooltip-format": "{essid} - {ipaddr}",
 		"interval": 30,
 		"on-click": "alacritty -e zsh -i -c nmtui"
+	},
+
+	"bluetooth": {
+		"tooltip": true,
+		"format": "󰂯",
+		"format-connected": "󰂰",
+		"format-off": "󰂲",
+		"format-disabled": "󰂲",
+		"tooltip-format": "{status}",
+		"on-click": "alacritty -e zsh -i -c bluetoothctl"
 	},
 
 	"battery": {
