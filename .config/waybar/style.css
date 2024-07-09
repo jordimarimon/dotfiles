@@ -139,8 +139,8 @@ window#waybar.hidden {
 }
 
 #battery.critical:not(.charging) {
-	background-color: #FFFFFF;
 	color: #000000;
+	background-color: #FFFFFF;
 }
 
 #clock {

@@ -1,5 +1,5 @@
 if [[ "$(tty)" = "/dev/tty1" ]]; then
 	# exec startx >& ~/.xsession-errors
-	Hyprland >& ~/hyprland.logs.txt
+	dbus-run-session Hyprland >& ~/hyprland.logs.txt
 fi
 

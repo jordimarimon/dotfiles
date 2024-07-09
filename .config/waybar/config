@@ -95,7 +95,7 @@
 			"warning": 30,
 			"critical": 10
 		},
-		"format": "{icon}  <span color='#F1F1F1'>{capacity}%</span>",
+		"format": "{icon}  <span color='#000000'>{capacity}%</span>",
 		"format-charging": "<span color='#9ece6a'></span> <span color='#000000'>{capacity}%</span>",
 		"format-plugged": " <span color='#000000'>{capacity}</span>%",
 		"format-alt": "<span color='#F1F1F1'>{time}</span> {icon}",
