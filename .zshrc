@@ -82,4 +82,5 @@ alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse -
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+eval "$(tmuxifier init -)"
 
