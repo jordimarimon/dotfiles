@@ -81,10 +81,10 @@
 
 	"bluetooth": {
 		"tooltip": true,
-		"format": "󰂯",
-		"format-connected": "󰂰",
-		"format-off": "󰂲",
-		"format-disabled": "󰂲",
+		"format": "<span color='#7aa2f7'>󰂯</span>",
+		"format-connected": "<span color='#7aa2f7'>󰂰</span>",
+		"format-off": "<span color='#7aa2f7'>󰂲</span>",
+		"format-disabled": "<span color='#7aa2f7'>󰂲</span>",
 		"tooltip-format": "{status}",
 		"on-click": "alacritty -e zsh -i -c bluetoothctl"
 	},
