@@ -17,7 +17,6 @@ require("lazy").setup({
   {import = "plugins.git"},
   {import = "plugins.mini"},
   {import = "plugins.autopairs"},
-  {import = "plugins.which-key"},
   {import = "plugins.harpoon"},
   {import = "plugins.markdown"},
   {import = "plugins.dap"},
