@@ -73,3 +73,6 @@ vim.opt.completeopt = 'menuone,noselect'
 -- Enables 24-bit RGB color in the TUI
 vim.opt.termguicolors = true
 
+-- Enable spell checking
+vim.opt.spelllang = 'es,en,ca'
+vim.opt.spell = true
