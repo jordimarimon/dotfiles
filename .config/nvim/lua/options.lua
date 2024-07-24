@@ -74,5 +74,5 @@ vim.opt.completeopt = 'menuone,noselect'
 vim.opt.termguicolors = true
 
 -- Enable spell checking
-vim.opt.spelllang = 'es,en,ca'
-vim.opt.spell = true
+-- vim.opt.spelllang = 'es,en,ca'
+-- vim.opt.spell = true

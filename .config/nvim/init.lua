@@ -19,8 +19,8 @@ require("lazy").setup({
   {import = "plugins.autopairs"},
   {import = "plugins.harpoon"},
   {import = "plugins.markdown"},
-  {import = "plugins.dap"},
   {import = "plugins.database"},
+  {import = "plugins.colors"},
 }, {ui = {border = "single"}})
 
 -- define keymaps

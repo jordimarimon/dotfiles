@@ -24,9 +24,7 @@ return {
 			automatic_installation = true,
 
 			-- A list of adapters to install if they're not already installed.
-			ensure_installed = {
-				"firefox"
-			},
+			ensure_installed = {},
 
 			-- To provide additional configuration to the handlers.
 			-- See mason-nvim-dap README for more information
@@ -37,21 +35,21 @@ return {
 					-- Keep original functionality
 					require('mason-nvim-dap').default_setup(config)
 				end,
-				firefox = function (config)
-					config.configurations.typescript = {
-						{
-							name = "Debug with Firefox",
-							type = "firefox",
-							request = "launch",
-							reAttach = true,
-							url = "http://localhost:4200",
-							webRoot = "${workspaceFolder}",
-							firefoxExecutable = "/usr/bin/firefox"
-						},
-					}
-
-					require('mason-nvim-dap').default_setup(config)
-				end
+				-- firefox = function (config)
+				-- 	config.configurations.typescript = {
+				-- 		{
+				-- 			name = "Debug with Firefox",
+				-- 			type = "firefox",
+				-- 			request = "launch",
+				-- 			reAttach = true,
+				-- 			url = "http://localhost:4200",
+				-- 			webRoot = "${workspaceFolder}",
+				-- 			firefoxExecutable = "/usr/bin/firefox"
+				-- 		},
+				-- 	}
+				--
+				-- 	require('mason-nvim-dap').default_setup(config)
+				-- end
 			},
 		})
 

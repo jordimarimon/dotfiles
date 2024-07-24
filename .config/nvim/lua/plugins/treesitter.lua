@@ -9,8 +9,8 @@ return {
 			ensure_installed = {
 				"c", "lua", "vim", "vimdoc", "query",
 				"javascript", "typescript", "php", "html",
-				"css", "angular", "bash", "haskell", "json",
-				"sql", "tsx", "yaml"
+				"css", "scss", "angular", "bash", "haskell", "json",
+				"sql", "tsx", "yaml", "python"
 			},
 			auto_install = true,
 			sync_install = false,

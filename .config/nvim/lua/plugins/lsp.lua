@@ -170,6 +170,10 @@ return {
 				clangd = {},
 				phpactor = {},
 				lua_ls = {},
+				tailwindcss = {},
+				css_variables = {},
+				cssls = {},
+				jsonls = {},
 			}
 
 			require("mason").setup({
