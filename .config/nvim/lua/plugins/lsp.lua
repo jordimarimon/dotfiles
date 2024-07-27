@@ -3,6 +3,19 @@
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 -- https://microsoft.github.io/language-server-protocol/implementors/servers/
 return {
+	-- `lazydev` configures Lua LSP for the Neovim config, runtime and plugins
+	-- used for completion, annotations and signatures of Neovim apis
+	{
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{ "Bilal2453/luvit-meta", lazy = true },
 	{
 
 		"neovim/nvim-lspconfig",
@@ -14,19 +27,8 @@ return {
 			-- Useful status updates for LSP
 			{ "j-hui/fidget.nvim", opts = {} },
 
-			-- `lazydev` configures Lua LSP for the Neovim config, runtime and plugins
-			-- used for completion, annotations and signatures of Neovim apis
-			{
-				"folke/lazydev.nvim",
-				ft = "lua", -- only load on lua files
-				opts = {
-					library = {
-						-- Load luvit types when the `vim.uv` word is found
-						{ path = "luvit-meta/library", words = { "vim%.uv" } },
-					},
-				},
-			},
-			{ "Bilal2453/luvit-meta", lazy = true },
+			-- Allows extra capabilities provided by nvim-cmp
+			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
 			--  This function gets run when an LSP attaches to a particular buffer.
@@ -80,7 +82,7 @@ return {
 					--    See `:help CursorHold` for information about when this is executed
 					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
-					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+					if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
 
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -205,10 +207,10 @@ return {
 			require("typescript-tools").setup {}
 			require("lspconfig")["typescript-tools"].launch()
 
-			vim.keymap.set("n", "<leader>ti", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[T]ypeScript remove [i]mports" })
-			vim.keymap.set("n", "<leader>tu", vim.cmd.TSToolsRemoveUnused, { desc = "[T]ypeScript remove [U]nused statements" })
-			vim.keymap.set("n", "<leader>ta", vim.cmd.TSToolsAddMissingImports, { desc = "[T]ypeScript [A]dd missing imports" })
-			vim.keymap.set("n", "<leader>tr", vim.cmd.TSToolsRenameFile, { desc = "[T]ypeScript [R]ename file" })
+			vim.keymap.set("n", "<leader>ri", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[R]emove [I]mports" })
+			vim.keymap.set("n", "<leader>ai", vim.cmd.TSToolsAddMissingImports, { desc = "[A]dd missing [I]mports" })
+			vim.keymap.set("n", "<leader>ru", vim.cmd.TSToolsRemoveUnused, { desc = "[R]emove [U]nused statements" })
+			vim.keymap.set("n", "<leader>rf", vim.cmd.TSToolsRenameFile, { desc = "[R]ename [F]ile" })
 		end
 	},
 }

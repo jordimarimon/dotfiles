@@ -6,22 +6,27 @@ require("options")
 
 -- define plugins
 require("plugins")
-require("lazy").setup({
-  {import = "plugins.telescope"},
-  {import = "plugins.treesitter"},
-  {import = "plugins.sleuth"},
-  {import = "plugins.lsp"},
-  {import = "plugins.completion"},
-  {import = "plugins.todo-comments"},
-  {import = "plugins.neo-tree"},
-  {import = "plugins.git"},
-  {import = "plugins.mini"},
-  {import = "plugins.autopairs"},
-  {import = "plugins.harpoon"},
-  {import = "plugins.markdown"},
-  {import = "plugins.database"},
-  {import = "plugins.colors"},
-}, {ui = {border = "single"}})
+require("lazy").setup(
+  {
+    {import = "plugins.telescope"},
+    {import = "plugins.treesitter"},
+    {import = "plugins.sleuth"},
+    {import = "plugins.lsp"},
+    {import = "plugins.completion"},
+    {import = "plugins.todo-comments"},
+    {import = "plugins.neo-tree"},
+    {import = "plugins.git"},
+    {import = "plugins.mini"},
+    {import = "plugins.autopairs"},
+    {import = "plugins.harpoon"},
+    {import = "plugins.markdown"},
+    {import = "plugins.database"},
+    {import = "plugins.colors"},
+  },
+  {
+    ui = {border = "single"},
+  }
+)
 
 -- define keymaps
 require("keymaps")
