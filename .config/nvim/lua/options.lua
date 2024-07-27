@@ -1,7 +1,7 @@
 -- Set <space> as the leader key
 -- See `:help mapleader`
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 -- Set highlight on search
 vim.opt.hlsearch = false
@@ -19,12 +19,12 @@ vim.opt.showmode = false
 vim.opt.conceallevel = 2
 
 -- Enable mouse mode
-vim.opt.mouse = 'a'
+vim.opt.mouse = "a"
 
 -- Sync clipboard between OS and Neovim.
 --  See `:help 'clipboard'`
 vim.schedule(function ()
-        vim.opt.clipboard = 'unnamedplus'
+        vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Enable break indent
@@ -42,7 +42,7 @@ vim.opt.splitbelow = true
 vim.opt.splitright = true
 
 -- Keep signcolumn on by default
-vim.opt.signcolumn = 'yes'
+vim.opt.signcolumn = "yes"
 
 -- Don't have `o` add a comment
 vim.opt.formatoptions:remove "o"
@@ -58,10 +58,10 @@ vim.o.timeoutlen = 500
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '  ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+vim.opt.inccommand = "split"
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
@@ -70,7 +70,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = 'menuone,noselect'
+vim.opt.completeopt = "menuone,noselect"
 
 -- Enables 24-bit RGB color in the TUI
 vim.opt.termguicolors = true

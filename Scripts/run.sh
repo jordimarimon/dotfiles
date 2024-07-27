@@ -26,7 +26,7 @@ case "$index" in
 		wofi --show drun;
 		;;
 	1)
-		alacritty -e zsh -i -c open_notes;
+		foot zsh -i -c open_notes;
 		;;
 	*)
 		notify-send "Unknown option selected";

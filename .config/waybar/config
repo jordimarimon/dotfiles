@@ -76,7 +76,7 @@
 		"format-ethernet": "<span color='#9ece6a'> </span> {bandwidthDownBits}",
 		"tooltip-format": "{essid} - {ipaddr}",
 		"interval": 30,
-		"on-click": "alacritty -e zsh -i -c nmtui"
+		"on-click": "foot zsh -i -c nmtui"
 	},
 
 	"bluetooth": {
@@ -86,7 +86,7 @@
 		"format-off": "<span color='#7aa2f7'>󰂲</span>",
 		"format-disabled": "<span color='#7aa2f7'>󰂲</span>",
 		"tooltip-format": "{status}",
-		"on-click": "alacritty -e zsh -i -c bluetoothctl"
+		"on-click": "foot zsh -i -c bluetoothctl"
 	},
 
 	"battery": {

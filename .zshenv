@@ -1,6 +1,6 @@
 # Useful environment variables
 export TERM="xterm-256color"
-export TERMINAL="alacritty"
+export TERMINAL="foot"
 export BROWSER="firefox"
 export EDITOR="nvim"
 export VISUAL="nvim"
