@@ -21,6 +21,7 @@ local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_git_conflict = "#9203b2"
+local fg_dapui = "#333333"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -100,4 +101,23 @@ vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "WarningMsg", {fg = fg_warn})
+
+-- DAP UI
+vim.api.nvim_set_hl(0, "DapUIScope", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIModifiedValue", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIDecoration", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStoppedThread", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUILineNumber", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIFloatBorder", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIBreakpointsPath", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIBreakpointsLine", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepOver", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepInto", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepBack", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepOut", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIWinSelect", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepOverNC", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepIntoNC", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepBackNC", {fg = fg})
+vim.api.nvim_set_hl(0, "DapUIStepOutNC", {fg = fg})
 

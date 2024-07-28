@@ -24,7 +24,7 @@ return {
 			automatic_installation = true,
 
 			-- A list of adapters to install if they're not already installed.
-			ensure_installed = {},
+			ensure_installed = {"cppdbg"},
 
 			-- To provide additional configuration to the handlers.
 			-- See mason-nvim-dap README for more information
@@ -33,23 +33,8 @@ return {
 				function(config)
 					-- all sources with no handler get passed here
 					-- Keep original functionality
-					require('mason-nvim-dap').default_setup(config)
+					require("mason-nvim-dap").default_setup(config)
 				end,
-				-- firefox = function (config)
-				-- 	config.configurations.typescript = {
-				-- 		{
-				-- 			name = "Debug with Firefox",
-				-- 			type = "firefox",
-				-- 			request = "launch",
-				-- 			reAttach = true,
-				-- 			url = "http://localhost:4200",
-				-- 			webRoot = "${workspaceFolder}",
-				-- 			firefoxExecutable = "/usr/bin/firefox"
-				-- 		},
-				-- 	}
-				--
-				-- 	require('mason-nvim-dap').default_setup(config)
-				-- end
 			},
 		})
 
@@ -58,6 +43,7 @@ return {
 		vim.keymap.set("n", "<F1>", dap.step_into, { desc = "Debug: Step Into" })
 		vim.keymap.set("n", "<F2>", dap.step_over, { desc = "Debug: Step Over" })
 		vim.keymap.set("n", "<F3>", dap.step_out, { desc = "Debug: Step Out" })
+		vim.keymap.set("n", "<F4>", dap.step_back, { desc = "Debug: Step Back" })
 		vim.keymap.set("n", "<leader>b", dap.toggle_breakpoint, { desc = "Debug: Toggle Breakpoint" })
 		vim.keymap.set("n", "<leader>B", function()
 			dap.set_breakpoint(vim.fn.input "Breakpoint condition: ")
@@ -67,9 +53,14 @@ return {
 		-- For more information, see |:help nvim-dap-ui|
 		dapui.setup()
 
-		-- Toggle to see last session result. 
+		-- Toggle to see last session result.
 		-- Without this, one can't see session output in case of an unhandled exception.
 		vim.keymap.set("n", "<F7>", dapui.toggle, { desc = "Debug: See last session result." })
+
+		-- Eval var under cursor
+		vim.keymap.set("n", "<space>?", function()
+			require("dapui").eval(nil, { enter = true })
+		end)
 
 		-- nvim-dap events to open and close the windows automatically
 		-- see |:help dap-extensions|
