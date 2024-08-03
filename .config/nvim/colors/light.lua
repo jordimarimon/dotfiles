@@ -8,6 +8,7 @@ local bg_diff_line = "none"
 local bg_diff_text = "#d4d4fc"
 local bg_diff_add = "#d4ffdf"
 local bg_diff_delete = "#ffd8d4"
+local bg_status_line_mode = "#d4d4fc"
 
 local fg = "#333333"
 local fg_status_line = "#FFFFFF"
@@ -21,7 +22,7 @@ local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_git_conflict = "#9203b2"
-local fg_dapui = "#333333"
+local fg_neo_tree_untracked = "#d98e04"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -101,6 +102,18 @@ vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "WarningMsg", {fg = fg_warn})
+
+-- MiniStatusLine
+vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", {fg = fg, bg = bg_status_line_mode})
+vim.api.nvim_set_hl(0, "MiniStatusLineModeInsert", {fg = fg, bg = bg_status_line_mode})
+vim.api.nvim_set_hl(0, "MiniStatusLineModeVisual", {fg = fg, bg = bg_status_line_mode})
+vim.api.nvim_set_hl(0, "MiniStatusLineModeReplace", {fg = fg, bg = bg_status_line_mode})
+vim.api.nvim_set_hl(0, "MiniStatusLineModeCommand", {fg = fg, bg = bg_status_line_mode})
+vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_mode})
+
+-- NeoTree
+-- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/ui/highlights.lua
+vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 
 -- DAP UI
 vim.api.nvim_set_hl(0, "DapUIScope", {fg = fg})
