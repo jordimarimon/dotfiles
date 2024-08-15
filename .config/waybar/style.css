@@ -1,6 +1,6 @@
 * {
 	border: none;
-	border-radius: 10px;
+	border-radius: 0px;
 	font-family: "JetbrainsMono Nerd Font";
 	font-size: 15px;
 	min-height: 10px;
@@ -10,8 +10,8 @@ window {}
 
 window#waybar {
 	background-color: #FFFFFF;
-	border-radius: 15px;
-	margin-top: 6px;
+	border-radius: 0px;
+	margin-top: 0px;
 }
 
 window#waybar.hidden {
@@ -21,7 +21,7 @@ window#waybar.hidden {
 #window {
 	padding-left: 10px;
 	padding-right: 10px;
-	border-radius: 10px;
+	border-radius: 0px;
 	transition: none;
 	color: transparent;
 	background: transparent;
@@ -159,7 +159,7 @@ window#waybar.hidden {
 }
 
 #custom-launcher {
-	font-size: 18px;
+	font-size: 14px;
 	margin-left: 10px;
 	padding-left: 10px;
 	padding-right: 5px;
@@ -170,6 +170,7 @@ window#waybar.hidden {
 }
 
 #custom-updates {
+	font-size: 14px;
 	margin-top: 6px;
 	margin-left: 8px;
 	padding-left: 10px;

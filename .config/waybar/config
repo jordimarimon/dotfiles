@@ -1,7 +1,6 @@
 {
 	"layer": "top",
-	"width": 1728,
-	"margin-top": 10,
+	"margin-top": 0,
 
 	"modules-left": [
 		"custom/launcher",
@@ -109,9 +108,8 @@
 	},
 
 	"clock": {
-		"tooltip": true,
+		"tooltip": false,
 		"interval": 60,
-		"format": "{:%H:%M}",
-		"tooltip-format": "{:%d-%m-%Y}",
+		"format": "{:%d-%m-%Y %H:%M}"
 	},
 }
