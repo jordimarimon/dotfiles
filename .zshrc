@@ -76,6 +76,7 @@ alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
 alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
+alias info='info --vi-keys'
 
 # Shell integrations
 eval "$(fzf --zsh)"

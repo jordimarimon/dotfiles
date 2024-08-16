@@ -108,8 +108,9 @@
 	},
 
 	"clock": {
-		"tooltip": false,
+		"tooltip": true,
 		"interval": 60,
-		"format": "{:%d-%m-%Y %H:%M}"
+		"format": "{:%H:%M}",
+        "tooltip-format": "{:%d-%m-%Y}"
 	},
 }

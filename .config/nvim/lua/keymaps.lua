@@ -28,3 +28,6 @@ vim.keymap.set("n", "[t", function() todo_comments.jump_prev() end, { desc = "Pr
 -- Copy current buffer path to system clipboard
 vim.keymap.set("n", "<leader>cf", function() vim.fn.setreg("+", vim.fn.expand('%')) end, { desc = "[C]opy [F]ile path" })
 
+-- Quit all windows (useful when exiting a diff)
+vim.keymap.set("n", "<leader>q", "<cmd>windo q<CR>", { desc = "[Q]uit all windows in current tab page" })
+
