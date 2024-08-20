@@ -22,6 +22,9 @@ return {
 					["H"] = "toggle_hidden",
 				},
 			},
+			follow_current_file = {
+				enabled = true,
+			},
 		},
 	},
 }
