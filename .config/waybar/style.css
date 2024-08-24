@@ -6,8 +6,6 @@
 	min-height: 10px;
 }
 
-window {}
-
 window#waybar {
 	background-color: #FFFFFF;
 	border-radius: 0px;
@@ -38,9 +36,10 @@ window#waybar.hidden {
 
 #workspaces button {
 	transition: none;
-	color: #03038C;
+	color: #583794;
 	background: transparent;
 	margin-right: 10px;
+	font-size: 4px;
 }
 
 #workspaces button:hover {
@@ -51,20 +50,13 @@ window#waybar.hidden {
 }
 
 #workspaces button.persistent {
-	transition: none;
 	color: #01011c;
-	background: transparent;
-	font-size: 4px;
-}
-
-#workspaces button.empty {
-	color: #583794;
 	font-size: 2px;
 	transition: none;
 	background: transparent;
 }
 
-#workspaces button.active {
+#workspaces button.focused {
 	transition: none;
 	color: #e0af68;
 	background: transparent;

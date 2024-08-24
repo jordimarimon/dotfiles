@@ -23,6 +23,13 @@ export FZF_DEFAULT_OPTS=" \
 --color=marker:#000000,fg+:#000000,prompt:#000000,hl+:#000000"
 
 # Paths
+export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/local/lib64/pkgconfig:$PKG_CONFIG_PATH
+export PKG_CONFIG_PATH=/usr/local/share/pkgconfig:$PKG_CONFIG_PATH
+
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/usr/local/lib64/:$LD_LIBRARY_PATH
+
 if [ -d "$HOME/.bin" ]; then 
   export PATH="$HOME/.bin:$PATH"
 fi
