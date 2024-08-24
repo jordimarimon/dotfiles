@@ -23,7 +23,7 @@ set $external HDMI-A-1
 #################
 
 # Default wallpaper
-output * bg /home/jmarimon/Pictures/ChromeOSBlues-1.png fill
+output * bg /home/jmarimon/Pictures/Linux-Unix-unixporn-minimalism-material-minimal-material-style-2088251-wallhere.com.jpg fill
 output $external pos 0 0 res 1920x1080
 
 #################
