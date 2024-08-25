@@ -59,6 +59,7 @@ input type:keyboard {
 }
 
 seat seat0 xcursor_theme "Bibata" 24
+seat seat0 hide_cursor 5000
 
 #################
 ### Looks
@@ -123,7 +124,7 @@ bindsym Shift+Print exec grim - | wl-copy && wl-paste > ~/Pictures/Screenshots/S
 floating_modifier $mod normal
 
 # Reload the configuration file
-bindsym $mod+Shift+c reload
+bindsym $mod+Shift+r reload
 
 # Move your focus around
 bindsym $mod+$left focus left

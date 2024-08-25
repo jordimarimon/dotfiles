@@ -9,7 +9,6 @@ export WINIT_X11_SCALE_FACTOR=1
 export _JAVA_AWT_WM_NONREPARENTING=1
 export MANPAGER="nvim +Man!" # Nvim as manpager
 export XKB_DEFAULT_LAYOUT="es"
-export XKB_DEFAULT_VARIANT="qwerty"
 export NODE_OPTIONS=--max_old_space_size=4096
 export HISTSIZE=500
 export HISTFILESIZE=$HISTSIZE
