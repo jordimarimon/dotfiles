@@ -3,7 +3,6 @@
 	border-radius: 0px;
 	font-family: "JetbrainsMono Nerd Font";
 	font-size: 15px;
-	min-height: 10px;
 }
 
 window#waybar {
@@ -26,20 +25,14 @@ window#waybar.hidden {
 }
 
 #workspaces {
-	margin: 6px 6px 6px 6px;
-	border-radius: 18px;
-	background: #EFEFF2;
+	background: #FFFFFF;
 	transition: none;
-	padding-left: 12px;
-	padding-right: 6px;
 }
 
 #workspaces button {
 	transition: none;
 	color: #583794;
 	background: transparent;
-	margin-right: 10px;
-	font-size: 4px;
 }
 
 #workspaces button:hover {
@@ -50,78 +43,36 @@ window#waybar.hidden {
 }
 
 #workspaces button.persistent {
+	font-size: 12px;
 	color: #01011c;
-	font-size: 2px;
-	transition: none;
 	background: transparent;
 }
 
 #workspaces button.focused {
-	transition: none;
+	font-size: 12px;
 	color: #e0af68;
 	background: transparent;
-	font-size: 4px;
 }
 
-#network {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 6px;
-	border-radius: 18px;
-	font-size: 14px;
-	font-weight:bold;
-	transition: none;
-	color: #000000;
-	background: #FFFFFF;
-}
-
-#wireplumber {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 6px;
-	border-radius: 18px;
-	font-size: 14px;
-	font-weight: bold;
-	transition: none;
-	color: #000000;
-	background: #FFFFFF;
-}
-
-#wireplumber.muted {
-	font-size: 16px;
-}
-
-
+#custom-updates,
+#custom-launcher,
+#tray,
+#clock,
+#wireplumber,
+#network,
+#battery,
 #bluetooth {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 6px;
-	border-radius: 18px;
-	font-size: 14px;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 12px;
 	font-weight:bold;
 	transition: none;
 	color: #000000;
 	background: #FFFFFF;
 }
 
-#battery {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 6px;
-	border-radius: 18px;
-	transition: none;
-	font-size: 14px;
-	font-weight: bold;
-	color: #000000;
-	background: #FFFFFF;
+#custom-launcher {
+	color: #210AF0;
 }
 
 #battery.charging,
@@ -133,56 +84,5 @@ window#waybar.hidden {
 #battery.critical:not(.charging) {
 	color: #000000;
 	background-color: #FFFFFF;
-}
-
-#clock {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-right: 10px;
-	margin-bottom: 6px;
-	border-radius: 18px;
-	transition: none;
-	font-size: 14px;
-	font-weight: bold;
-	color: #000000;
-	background: #FFFFFF;
-}
-
-#custom-launcher {
-	font-size: 14px;
-	margin-left: 10px;
-	padding-left: 10px;
-	padding-right: 5px;
-	border-radius: 10px;
-	transition: none;
-	color: #210af0;
-	background: transparent;
-}
-
-#custom-updates {
-	font-size: 14px;
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	padding-right: 10px;
-	margin-bottom: 0px;
-	border-radius: 10px;
-	transition: none;
-	color: #000000;
-	background: #FFFFFF;
-}
-
-#tray {
-	margin-top: 6px;
-	margin-left: 8px;
-	padding-left: 10px;
-	margin-bottom: 0px;
-	padding-right: 10px;
-	border-radius: 10px;
-	transition: none;
-	color: #000000;
-	background: #FFFFFF;
 }
 

@@ -50,7 +50,7 @@
 		},
 		"format": "{icon}",
 		"format-icons": {
-			"focused": "<span font='12'>󰮯</span>",
+			"focused": "󰮯",
 			"default": "<span font='8'></span>",
 			"persistent": "󰊠",
 		},
@@ -111,6 +111,6 @@
 		"tooltip": true,
 		"interval": 60,
 		"format": "{:%H:%M}",
-        "tooltip-format": "{:%d-%m-%Y}"
-	},
+		"tooltip-format": "{:%d-%m-%Y}"
+	}
 }
