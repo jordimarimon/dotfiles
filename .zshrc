@@ -77,6 +77,14 @@ alias logout="loginctl terminate-user $(whoami)"
 alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias info='info --vi-keys'
+alias ga="git add"
+alias gc="git commit"
+alias gca="git commit --amend"
+alias gce="git commit --amend --no-edit"
+alias gs="git status"
+alias gdt="git diff-tree --no-commit-id --name-only -r"
+alias gl="git log-prettier"
+alias gla="git log --all --format=fuller"
 
 # Shell integrations
 eval "$(fzf --zsh)"

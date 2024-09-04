@@ -18,6 +18,14 @@ set $term foot
 set $laptop eDP-1
 set $external HDMI-A-1
 
+# Colors
+set $bg-color            #0000ff
+set $inactive-bg-color   #f9fafb
+set $text-color          #ffffff
+set $inactive-text-color #000000
+set $urgent-bg-color     #fffbeb
+set $indicator-color     #0000ff
+
 #################
 ### Output configuration
 #################
@@ -70,13 +78,11 @@ font pango:JetBrainsMono Nerd Font, Solid 12
 default_border pixel 2
 
 # Window colors
-# class                 border    backgr.   text      indicator   child_border
-client.focused          #0000ff   #0000ff   #000000   #0000ff     #0000ff
-client.focused_inactive #0000ff   #0000ff   #000000   #0000ff     #0000ff
-client.unfocused        #0000ff   #0000ff   #000000   #0000ff     #0000ff
-client.urgent           #0000ff   #0000ff   #000000   #0000ff     #0000ff
-client.placeholder      #0000ff   #0000ff   #000000   #0000ff     #0000ff
-client.background       #0000ff
+#                       border             background         text                 indicator		child_border
+client.focused          $bg-color          $bg-color          $text-color          $indicator-color	$bg-color
+client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color	$bg-color
+client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color	$bg-color
+client.urgent           $urgent-bg-color   $urgent-bg-color   $text-color          $indicator-color	$bg-color
 
 gaps inner 5
 gaps outer 5
