@@ -115,22 +115,3 @@ vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_
 -- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/ui/highlights.lua
 vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 
--- DAP UI
-vim.api.nvim_set_hl(0, "DapUIScope", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIModifiedValue", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIDecoration", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStoppedThread", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUILineNumber", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIFloatBorder", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIBreakpointsPath", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIBreakpointsLine", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepOver", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepInto", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepBack", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepOut", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIWinSelect", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepOverNC", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepIntoNC", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepBackNC", {fg = fg})
-vim.api.nvim_set_hl(0, "DapUIStepOutNC", {fg = fg})
-
