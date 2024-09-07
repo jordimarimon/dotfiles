@@ -1,0 +1,24 @@
+/**
+ * To inspect any element of the UI:
+ *
+ * Enable the following flags in "about:config":
+ *      - "devtools.chrome.enabled"
+ *      - "devtools.debugger.remote-enabled"
+ *      - "toolkit.legacyUserProfileCustomizations.stylesheets"
+ *
+ * Now press the following to inspect the UI elements:
+ * Ctrl + Shift + Alt + I
+ */
+
+.titlebar-button.titlebar-close {
+    display: none !important;
+}
+
+.titlebar-spacer {
+    width: 0px !important;
+}
+
+.tab-close-button {
+    display: none !important;
+}
+
