@@ -115,3 +115,6 @@ vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_
 -- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/ui/highlights.lua
 vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 
+-- Render Markdown
+vim.api.nvim_set_hl(0, "RenderMarkdownCode", {bg = bg_surface})
+
