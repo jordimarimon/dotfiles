@@ -10,6 +10,22 @@
  * Ctrl + Shift + Alt + I
  */
 
+@namespace url(http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul);
+
+/*#navigator-toolbox {*/
+/*    height: 0px !important;*/
+/*    min-height: 0px !important;*/
+/*    overflow: hidden !important;*/
+/*}*/
+/**/
+/*#navigator-toolbox:focus,*/
+/*#navigator-toolbox:hover,*/
+/*#navigator-toolbox:focus-within,*/
+/*#navigator-toolbox:active {*/
+/*    height: auto !important;*/
+/*    overflow: visible !important;*/
+/*}*/
+
 .titlebar-button.titlebar-close {
     display: none !important;
 }

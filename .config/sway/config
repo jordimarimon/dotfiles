@@ -31,7 +31,7 @@ set $indicator-color     #0000ff
 #################
 
 # Default wallpaper
-output * bg /home/jmarimon/Pictures/Linux-Unix-unixporn-minimalism-material-minimal-material-style-2088251-wallhere.com.jpg fill
+output * bg /home/jmarimon/Pictures/minimalism-material-minimal-material-style-2088251-wallhere.com.jpg fill
 
 #################
 ### Autostart

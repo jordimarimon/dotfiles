@@ -118,3 +118,11 @@ vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 -- Render Markdown
 vim.api.nvim_set_hl(0, "RenderMarkdownCode", {bg = bg_surface})
 
+-- HTML
+vim.api.nvim_set_hl(0, "@markup.heading.1.html", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.2.html", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.3.html", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.4.html", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.5.html", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.6.html", {fg = fg})
+
