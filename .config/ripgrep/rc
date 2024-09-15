@@ -1,0 +1,8 @@
+--colors=line:fg:blue
+--colors=line:style:bold
+--colors=path:fg:green
+--colors=path:style:bold
+--colors=match:fg:black
+--colors=match:bg:0xFC,0xF9,0xBB
+--colors=match:style:nobold
+

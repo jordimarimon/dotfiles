@@ -224,3 +224,9 @@ bindswitch --reload --locked lid:on output $laptop disable
 bindswitch --reload --locked lid:off output $laptop enable
 exec_always ~/.config/sway/lid-reload.sh
 
+#################
+### Window rules
+#################
+
+for_window [class="feh"] floating enable
+

@@ -76,6 +76,7 @@ alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
 alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
+alias foreignpkgs="yay -Qm"
 alias info='info --vi-keys'
 alias ga="git add"
 alias gc="git commit"

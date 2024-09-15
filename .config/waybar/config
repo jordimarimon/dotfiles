@@ -29,7 +29,8 @@
 		"tooltip": "false",
 		"format": " {}",
 		"exec": "checkupdates | wc -l",
-		"interval": 3600
+		"interval": 3600,
+		"on-click": ""
 	},
 
 	"sway/workspaces": {
