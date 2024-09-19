@@ -1,7 +1,12 @@
 -- Highlight, edit, and navigate code
+-- Additional nvim-treesitter modules:
+--	- Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+--	- Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+--	- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 return {
 	"nvim-treesitter/nvim-treesitter",
-	build = ':TSUpdate',
+	build = ":TSUpdate",
+	main = "nvim-treesitter.configs",
 	config = function ()
 		local configs = require("nvim-treesitter.configs")
 
