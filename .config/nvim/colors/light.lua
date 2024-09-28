@@ -122,24 +122,24 @@ vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_
 vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 
 -- Render Markdown
-vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown})
-vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg_heading_markdown})
+vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_1_markdown})
 
-vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown})
-vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg_heading_markdown})
+vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", {bg = bg_heading_2_markdown})
 
-vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown})
-vim.api.nvim_set_hl(0, "RenderMarkdownH3", {fg = fg_heading_markdown})
+vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH3", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", {bg = bg_heading_3_markdown})
 
-vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown})
-vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg_heading_markdown})
+vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_4_markdown})
 
-vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown})
-vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg_heading_markdown})
+vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_5_markdown})
 
 vim.api.nvim_create_autocmd('ModeChanged', {
@@ -149,17 +149,17 @@ vim.api.nvim_create_autocmd('ModeChanged', {
     local mode = vim.fn.mode()
 
     if mode == 'i' then
-      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg})
-      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg})
-      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg})
-      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg})
-      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg})
+      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg, bold = true})
     else
-      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown})
-      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown})
-      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown})
-      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown})
-      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown})
+      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown, bold = true})
+      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown, bold = true})
     end
   end,
 })

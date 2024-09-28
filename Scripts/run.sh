@@ -7,7 +7,7 @@ commands=(\
 );
 
 IFS=$'\n';
-choice=$(echo "${commands[*]}" | wofi --dmenu -i);
+choice=$(echo "${commands[*]}" | fuzzel --dmenu -i);
 IFS=' ';
 
 if [ -z "$choice" ]; then
@@ -23,7 +23,7 @@ done
 
 case "$index" in
 	0)
-		wofi --show drun;
+		fuzzel;
 		;;
 	1)
 		foot zsh -i -c open_notes;
