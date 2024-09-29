@@ -145,7 +145,6 @@ vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_5_markdown})
 vim.api.nvim_create_autocmd('ModeChanged', {
   desc = 'Change heading colors in markdown',
   group = vim.api.nvim_create_augroup('MarkdownHighlightGroupChange', { clear = true }),
-  pattern = {"*.md", "*.mdx"},
   callback = function()
     local mode = vim.fn.mode()
 
