@@ -148,7 +148,7 @@ vim.api.nvim_create_autocmd('ModeChanged', {
   callback = function()
     local mode = vim.fn.mode()
 
-    if mode == 'i' then
+    if mode ~= 'n' then
       vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg, bold = true})
       vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg, bold = true})
       vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg, bold = true})
