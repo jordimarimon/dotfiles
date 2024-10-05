@@ -75,6 +75,11 @@ vim.opt.completeopt = "menuone,noselect"
 -- Enables 24-bit RGB color in the TUI
 vim.opt.termguicolors = true
 
+-- Use 4 spaces for tabs
+vim.opt.expandtab = true
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+
 -- Enable spell checking
 -- vim.opt.spelllang = 'es,en,ca'
 -- vim.opt.spell = true
