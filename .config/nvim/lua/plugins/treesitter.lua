@@ -15,10 +15,11 @@ return {
 
 		configs.setup({
 			ensure_installed = {
-				"c", "lua", "vim", "vimdoc", "query",
+				"c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
 				"javascript", "typescript", "php", "html",
-				"css", "scss", "angular", "bash", "haskell", "json",
-				"sql", "tsx", "yaml", "python"
+				"css", "angular", "bash", "json",
+				"sql", "tsx", "yaml", "python", "editorconfig", "make",
+				"markdown", "markdown_inline"
 			},
 			auto_install = true,
 			sync_install = false,
@@ -30,25 +31,55 @@ return {
 			match = {
 				enable = true,
 			},
-			incremental_selection = {
-				enable = true,
-				keymaps = {
-					init_selection = "zi",
-					node_incremental = "zn",
-					scope_incremental = "zo",
-					node_decremental = "zd",
-				},
-			},
 			indent = {
 				enable = true,
 			},
-			swap = {
+			incremental_selection = {
 				enable = true,
-				swap_next = {
-					["<leader>rp"] = "@parameter.inner",
+				keymaps = {
+					init_selection = "<Leader>ss",
+					node_incremental = "<Leader>si",
+					scope_incremental = "<Leader>sc",
+					node_decremental = "<Leader>sd",
 				},
-				swap_previous = {
-					["<leader>rP"] = "@parameter.inner",
+			},
+			textobjects = {
+				swap = {
+					enable = true,
+					swap_next = { ["<Leader>>"] = "@parameter.inner" },
+					swap_previous = { ["<Leader><"] = "@parameter.inner" },
+				},
+				select = {
+					enable = true,
+					lookahead = true,
+					keymaps = {
+						["af"] = "@function.outer",
+						["if"] = "@function.inner",
+						["ac"] = "@class.outer",
+						["ic"] = "@class.inner",
+					},
+				},
+				move = {
+					enable = true,
+					set_jumps = true,
+					goto_next_start = {
+						["]]"] = "@jsx.element",
+						["]f"] = "@function.outer",
+						["]m"] = "@class.outer",
+					},
+					goto_next_end = {
+						["]F"] = "@function.outer",
+						["]M"] = "@class.outer",
+					},
+					goto_previous_start = {
+						["[["] = "@jsx.element",
+						["[f"] = "@function.outer",
+						["[m"] = "@class.outer",
+					},
+					goto_previous_end = {
+						["[F"] = "@function.outer",
+						["[M"] = "@class.outer",
+					},
 				},
 			},
 		})

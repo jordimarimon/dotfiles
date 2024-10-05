@@ -1,2 +1,3 @@
--- TODO: Create dark theme using the following one as inspiration
+-- TODO: Create dark theme using the following ones as inspiration
 -- https://github.com/doums/darcula/blob/master/colors/darcula.vim
+-- https://github.com/rezhaTanuharja/minimalistNVIM?tab=readme-ov-file
