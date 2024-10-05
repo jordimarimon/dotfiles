@@ -80,6 +80,9 @@ vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
 
+-- Enables virtualedit in visual block mode
+vim.opt.virtualedit = "block"
+
 -- Enable spell checking
 -- vim.opt.spelllang = 'es,en,ca'
 -- vim.opt.spell = true
