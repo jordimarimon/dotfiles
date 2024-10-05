@@ -15,7 +15,6 @@ require("lazy").setup(
     {import = "plugins.lsp"},
     {import = "plugins.completion"},
     {import = "plugins.todo-comments"},
-    {import = "plugins.neo-tree"},
     {import = "plugins.git"},
     {import = "plugins.mini"},
     {import = "plugins.autopairs"},
