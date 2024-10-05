@@ -22,6 +22,7 @@ require("lazy").setup(
     {import = "plugins.database"},
     {import = "plugins.colors"},
     {import = "plugins.oil"},
+    {import = "plugins.harpoon"},
   },
   {
     ui = {border = "single"},
