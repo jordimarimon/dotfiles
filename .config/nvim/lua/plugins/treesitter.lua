@@ -7,6 +7,9 @@ return {
 	"nvim-treesitter/nvim-treesitter",
 	build = ":TSUpdate",
 	main = "nvim-treesitter.configs",
+	dependencies = {
+		"nvim-treesitter/nvim-treesitter-textobjects",
+	},
 	config = function ()
 		local configs = require("nvim-treesitter.configs")
 
@@ -20,9 +23,34 @@ return {
 			auto_install = true,
 			sync_install = false,
 			modules = {},
-			highlight = { enable = true },
-			indent = { enable = true },
 			ignore_install = {},
+			highlight = {
+				enable = true,
+			},
+			match = {
+				enable = true,
+			},
+			incremental_selection = {
+				enable = true,
+				keymaps = {
+					init_selection = "zi",
+					node_incremental = "zn",
+					scope_incremental = "zo",
+					node_decremental = "zd",
+				},
+			},
+			indent = {
+				enable = true,
+			},
+			swap = {
+				enable = true,
+				swap_next = {
+					["<leader>rp"] = "@parameter.inner",
+				},
+				swap_previous = {
+					["<leader>rP"] = "@parameter.inner",
+				},
+			},
 		})
 	end,
 }

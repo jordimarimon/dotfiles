@@ -22,6 +22,7 @@ require("lazy").setup(
     {import = "plugins.markdown"},
     {import = "plugins.database"},
     {import = "plugins.colors"},
+    {import = "plugins.oil"},
   },
   {
     ui = {border = "single"},
