@@ -83,6 +83,11 @@ vim.opt.shiftwidth = 4
 -- Enables virtualedit in visual block mode
 vim.opt.virtualedit = "block"
 
+-- Use treesitter for folding
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+vim.opt.foldenable = false
+
 -- Enable spell checking
 -- vim.opt.spelllang = 'es,en,ca'
 -- vim.opt.spell = true
