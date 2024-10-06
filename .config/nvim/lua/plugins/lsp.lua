@@ -211,7 +211,15 @@ return {
 		ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
 		config = function ()
-			require("typescript-tools").setup {}
+			require("typescript-tools").setup({
+				on_init = function(client, _)
+					client.server_capabilities.semanticTokensProvider = nil
+				end,
+				settings = {
+					separate_diagnostic_server = false,
+				},
+			})
+
 			require("lspconfig")["typescript-tools"].launch()
 
 			vim.keymap.set("n", "<leader>ri", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[R]emove [I]mports" })
