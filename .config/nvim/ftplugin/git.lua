@@ -1,2 +1,2 @@
-vim.opt.foldmethod = "syntax"
-vim.opt.foldenable = false
+vim.opt_local.foldmethod = "syntax"
+vim.opt_local.foldenable = false
