@@ -228,5 +228,5 @@ exec_always ~/.config/sway/lid-reload.sh
 ### Window rules
 #################
 
-for_window [class="feh"] floating enable
+for_window [class="feh"] floating enable, move position center
 
