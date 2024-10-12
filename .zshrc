@@ -90,5 +90,3 @@ alias gla="git log --all --format=fuller"
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
-eval "$(tmuxifier init -)"
-
