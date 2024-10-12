@@ -86,6 +86,7 @@ alias gs="git status"
 alias gdt="git diff-tree --no-commit-id --name-only -r"
 alias gl="git log-prettier"
 alias gla="git log --all --format=fuller"
+alias tmuxinteractiu="$HOME/Scripts/tmux-interactiu.sh"
 
 # Shell integrations
 eval "$(fzf --zsh)"
