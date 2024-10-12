@@ -226,6 +226,8 @@ return {
 			vim.keymap.set("n", "<leader>ai", vim.cmd.TSToolsAddMissingImports, { desc = "[A]dd missing [I]mports" })
 			vim.keymap.set("n", "<leader>ru", vim.cmd.TSToolsRemoveUnused, { desc = "[R]emove [U]nused statements" })
 			vim.keymap.set("n", "<leader>rf", vim.cmd.TSToolsRenameFile, { desc = "[R]ename [F]ile" })
+			vim.keymap.set("n", "<leader>oi", vim.cmd.TSToolsOrganizeImports, { desc = "[O]rganize [I]mports" })
+			vim.keymap.set("n", "<leader>fr", vim.cmd.TSToolsFileReferences, { desc = "[F]ile [R]eferences" })
 		end
 	},
 }
