@@ -1,5 +1,6 @@
 local bg = "none"
 local bg_surface = "#efefef"
+local bg_tab_sel = "#FFFFFF"
 local bg_visual = "#f7f6c8"
 local bg_status_line = "#040299"
 local bg_search = "#fcfc6a"
@@ -26,8 +27,6 @@ local fg_string = "#03770d"
 local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
-local fg_git_conflict = "#9203b2"
-local fg_neo_tree_untracked = "#d98e04"
 local fg_heading_markdown = "#FFFFFF"
 
 vim.g.colors_name = "light"
@@ -64,6 +63,8 @@ vim.api.nvim_set_hl(0, "Visual", {fg = fg, bg = bg_visual})
 vim.api.nvim_set_hl(0, "VisualNC", {fg = fg, bg = bg_visual})
 vim.api.nvim_set_hl(0, "StatusLine", {fg = fg_status_line, bg = bg_status_line})
 vim.api.nvim_set_hl(0, "StatusLineNC", {fg = fg_status_line, bg = bg_status_line})
+vim.api.nvim_set_hl(0, "TabLine", {fg = fg_status_line, bg = bg_status_line})
+vim.api.nvim_set_hl(0, "TabLineSel", {fg = fg, bg = bg_tab_sel})
 vim.api.nvim_set_hl(0, "Error", {fg = fg_error})
 vim.api.nvim_set_hl(0, "ErrorMsg", {fg = fg_error})
 vim.api.nvim_set_hl(0, "NormalFloat", {fg = fg, bg = bg})
@@ -102,8 +103,6 @@ vim.api.nvim_set_hl(0, "QuickFixLine", {fg = fg, bg = bg_surface})
 vim.api.nvim_set_hl(0, "Added", {fg = fg_success})
 vim.api.nvim_set_hl(0, "Removed", {fg = fg_error})
 vim.api.nvim_set_hl(0, "Changed", {fg = fg_info})
-vim.api.nvim_set_hl(0, "NeoTreeTitleBar", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "NeoTreeGitConflict", {fg = fg_git_conflict})
 vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
@@ -116,10 +115,6 @@ vim.api.nvim_set_hl(0, "MiniStatusLineModeVisual", {fg = fg, bg = bg_status_line
 vim.api.nvim_set_hl(0, "MiniStatusLineModeReplace", {fg = fg, bg = bg_status_line_mode})
 vim.api.nvim_set_hl(0, "MiniStatusLineModeCommand", {fg = fg, bg = bg_status_line_mode})
 vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_mode})
-
--- NeoTree
--- https://github.com/nvim-neo-tree/neo-tree.nvim/blob/main/lua/neo-tree/ui/highlights.lua
-vim.api.nvim_set_hl(0, "NeoTreeGitUntracked", {fg = fg_neo_tree_untracked})
 
 -- Render Markdown
 vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})

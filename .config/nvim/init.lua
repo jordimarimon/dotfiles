@@ -3,6 +3,7 @@ vim.cmd.colorscheme("light")
 
 -- define options
 require("options")
+require("tabs")
 require("filetypes")
 
 -- define plugins
