@@ -116,6 +116,11 @@ vim.api.nvim_set_hl(0, "MiniStatusLineModeReplace", {fg = fg, bg = bg_status_lin
 vim.api.nvim_set_hl(0, "MiniStatusLineModeCommand", {fg = fg, bg = bg_status_line_mode})
 vim.api.nvim_set_hl(0, "MiniStatusLineModeOther", {fg = fg, bg = bg_status_line_mode})
 
+-- GitSigns
+vim.api.nvim_set_hl(0, "GitSignsAddInline", {fg = fg_success, bg = bg_diff_add})
+vim.api.nvim_set_hl(0, "GitSignsDeleteInline", {fg = fg_error, bg = bg_diff_delete})
+vim.api.nvim_set_hl(0, "GitSignsChangeInline", {fg = fg, bg = bg_diff_line})
+
 -- Render Markdown
 vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg_heading_markdown, bold = true})
