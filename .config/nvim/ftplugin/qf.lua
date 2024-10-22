@@ -4,13 +4,23 @@ vim.keymap.set("v", "d", require("custom.quickfix").rm_qf_items, { desc = "Remov
 
 -- Be able to move between entries
 local function move_to_next_qf()
-    vim.cmd("cnext")
-    vim.cmd("copen")
+    local success = pcall(function() vim.cmd("cnext") end)
+
+    if not success then
+      vim.cmd('cfirst')
+    end
+
+    vim.cmd("copen");
 end
 
 local function move_to_prev_qf()
-    vim.cmd("cprev")
-    vim.cmd("copen")
+    local success = pcall(function() vim.cmd("cprev") end)
+
+    if not success then
+        vim.cmd("clast");
+    end
+
+    vim.cmd("copen");
 end
 
 vim.keymap.set("n", "<M-j>", move_to_next_qf, { desc = "Move to next QF entry", buffer = true, silent = true })
