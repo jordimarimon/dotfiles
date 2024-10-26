@@ -86,6 +86,6 @@ vim.opt.virtualedit = "block"
 -- Make sure fold is disabled by default
 vim.opt.foldenable = false
 
--- Enable spell checking
--- vim.opt.spelllang = 'es,en,ca'
--- vim.opt.spell = true
+-- Spell checking
+vim.opt.spelllang = 'es,en,ca'
+vim.opt.spell = false

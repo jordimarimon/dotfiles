@@ -180,6 +180,7 @@ return {
 				css_variables = {},
 				cssls = {},
 				jsonls = {},
+				html = {},
 			}
 
 			require("mason").setup({

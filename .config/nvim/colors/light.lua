@@ -17,12 +17,16 @@ local bg_heading_4_markdown = "#9ca3af"
 local bg_heading_5_markdown = "#FFFFFF"
 
 local fg = "#333333"
+local fg_keyword = fg
+local fg_member = fg
+local fg_constant = fg
 local fg_status_line = "#FFFFFF"
 local fg_info = "#2563EB"
 local fg_success = "#03770d"
 local fg_warn = "#938c02"
 local fg_comment = "#b0b0b0"
 local fg_function = "#1504a5"
+local fg_ts_uvar = fg_function
 local fg_string = "#03770d"
 local fg_number = "#009999"
 local fg_type = "#690363"
@@ -35,19 +39,25 @@ vim.o.background = "light"
 vim.api.nvim_set_hl(0, "Normal", {fg = fg, bg = bg})
 
 -- Programming languages
-vim.api.nvim_set_hl(0, "@variable", {fg = fg})
-vim.api.nvim_set_hl(0, "@keyword", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@function.call", {fg = fg_function, bold = true})
-vim.api.nvim_set_hl(0, "@boolean", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@number", {fg = fg_number})
-vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
 vim.api.nvim_set_hl(0, "String", {fg = fg_string})
 vim.api.nvim_set_hl(0, "Operator", {fg = fg})
 vim.api.nvim_set_hl(0, "Delimiter", {fg = fg})
 vim.api.nvim_set_hl(0, "Function", {fg = fg_function, bold = true})
-vim.api.nvim_set_hl(0, "Identifier", {fg = fg})
 vim.api.nvim_set_hl(0, "Type", {fg = fg_type, bold = true})
-vim.api.nvim_set_hl(0, "Constant", {fg = fg})
+vim.api.nvim_set_hl(0, "Constant", {fg = fg_constant})
+vim.api.nvim_set_hl(0, "Identifier", {fg = fg})
+vim.api.nvim_set_hl(0, "@type", {fg = fg_type, bold = true})
+vim.api.nvim_set_hl(0, "@type.builtin", {fg = fg_type, bold = true})
+vim.api.nvim_set_hl(0, "@variable", {fg = fg})
+vim.api.nvim_set_hl(0, "@constant", {fg = fg})
+vim.api.nvim_set_hl(0, "@variable.member", {fg = fg_member})
+vim.api.nvim_set_hl(0, "@keyword", {fg = fg_keyword, bold = true})
+vim.api.nvim_set_hl(0, "@function.builtin", {fg = fg_function, bold = true})
+vim.api.nvim_set_hl(0, "@function.call", {fg = fg_function, bold = true})
+vim.api.nvim_set_hl(0, "@boolean", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@number", {fg = fg_number})
+vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
+vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
 
 -- Common
 vim.api.nvim_set_hl(0, "Special", {fg = fg, bold = true})
