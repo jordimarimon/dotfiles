@@ -18,7 +18,7 @@ return {
 
 		local cmp = require("cmp")
 
-		cmp.setup {
+		cmp.setup({
 			snippet = {
 				expand = function(args)
 					luasnip.lsp_expand(args.body)
@@ -46,12 +46,12 @@ return {
 				-- Accept ([y]es) the completion.
 				--  This will auto-import if your LSP supports it.
 				--  This will expand snippets if the LSP sent a snippet.
-				["<C-y>"] = cmp.mapping.confirm { select = true },
+				["<C-y>"] = cmp.mapping.confirm({ select = true }),
 
 				-- Manually trigger a completion from nvim-cmp.
 				--  Generally you don"t need this, because nvim-cmp will display
 				--  completions whenever it has completion options available.
-				["<C-Space>"] = cmp.mapping.complete {},
+				["<C-Space>"] = cmp.mapping.complete({}),
 
 				-- Think of <c-l> as moving to the right of your snippet expansion.
 				--  So if you have a snippet that"s like:
@@ -75,18 +75,18 @@ return {
 
 			},
 			sources = {
-				{ name = "nvim_lsp" },
-				{ name = 'luasnip' },
-				{ name = "path" },
-				{ name = "buffer" },
+				{ name = "nvim_lsp", max_item_count = 5 },
+				{ name = "luasnip", max_item_count = 5 },
+				{ name = "path", max_item_count = 5 },
+				{ name = "buffer", max_item_count = 5 },
 			},
-		}
+		})
 
 		-- Setup up vim-dadbod
 		cmp.setup.filetype({ "sql", "mysql", "plsql" }, {
 			sources = {
-				{ name = "vim-dadbod-completion" },
-				{ name = "buffer" },
+				{ name = "vim-dadbod-completion", max_item_count = 5 },
+				{ name = "buffer", max_item_count = 5 },
 			},
 		})
 	end,

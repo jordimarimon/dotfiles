@@ -21,7 +21,6 @@ require("lazy").setup(
     {import = "plugins.autopairs"},
     {import = "plugins.markdown"},
     {import = "plugins.database"},
-    {import = "plugins.colors"},
     {import = "plugins.oil"},
     {import = "plugins.harpoon"},
   },
