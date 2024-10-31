@@ -58,6 +58,8 @@ vim.api.nvim_set_hl(0, "@boolean", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@number", {fg = fg_number})
 vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
 vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
+vim.api.nvim_set_hl(0, "@tag.attribute.angular", {fg = fg, bold = false})
+vim.api.nvim_set_hl(0, "@keyword.angular", {fg = fg, bold = false})
 
 -- Common
 vim.api.nvim_set_hl(0, "Special", {fg = fg, bold = true})
