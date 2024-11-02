@@ -23,6 +23,7 @@ require("lazy").setup(
     {import = "plugins.database"},
     {import = "plugins.oil"},
     {import = "plugins.harpoon"},
+    {import = "plugins.multiple-cursors"},
   },
   {
     ui = {border = "single"},
