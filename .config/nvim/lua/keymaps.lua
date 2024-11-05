@@ -34,3 +34,6 @@ vim.api.nvim_set_keymap("n", "<M-l>", ":tabn<CR>", { silent = true, noremap = tr
 vim.api.nvim_set_keymap("n", "<M-S-h>", ":-tabmove<CR>", { silent = true, noremap = true, desc = "[T]ab [M]ove [P]revious" })
 vim.api.nvim_set_keymap("n", "<M-S-l>", ":+tabmove<CR>", { silent = true, noremap = true, desc  = "[T]ab [M]ove [N]ext" })
 
+-- Reload the current file and delete other buffers
+vim.keymap.set("n", "<leader>rb", "<cmd>%bd|e#|bd#<CR>", { desc = "[R]eload [B]uffer" })
+
