@@ -48,6 +48,9 @@ return {
 					-- Find references for the word under your cursor.
 					map("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
 
+					--- Displays hover information about the symbol under the cursor in a floating window
+					map("K", function() vim.lsp.buf.hover({border = "single"}) end, "Show symbol info")
+
 					-- Jump to the implementation of the word under your cursor.
 					-- Useful when your language has ways of declaring types without an actual implementation.
 					map("gI", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
@@ -130,22 +133,7 @@ return {
 			})
 
 
-			vim.keymap.set("n", "<leader>sc", function()
-				vim.lsp.stop_client(vim.lsp.get_clients())
-				end, { desc = "[S]top [C]lients" })
-
-			-- Define borders for the floating windows
-			vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-				vim.lsp.handlers.hover, {
-					border = "single",
-				}
-			)
-
-			vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-				vim.lsp.handlers.signature_help, {
-					border = "single"
-				}
-			)
+			vim.keymap.set("n", "<leader>sc", function() vim.lsp.stop_client(vim.lsp.get_clients()) end, { desc = "[S]top [C]lients" })
 
 			vim.diagnostic.config({ float = { border="single" } })
 
