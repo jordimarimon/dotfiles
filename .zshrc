@@ -70,7 +70,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Aliases
-alias git-config='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias gc='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
+alias g="git"
 alias cat="bat"
 alias ls="lsd"
 alias logout="loginctl terminate-user $(whoami)"
@@ -78,15 +79,6 @@ alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias foreignpkgs="yay -Qm"
 alias info='info --vi-keys'
-alias ga="git add"
-alias gc="git commit"
-alias gca="git commit --amend"
-alias gce="git commit --amend --no-edit"
-alias gs="git status"
-alias gdt="git diff-tree --no-commit-id --name-only -r"
-alias gl="git log-prettier"
-alias gla="git log --all --format=fuller"
-alias gcontributors="git shortlog --summary --numbered --email"
 alias tmuxinteractiu="$HOME/Scripts/tmux-interactiu.sh"
 
 # Shell integrations
