@@ -4,7 +4,7 @@ return {
 	{
 		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		dependencies = { "iguanacucumber/magazine.nvim" },
+		dependencies = { "hrsh7th/nvim-cmp" },
 		config = function()
 			require("nvim-autopairs").setup({})
 			-- To automatically add `(` after selecting a function or method
