@@ -1,5 +1,6 @@
 local bg = "none"
 local bg_surface = "#efefef"
+local bg_light_blue = "#dbeafe"
 local bg_tab_sel = "#FFFFFF"
 local bg_visual = "#f7f6c8"
 local bg_status_line = "#040299"
@@ -109,7 +110,7 @@ vim.api.nvim_set_hl(0, "WinBar", {fg = fg})
 vim.api.nvim_set_hl(0, "WinBarNC", {fg = fg})
 vim.api.nvim_set_hl(0, "WinSeparator", {fg = fg})
 vim.api.nvim_set_hl(0, "RedrawDebugNormal", {fg = fg})
-vim.api.nvim_set_hl(0, "Folded", {fg = fg, bg = bg_surface})
+vim.api.nvim_set_hl(0, "Folded", {fg = fg, bg = bg_light_blue})
 vim.api.nvim_set_hl(0, "WildMenu", {fg = fg, bg = bg_surface})
 vim.api.nvim_set_hl(0, "QuickFixLine", {fg = fg, bg = bg_surface})
 vim.api.nvim_set_hl(0, "Added", {fg = fg_success})
