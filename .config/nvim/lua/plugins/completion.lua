@@ -4,7 +4,20 @@ return {
 	event = "InsertEnter",
 	dependencies = {
 		-- Snippet Engine & its associated nvim-cmp source
-		"L3MON4D3/LuaSnip",
+		{
+			"L3MON4D3/LuaSnip",
+			build = "make install_jsregexp",
+			dependencies = {
+				"rafamadriz/friendly-snippets",
+				config = function()
+					require('luasnip.loaders.from_vscode').lazy_load({
+						exclude = { "markdown" }
+					})
+				end,
+			},
+		},
+
+		"saadparwaiz1/cmp_luasnip",
 
 		-- Adds LSP completion capabilities
 		"hrsh7th/cmp-nvim-lsp",
