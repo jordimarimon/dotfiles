@@ -1,5 +1,3 @@
-local todo_comments = require("todo-comments")
-
 -- Remove any keymap set in the leader key
 vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
@@ -25,11 +23,6 @@ vim.api.nvim_set_keymap("i", "<C-h>", "<Left>", { desc = "Move to the left", sil
 vim.api.nvim_set_keymap("i", "<C-l>", "<Right>", { desc = "Move to the right", silent = true })
 vim.api.nvim_set_keymap("i", "<C-j>", "<Down>", { desc = "Move down", silent = true })
 vim.api.nvim_set_keymap("i", "<C-k>", "<Up>", { desc = "Move up", silent = true })
-
--- Todo comments keymaps
-vim.keymap.set("n", "<leader>st", vim.cmd.TodoTelescope, { desc = "[S]earch [T]odos", silent = true })
-vim.keymap.set("n", "]t", function() todo_comments.jump_next() end, { desc = "Next todo comment", silent = true })
-vim.keymap.set("n", "[t", function() todo_comments.jump_prev() end, { desc = "Previous todo comment", silent = true })
 
 -- Copy current buffer path to system clipboard
 vim.keymap.set("n", "<leader>cf", function() vim.fn.setreg("+", vim.fn.expand('%')) end, { desc = "[C]opy [F]ile path", silent = true })

@@ -3,7 +3,12 @@ return {
 	'folke/todo-comments.nvim',
 	event = 'VimEnter',
 	dependencies = { 'nvim-lua/plenary.nvim' },
-	opts = {
-		signs = false,
-	},
+	config = function ()
+		local todo_comments = require("todo-comments")
+		todo_comments.setup({signs = false})
+
+		vim.keymap.set("n", "<leader>st", vim.cmd.TodoTelescope, { desc = "[S]earch [T]odos", silent = true })
+		vim.keymap.set("n", "]t", function() todo_comments.jump_next() end, { desc = "Next todo comment", silent = true })
+		vim.keymap.set("n", "[t", function() todo_comments.jump_prev() end, { desc = "Previous todo comment", silent = true })
+	end
 }
