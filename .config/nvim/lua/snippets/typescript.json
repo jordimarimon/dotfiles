@@ -1,0 +1,57 @@
+{
+    "Angular Standalone Component": {
+        "prefix": "a-component",
+        "description": "Angular component",
+        "body": [
+            "import { Component, ChangeDetectionStrategy } from '@angular/core';",
+            "",
+            "",
+            "@Component({",
+            "\tstandalone: true,",
+            "\timports: [],",
+            "\tselector: '${1:selector-name}',",
+            "\ttemplateUrl: '${2:name}.component.html',",
+            "\tchangeDetection: ChangeDetectionStrategy.OnPush,",
+            "})",
+            "export class ${3:Name}Component {",
+            "",
+            "\tconstructor() { }",
+            "",
+            "}"
+        ]
+    },
+    "Angular Service": {
+        "prefix": "a-service",
+        "description": "Angular Service",
+        "body": [
+            "import { Injectable } from '@angular/core';",
+            "",
+            "",
+            "@Injectable({providedIn: ${1:'root'}})",
+            "export class ${2:ServiceName}Service {",
+            "",
+            "\tconstructor() { }",
+            "",
+            "}"
+        ]
+    },
+    "Angular Directive": {
+        "prefix": "a-directive",
+        "description": "Angular directive",
+        "body": [
+            "import { Directive } from '@angular/core';",
+            "",
+            "",
+            "@Directive({",
+            "\tstandalone: true,",
+            "\tselector: '[${1:selector-name}]',",
+            "\texportAs: '[${1:export-name}]',",
+            "})",
+            "export class ${2:Name}Directive {",
+            "",
+            "\tconstructor() { }",
+            "",
+            "}"
+        ]
+    }
+}
