@@ -21,13 +21,13 @@ if ! tmux has-session -t $SESSION_NAME 2>/dev/null; then
     tmux new-window -c $API_PATH -n "api"
 
     # Split the first window into two panes (vertical split)
-    tmux split-window -v -c $FRONTEND_PATH -t $SESSION_NAME:0
+    tmux split-window -v -c $FRONTEND_PATH -t $SESSION_NAME:1
 
     # Split the second window into two panes (vertical split)
-    tmux split-window -v -c $WEB_PATH -t $SESSION_NAME:1
+    tmux split-window -v -c $WEB_PATH -t $SESSION_NAME:2
 
     # Select the first window to set focus
-    tmux select-window -t $SESSION_NAME:0
+    tmux select-window -t $SESSION_NAME:1
 
     # Attach to the session
     tmux attach-session -t $SESSION_NAME
