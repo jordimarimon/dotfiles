@@ -53,5 +53,25 @@
             "",
             "}"
         ]
+    },
+    "If Return": {
+        "prefix": "if-return",
+        "description": "If with return",
+        "body": [
+            "if (${1:condition}) {",
+            "\treturn${2:};",
+            "}",
+            ""
+        ]
+    },
+    "If Null Return": {
+        "prefix": "if-null-return",
+        "description": "If null with return",
+        "body": [
+            "if (${1:condition} == null) {",
+            "\treturn${2:};",
+            "}",
+            ""
+        ]
     }
 }
