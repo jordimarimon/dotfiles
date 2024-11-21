@@ -59,6 +59,12 @@ exec wl-paste --watch cliphist store &
 ### Input configuration
 #################
 
+# input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
+#     xkb_layout es
+#     xkb_model pc105
+#     xkb_options caps:escape
+# }
+
 input type:keyboard {
     xkb_layout es
     xkb_model pc105
