@@ -79,7 +79,8 @@ alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"
 alias foreignpkgs="yay -Qm"
 alias info='info --vi-keys'
-alias tmuxinteractiu="$HOME/Scripts/tmux-interactiu.sh"
+alias tmuxstart="$HOME/Scripts/tmux-create-sessions.sh"
+alias tmuxcreate="$HOME/Scripts/tmux-create-session.sh"
 
 # Shell integrations
 eval "$(fzf --zsh)"
