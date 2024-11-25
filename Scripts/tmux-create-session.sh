@@ -30,8 +30,8 @@ tmux new-session -d -s $SESSION_NAME -c "$SESSION_PATH" -n "editor"
 # Open neovim in the first window
 tmux send-keys -t "$SESSION_NAME:1" "nvim ." C-m
 
-# Create a second window in the same session for the terminal
-tmux new-window -c "$SESSION_PATH" -n "terminal"
+# Create a second window in the same session for the shell
+tmux new-window -c "$SESSION_PATH" -n "shell"
 
 # Set focus to the first window
 tmux select-window -t $SESSION_NAME:1

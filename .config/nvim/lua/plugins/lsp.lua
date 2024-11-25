@@ -157,11 +157,7 @@ return {
 			-- - settings (table): Override the default settings passed when initializing the server.
 			local servers = {
 				pyright = {},
-				clangd = {
-					on_init = function(client, _)
-						client.server_capabilities.semanticTokensProvider = nil
-					end,
-				},
+				clangd = {},
 				phpactor = {},
 				lua_ls = {},
 				tailwindcss = {},
@@ -186,6 +182,9 @@ return {
 						-- by the server configuration above. Useful when disabling
 						-- certain features of an LSP (for example, turning off formatting for tsserver)
 						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+						server.on_init = function(client, _)
+							client.server_capabilities.semanticTokensProvider = nil
+						end
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
