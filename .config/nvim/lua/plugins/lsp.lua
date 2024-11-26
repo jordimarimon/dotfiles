@@ -117,7 +117,7 @@ return {
 							group = vim.api.nvim_create_augroup("lsp-detach", { clear = true }),
 							callback = function(event2)
 								vim.lsp.buf.clear_references()
-								vim.api.nvim_clear_autocmds { group = "lsp-highlight", buffer = event2.buf }
+								vim.api.nvim_clear_autocmds({ group = "lsp-highlight", buffer = event2.buf })
 							end,
 						})
 					end
@@ -185,6 +185,7 @@ return {
 						server.on_init = function(client, _)
 							client.server_capabilities.semanticTokensProvider = nil
 						end
+						server.autostart = false
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
@@ -200,12 +201,11 @@ return {
 				on_init = function(client, _)
 					client.server_capabilities.semanticTokensProvider = nil
 				end,
+				autostart = false,
 				settings = {
 					separate_diagnostic_server = false,
 				},
 			})
-
-			require("lspconfig")["typescript-tools"].launch()
 
 			vim.keymap.set("n", "<leader>ri", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[R]emove [I]mports" })
 			vim.keymap.set("n", "<leader>ai", vim.cmd.TSToolsAddMissingImports, { desc = "[A]dd missing [I]mports" })
