@@ -59,20 +59,21 @@ exec wl-paste --watch cliphist store &
 ### Input configuration
 #################
 
-# house keyboard
-# input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
-#     xkb_layout es
-#     xkb_model pc105
-#     xkb_options caps:escape
-# }
+# old keyboard
+input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
+    xkb_layout es
+    xkb_model pc105
+    xkb_options caps:escape
+}
 
-# kinesis (set id)
-# input type:keyboard {
-#     xkb_layout us
-# }
+# current keyboard
+input "10730:866:Kinesis_Corporation_Adv360_Pro_Keyboard" {
+    xkb_layout us
+    xkb_options caps:escape
+}
 
-# company keyboard (set id)
-input type:keyboard {
+# company keyboard
+input "1133:16482:Logitech_K850" {
     xkb_layout es
     xkb_model pc105
     xkb_options caps:escape
