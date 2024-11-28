@@ -116,7 +116,7 @@ bar {
 #################
 
 # Start a terminal
-bindsym $mod+Return exec $term
+bindsym $mod+g exec $term
 
 # Kill focused window
 bindsym $mod+q kill
