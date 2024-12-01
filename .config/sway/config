@@ -70,7 +70,6 @@ input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
 input "10730:866:Kinesis_Corporation_Adv360_Pro_Keyboard" {
     xkb_layout us
     xkb_model kinesis
-    xkb_options caps:escape
 }
 
 # company keyboard
@@ -117,7 +116,7 @@ bar {
 #################
 
 # Start a terminal
-bindsym $mod+g exec $term
+bindsym $mod+Return exec $term
 
 # Kill focused window
 bindsym $mod+q kill
