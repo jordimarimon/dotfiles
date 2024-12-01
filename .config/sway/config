@@ -68,7 +68,7 @@ input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
 
 # current keyboard
 input "10730:866:Kinesis_Corporation_Adv360_Pro_Keyboard" {
-    xkb_layout us
+    xkb_layout us(intl)
     xkb_model kinesis
 }
 
