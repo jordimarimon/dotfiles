@@ -10,12 +10,15 @@ return {
 		main = "nvim-treesitter.configs",
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-context",
 		},
 		config = function ()
 			local configs = require("nvim-treesitter.configs")
-			local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+			local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
+			local context = require("treesitter-context")
 
 			parser_config.css = {
+				filetype = "css",
 				install_info = {
 					url = "~/Projects/tree-sitter-css",
 					files = {"src/parser.c", "src/scanner.c"},
@@ -23,7 +26,6 @@ return {
 					generate_requires_npm = false,
 					requires_generate_from_grammar = false,
 				},
-				filetype = "css",
 			}
 
 			configs.setup({
@@ -102,6 +104,13 @@ return {
 						},
 					},
 				},
+			})
+
+			context.setup({
+				enable = true,
+				on_attach = function(bufnr)
+					return vim.bo[bufnr].filetype ~= "markdown"
+				end,
 			})
 		end,
 	},

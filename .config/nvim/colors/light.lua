@@ -10,6 +10,7 @@ local bg_diff_line = "none"
 local bg_diff_text = "#d4d4fc"
 local bg_diff_add = "#d4ffdf"
 local bg_diff_delete = "#ffd8d4"
+local bg_context = "#eff6ff"
 local bg_status_line_mode = "#d4d4fc"
 local bg_heading_1_markdown = "#030712"
 local bg_heading_2_markdown = "#1f2937"
@@ -124,6 +125,7 @@ vim.api.nvim_set_hl(0, "LspInlayHint", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "WarningMsg", {fg = fg_warn})
+vim.api.nvim_set_hl(0, "TreesitterContext", {bg = bg_context})
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", {fg = fg, bg = bg_status_line_mode})
