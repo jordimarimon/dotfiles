@@ -13,6 +13,18 @@ return {
 		},
 		config = function ()
 			local configs = require("nvim-treesitter.configs")
+			local parser_config = require "nvim-treesitter.parsers".get_parser_configs()
+
+			parser_config.css = {
+				install_info = {
+					url = "~/Projects/tree-sitter-css",
+					files = {"src/parser.c", "src/scanner.c"},
+					branch = "master",
+					generate_requires_npm = false,
+					requires_generate_from_grammar = false,
+				},
+				filetype = "css",
+			}
 
 			configs.setup({
 				ensure_installed = {
