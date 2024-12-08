@@ -107,7 +107,8 @@ return {
 			})
 
 			context.setup({
-				enable = true,
+				enable = false,
+				mode = 'topline',
 				on_attach = function(bufnr)
 					return vim.bo[bufnr].filetype ~= "markdown"
 				end,

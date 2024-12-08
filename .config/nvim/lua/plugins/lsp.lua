@@ -34,10 +34,16 @@ return {
 			--  This function gets run when an LSP attaches to a particular buffer.
 			vim.api.nvim_create_autocmd("LspAttach", {
 				group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
-				callback = function(event)
+				callback = function(args)
 					local map = function(keys, func, desc, mode)
 						mode = mode or "n"
-						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+						vim.keymap.set(mode, keys, func, { buffer = args.buf, desc = "LSP: " .. desc })
+					end
+
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+					if not client then
+						return
 					end
 
 					-- Jump to the definition of the word under your cursor.
@@ -68,10 +74,6 @@ return {
 					-- Similar to document symbols, except searches over your entire project.
 					map("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
-					-- Rename the variable under your cursor.
-					-- Most Language Servers support renaming across files, etc.
-					map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
 					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
@@ -79,21 +81,24 @@ return {
 					-- This is not Goto Definition, this is Goto Declaration.
 					map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
 
-					local client = vim.lsp.get_client_by_id(event.data.client_id)
+					-- Format file
+					if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
+						map("<leader>ff", function() vim.lsp.buf.format({buf = args.buf, id = client.id}) end, "[F]ormat [F]ile", { "n" })
+					end
 
 					-- The following two autocommands are used to highlight references of the
 					-- word under your cursor when your cursor rests there for a little while.
 					--    See `:help CursorHold` for information about when this is executed
 					--
 					-- When you move your cursor, the highlights will be cleared (the second autocommand).
-					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+					if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
 						local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
 
 						vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-							buffer = event.buf,
+							buffer = args.buf,
 							group = highlight_augroup,
 							callback = function()
-								local buffer_visible = vim.fn.bufwinnr(event.buf) ~= -1
+								local buffer_visible = vim.fn.bufwinnr(args.buf) ~= -1
 
 								if buffer_visible then
 									vim.lsp.buf.document_highlight()
@@ -102,10 +107,10 @@ return {
 						})
 
 						vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-							buffer = event.buf,
+							buffer = args.buf,
 							group = highlight_augroup,
 							callback = function()
-								local buffer_visible = vim.fn.bufwinnr(event.buf) ~= -1
+								local buffer_visible = vim.fn.bufwinnr(args.buf) ~= -1
 
 								if buffer_visible then
 									vim.lsp.buf.clear_references()
@@ -126,7 +131,7 @@ return {
 					-- code, if the language server you are using supports them
 					if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
 						map("<leader>th", function()
-							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({bufnr = event.buf}))
+							vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({bufnr = args.buf}))
 						end, "[T]oggle Inlay [H]ints")
 					end
 				end,
@@ -156,7 +161,7 @@ return {
 			-- - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
 			-- - settings (table): Override the default settings passed when initializing the server.
 			local servers = {
-				pyright = {},
+				basedpyright = {},
 				clangd = {},
 				phpactor = {},
 				lua_ls = {},
@@ -167,14 +172,16 @@ return {
 				html = {},
 			}
 
+			---@diagnostic disable-next-line: missing-fields
 			require("mason").setup({
 				ui = {
 					border = "single",
 				},
 			})
 
-			require("mason-lspconfig").setup {
+			require("mason-lspconfig").setup({
 				ensure_installed = vim.tbl_keys(servers),
+				automatic_installation = true,
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -189,7 +196,7 @@ return {
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
-			}
+			})
 		end,
 	},
 	{
