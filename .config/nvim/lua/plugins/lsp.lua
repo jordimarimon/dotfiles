@@ -47,7 +47,7 @@ return {
 					end
 
 					-- Find references for the word under your cursor.
-					map("grr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
+					map("grr", function() require("telescope.builtin").lsp_references({include_declaration = false}) end, "[G]oto [R]eferences")
 
 					--- Displays hover information about the symbol under the cursor in a floating window
 					map("K", function() vim.lsp.buf.hover({border = "single"}) end, "Show symbol info")
