@@ -11,6 +11,10 @@ vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Move up and down only 5 lines
+vim.keymap.set("n", "<C-u>", "5k", { silent = true })
+vim.keymap.set("n", "<C-d>", "5j", { silent = true })
+
 -- Keybinds to make split navigation easier.
 -- See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window", silent = true })
