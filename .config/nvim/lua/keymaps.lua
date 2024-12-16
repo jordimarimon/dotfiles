@@ -12,8 +12,8 @@ vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = tr
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- Move up and down only 5 lines
-vim.keymap.set("n", "<C-u>", "5k", { silent = true })
-vim.keymap.set("n", "<C-d>", "5j", { silent = true })
+vim.keymap.set({"n", "v"}, "<C-u>", "5k", { silent = true })
+vim.keymap.set({"n", "v"}, "<C-d>", "5j", { silent = true })
 
 -- Keybinds to make split navigation easier.
 -- See `:help wincmd` for a list of all window commands
@@ -45,5 +45,5 @@ vim.api.nvim_create_user_command('Wa', 'wa', { desc = "Write all" })
 vim.api.nvim_create_user_command('Wq', 'wq', { desc = "Write and quit" })
 
 -- For resolving conflicts when rebasing or mering
-vim.keymap.set("n", "<leader>gh", "<cmd>diffget //2<CR>")
-vim.keymap.set("n", "<leader>gl", "<cmd>diffget //3<CR>")
+vim.keymap.set({"n", "v"}, "<leader>gh", "<cmd>diffget //2<CR>")
+vim.keymap.set({"n", "v"}, "<leader>gl", "<cmd>diffget //3<CR>")
