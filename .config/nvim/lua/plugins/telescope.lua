@@ -33,7 +33,7 @@ return {
 		-- After running this command, a window will open up and you're able to
 		-- type in the prompt window. You'll see a list of `help_tags` options and
 		-- a corresponding preview of the help.
-		--
+
 		-- Two important keymaps to use while in Telescope are:
 		--  - Insert mode: <c-/>
 		--  - Normal mode: ?
@@ -44,23 +44,30 @@ return {
 
 		-- [[ Configure Telescope ]]
 		-- See `:help telescope` and `:help telescope.setup()`
-		require("telescope").setup {
+		require("telescope").setup({
 			defaults = {
-				path_display = { "truncate" }
+				path_display = { "truncate" },
+				layout_strategy = "horizontal",
+				sorting_strategy = "ascending",
+				layout_config= {
+					prompt_position = "top",
+					height = 0.95,
+					mirror = false,
+				},
 			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
 				},
 			},
-		}
+		})
 
 		-- Enable Telescope extensions if they are installed
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 
 		-- See `:help telescope.builtin`
-		local builtin = require "telescope.builtin"
+		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
