@@ -185,7 +185,6 @@ return {
 						server.on_init = function(client, _)
 							client.server_capabilities.semanticTokensProvider = nil
 						end
-						server.autostart = false
 						require("lspconfig")[server_name].setup(server)
 					end,
 				},
@@ -201,7 +200,6 @@ return {
 				on_init = function(client, _)
 					client.server_capabilities.semanticTokensProvider = nil
 				end,
-				autostart = false,
 				settings = {
 					separate_diagnostic_server = false,
 				},
