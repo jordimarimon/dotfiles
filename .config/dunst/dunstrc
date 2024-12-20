@@ -4,11 +4,11 @@
     notification_limit = 0
     follow = none
     width = 350
-    height = 350
+    height = (0, 350)
     origin = top-right
     offset = 15x55
     scale = 0
-    progress_bar = true      
+    progress_bar = true
     progress_bar_height = 10
     progress_bar_frame_width = 1
     progress_bar_min_width = 150
