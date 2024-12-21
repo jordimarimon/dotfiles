@@ -23,6 +23,103 @@ return {
 		{ "nvim-tree/nvim-web-devicons", enabled = true },
 	},
 	config = function()
+		local builtin = require("telescope.builtin")
+		local actions = require("telescope.actions")
+		local action_state = require("telescope.actions.state")
+		local scan = require("plenary.scandir")
+		local path = require("plenary.path")
+		local os_sep = path.path.sep
+		local pickers = require("telescope.pickers")
+		local action_set = require("telescope.actions.set")
+		local conf = require("telescope.config").values
+		local finders = require("telescope.finders")
+		local make_entry = require("telescope.make_entry")
+
+		local live_grep_filters = {
+			---@type nil|string
+			extension = nil,
+			---@type nil|string[]
+			directories = nil,
+		}
+
+		local set_extensions = function (prompt_bufnr)
+			local current_input = action_state.get_current_line()
+
+			vim.ui.input({ prompt = "*." }, function(input)
+				if input == nil then
+					return
+				end
+
+				live_grep_filters.extension = input
+
+				actions.close(prompt_bufnr)
+
+				builtin.live_grep({
+					additional_args = live_grep_filters.extension and function()
+						return { "-g", "*." .. live_grep_filters.extension }
+					end,
+					search_dirs = live_grep_filters.directories,
+					default_text = current_input,
+				})
+			end)
+		end
+
+		local set_directories = function (prompt_bufnr)
+			local current_input = action_state.get_current_line()
+			local data = {}
+
+			scan.scan_dir(vim.uv.cwd(), {
+				hidden = true,
+				only_dirs = true,
+				respect_gitignore = true,
+				on_insert = function(entry)
+					table.insert(data, entry .. os_sep)
+				end,
+			})
+
+			table.insert(data, 1, '.' .. os_sep)
+
+			actions.close(prompt_bufnr)
+
+			pickers
+				.new({}, {
+					prompt_title = "Folders for Live Grep",
+					finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
+					previewer = conf.file_previewer({}),
+					sorter = conf.file_sorter({}),
+					attach_mappings = function(bufnr)
+						action_set.select:replace(function()
+							local dirs = {}
+							local current_picker = action_state.get_current_picker(bufnr)
+							local selections = current_picker:get_multi_selection()
+
+							if vim.tbl_isempty(selections) then
+								table.insert(dirs, action_state.get_selected_entry().value)
+							else
+								for _, selection in ipairs(selections) do
+									table.insert(dirs, selection.value)
+								end
+							end
+
+							live_grep_filters.directories = dirs
+
+							actions.close(bufnr)
+
+							builtin.live_grep({
+								additional_args = live_grep_filters.extension and function()
+									return { "-g", "*." .. live_grep_filters.extension }
+								end,
+								search_dirs = live_grep_filters.directories,
+								default_text = current_input,
+							})
+						end)
+
+						return true
+					end,
+				})
+				:find()
+		end
+
 		-- Telescope is a fuzzy finder that comes with a lot of different things that
 		-- it can fuzzy find! It's more than just a "file finder", it can search
 		-- many different aspects of Neovim, your workspace, LSP, and more!
@@ -55,6 +152,16 @@ return {
 					mirror = false,
 				},
 			},
+			pickers = {
+				live_grep = {
+					mappings = {
+						i = {
+							["<c-f>"] = set_extensions,
+							["<c-l>"] = set_directories,
+						},
+					},
+				},
+			},
 			extensions = {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
@@ -67,7 +174,6 @@ return {
 		pcall(require("telescope").load_extension, "ui-select")
 
 		-- See `:help telescope.builtin`
-		local builtin = require("telescope.builtin")
 		vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
 		vim.keymap.set("n", "<leader>sk", builtin.keymaps, { desc = "[S]earch [K]eymaps" })
 		vim.keymap.set("n", "<leader>sf", builtin.find_files, { desc = "[S]earch [F]iles" })
@@ -82,24 +188,24 @@ return {
 		vim.keymap.set("n", "<leader>gcf", builtin.git_bcommits, { desc = "Search [G]it [C]ommits for current [F]ile" })
 
 		vim.keymap.set("n", "<leader><leader>", function()
-			-- You can pass additional configuration to Telescope to change the theme, layout, etc.
-			builtin.current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
-			  winblend = 10,
-			  previewer = false,
-			})
+			builtin.current_buffer_fuzzy_find(
+				require("telescope.themes").get_dropdown({
+					winblend = 10,
+					previewer = false,
+				})
+			)
 		end, { desc = "Fuzzily [S]earch in current [B]uffer" })
 
-		--  See `:help telescope.builtin.live_grep()` for information about particular keys
 		vim.keymap.set("n", "<leader>so", function()
-			builtin.live_grep {
+			builtin.live_grep({
 			  grep_open_files = true,
 			  prompt_title = "Live Grep in Open Files",
-			}
+			})
 		end, { desc = "[S]earch in [O]pen Files" })
 
 		-- Shortcut for searching your Neovim configuration files
 		vim.keymap.set("n", "<leader>sn", function()
-			builtin.find_files { cwd = vim.fn.stdpath "config" }
+			builtin.find_files { cwd = vim.fn.stdpath("config") }
 		end, { desc = "[S]earch [N]eovim files" })
 	end,
 }

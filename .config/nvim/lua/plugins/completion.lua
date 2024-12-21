@@ -48,6 +48,15 @@ return {
 				documentation = cmp.config.window.bordered(),
 			},
 
+			matching = {
+				disallow_fuzzy_matching = true,
+				disallow_fullfuzzy_matching = true,
+				disallow_partial_fuzzy_matching = true,
+				disallow_partial_matching = false,
+				disallow_prefix_unmatching = true,
+				disallow_symbol_nonprefix_matching = false,
+			},
+
 			-- See `:help ins-completion`
 			mapping = cmp.mapping.preset.insert {
 				-- Select the [n]ext item
@@ -90,11 +99,12 @@ return {
 				end, { "i", "s" }),
 
 			},
+
 			sources = {
 				{ name = "nvim_lsp", max_item_count = 10 },
 				{ name = "luasnip", max_item_count = 10 },
 				{ name = "path", max_item_count = 10 },
-				{ name = "buffer", max_item_count = 10 },
+				{ name = "buffer", max_item_count = 10, keyword_length = 5 },
 			},
 		})
 
