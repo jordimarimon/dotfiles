@@ -128,6 +128,10 @@ vim.api.nvim_set_hl(0, "FloatBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "LspInfoBorder", {fg = fg})
 vim.api.nvim_set_hl(0, "WarningMsg", {fg = fg_warn})
 vim.api.nvim_set_hl(0, "TreesitterContext", {bg = bg_context})
+vim.api.nvim_set_hl(0, "SpellBad", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "SpellCap", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "SpellLocal", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "SpellRare", {undercurl = true, underline = true, sp = fg_error})
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", {fg = fg, bg = bg_status_line_mode})
