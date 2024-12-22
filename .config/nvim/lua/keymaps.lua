@@ -47,3 +47,6 @@ vim.api.nvim_create_user_command('Wq', 'wq', { desc = "Write and quit" })
 -- For resolving conflicts when rebasing or mering
 vim.keymap.set({"n", "v"}, "<leader>gh", "<cmd>diffget //2<CR>")
 vim.keymap.set({"n", "v"}, "<leader>gl", "<cmd>diffget //3<CR>")
+
+-- Open current file directory
+vim.keymap.set("n", "-", "<cmd>Oil<CR>")

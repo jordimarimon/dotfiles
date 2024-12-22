@@ -3,6 +3,7 @@ return {
 	"nvim-telescope/telescope.nvim",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
+
 		{
 			"nvim-telescope/telescope-fzf-native.nvim",
 
@@ -42,6 +43,16 @@ return {
 			directories = nil,
 		}
 
+		local custom_live_grep = function (current_input)
+			builtin.live_grep({
+				additional_args = live_grep_filters.extension and function()
+					return { "-g", "*." .. live_grep_filters.extension }
+				end,
+				search_dirs = live_grep_filters.directories,
+				default_text = current_input,
+			})
+		end
+
 		local set_extensions = function (prompt_bufnr)
 			local current_input = action_state.get_current_line()
 
@@ -54,13 +65,7 @@ return {
 
 				actions.close(prompt_bufnr)
 
-				builtin.live_grep({
-					additional_args = live_grep_filters.extension and function()
-						return { "-g", "*." .. live_grep_filters.extension }
-					end,
-					search_dirs = live_grep_filters.directories,
-					default_text = current_input,
-				})
+				custom_live_grep(current_input)
 			end)
 		end
 
@@ -77,47 +82,41 @@ return {
 				end,
 			})
 
-			table.insert(data, 1, '.' .. os_sep)
+			table.insert(data, 1, "." .. os_sep)
 
 			actions.close(prompt_bufnr)
 
-			pickers
-				.new({}, {
-					prompt_title = "Folders for Live Grep",
-					finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
-					previewer = conf.file_previewer({}),
-					sorter = conf.file_sorter({}),
-					attach_mappings = function(bufnr)
-						action_set.select:replace(function()
-							local dirs = {}
-							local current_picker = action_state.get_current_picker(bufnr)
-							local selections = current_picker:get_multi_selection()
+			local picker_opts = {
+				prompt_title = "Folders for Live Grep",
+				finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
+				previewer = conf.file_previewer({}),
+				sorter = conf.file_sorter({}),
+				attach_mappings = function(bufnr)
+					action_set.select:replace(function()
+						local dirs = {}
+						local current_picker = action_state.get_current_picker(bufnr)
+						local selections = current_picker:get_multi_selection()
 
-							if vim.tbl_isempty(selections) then
-								table.insert(dirs, action_state.get_selected_entry().value)
-							else
-								for _, selection in ipairs(selections) do
-									table.insert(dirs, selection.value)
-								end
+						if vim.tbl_isempty(selections) then
+							table.insert(dirs, action_state.get_selected_entry().value)
+						else
+							for _, selection in ipairs(selections) do
+								table.insert(dirs, selection.value)
 							end
+						end
 
-							live_grep_filters.directories = dirs
+						live_grep_filters.directories = dirs
 
-							actions.close(bufnr)
+						actions.close(bufnr)
 
-							builtin.live_grep({
-								additional_args = live_grep_filters.extension and function()
-									return { "-g", "*." .. live_grep_filters.extension }
-								end,
-								search_dirs = live_grep_filters.directories,
-								default_text = current_input,
-							})
-						end)
+						custom_live_grep(current_input)
+					end)
 
-						return true
-					end,
-				})
-				:find()
+					return true
+				end,
+			}
+
+			pickers.new({}, picker_opts):find()
 		end
 
 		-- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -166,6 +165,7 @@ return {
 				["ui-select"] = {
 					require("telescope.themes").get_dropdown(),
 				},
+				fzf = {},
 			},
 		})
 
@@ -205,7 +205,14 @@ return {
 
 		-- Shortcut for searching your Neovim configuration files
 		vim.keymap.set("n", "<leader>sn", function()
-			builtin.find_files { cwd = vim.fn.stdpath("config") }
+			builtin.find_files({ cwd = vim.fn.stdpath("config") })
+		end, { desc = "[S]earch [N]eovim files" })
+
+		-- Shortcut for searching plugins source files
+		vim.keymap.set("n", "<leader>sp", function()
+			builtin.find_files({
+				cwd = vim.fs.joinpath(vim.fn.stdpath("data"), "lazy"),
+			})
 		end, { desc = "[S]earch [N]eovim files" })
 	end,
 }
