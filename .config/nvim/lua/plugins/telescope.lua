@@ -46,7 +46,7 @@ return {
 		local custom_live_grep = function (current_input)
 			builtin.live_grep({
 				additional_args = live_grep_filters.extension and function()
-					return { "-g", "*." .. live_grep_filters.extension }
+					return { "-g", "**" .. os_sep .. "*." .. live_grep_filters.extension }
 				end,
 				search_dirs = live_grep_filters.directories,
 				default_text = current_input,
