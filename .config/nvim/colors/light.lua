@@ -132,6 +132,7 @@ vim.api.nvim_set_hl(0, "SpellBad", {undercurl = true, underline = true, sp = fg_
 vim.api.nvim_set_hl(0, "SpellCap", {undercurl = true, underline = true, sp = fg_error})
 vim.api.nvim_set_hl(0, "SpellLocal", {undercurl = true, underline = true, sp = fg_error})
 vim.api.nvim_set_hl(0, "SpellRare", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "PmenuThumb", {fg = fg, bg = fg})
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", {fg = fg, bg = bg_status_line_mode})
@@ -203,4 +204,3 @@ vim.api.nvim_set_hl(0, "@markup.heading.4.angular", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.5.angular", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.6.angular", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.strong", {bold = false})
-

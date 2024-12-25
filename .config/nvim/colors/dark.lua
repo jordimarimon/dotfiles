@@ -1,7 +1,0 @@
--- TODO: Create dark theme using the following ones as inspiration:
--- https://github.com/doums/darcula/blob/master/colors/darcula.vim
--- https://github.com/rezhaTanuharja/minimalistNVIM
--- https://github.com/olivercederborg/poimandres.nvim
--- https://github.com/WTFox/jellybeans.nvim
--- https://github.com/projekt0n/github-nvim-theme
--- https://github.com/chiendo97/intellij.vim
