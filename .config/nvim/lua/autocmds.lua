@@ -28,3 +28,34 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     end,
 })
 
+-- https://neovim.io/doc/user/diff.html#%3ADiffOrig
+vim.api.nvim_create_user_command("DiffOrig", function()
+    -- Get the current buffer's name
+    local buff_name = vim.api.nvim_buf_get_name(0)
+    local ft = vim.bo.filetype
+
+    -- Check if the current buffer has a name (i.e., it's not an unnamed buffer)
+    if buff_name == "" then
+        print("Current buffer has no name.")
+        return
+    end
+
+    -- Start diff mode on the current buffer
+    vim.cmd("diffthis")
+
+    -- Open a new vertical split
+    vim.cmd("vnew")
+
+    -- Set the buffer type to "nofile"
+    vim.bo.buftype = "nofile"
+    vim.bo.filetype = ft
+
+    -- Read the current buffer into the new buffer
+    vim.cmd("read " .. buff_name)
+
+    -- Delete the first line (0d_)
+    vim.cmd("0d_")
+
+    -- Start diff mode on the current buffer
+    vim.cmd("diffthis")
+end, {})
