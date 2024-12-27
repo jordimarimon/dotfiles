@@ -132,6 +132,11 @@ vim.api.nvim_set_hl(0, "SpellBad", {undercurl = true, underline = true, sp = fg_
 vim.api.nvim_set_hl(0, "SpellCap", {undercurl = true, underline = true, sp = fg_error})
 vim.api.nvim_set_hl(0, "SpellLocal", {undercurl = true, underline = true, sp = fg_error})
 vim.api.nvim_set_hl(0, "SpellRare", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {undercurl = true, underline = true, sp = fg_error})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {undercurl = true, underline = true, sp = fg_warn})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {undercurl = true, underline = true, sp = fg_info})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {undercurl = true, underline = true, sp = fg_info})
+vim.api.nvim_set_hl(0, "DiagnosticUnderlineOk", {undercurl = true, underline = true, sp = fg_success})
 vim.api.nvim_set_hl(0, "PmenuThumb", {fg = fg, bg = fg})
 
 -- MiniStatusLine
