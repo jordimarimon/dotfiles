@@ -1,5 +1,4 @@
 # Useful environment variables
-export TERM="xterm-256color"
 export TERMINAL="foot"
 export BROWSER="firefox"
 export EDITOR="nvim"
