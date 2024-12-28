@@ -6,6 +6,11 @@ export VISUAL="nvim"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
 export WINIT_X11_SCALE_FACTOR=1
 export _JAVA_AWT_WM_NONREPARENTING=1
+export GDK_BACKEND=wayland
+export MOZ_ENABLE_WAYLAND=1
+export QT_QPA_PLATFORM="wayland;xcb"
+export QT_AUTO_SCREEN_SCALE_FACTOR=1
+export QT_ENABLE_HIGHDPI_SCALING=1
 export MANPAGER="nvim +Man!" # Nvim as manpager
 export XKB_DEFAULT_LAYOUT="es"
 export NODE_OPTIONS=--max_old_space_size=4096

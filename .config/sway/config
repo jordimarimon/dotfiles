@@ -37,6 +37,7 @@ output * bg /home/jmarimon/Pictures/minimalism-material-minimal-material-style-2
 ### Autostart
 #################
 
+# set environment variables for new units started by user service manager
 # https://gitlab.archlinux.org/archlinux/packaging/packages/sway/-/blob/main/50-systemd-user.conf
 exec systemctl --user set-environment XDG_CURRENT_DESKTOP=sway
 exec systemctl --user import-environment DISPLAY \
