@@ -71,7 +71,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#06000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -82,7 +82,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -115,7 +115,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#06000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -137,7 +137,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -148,7 +148,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -159,7 +159,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -170,7 +170,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -192,7 +192,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -225,7 +225,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -249,7 +249,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -262,7 +262,7 @@
                     <key>fontStyle</key>
                     <string>bold</string>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -286,7 +286,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#02000000</string>
+                    <string>#01000000</string>
                 </dict>
             </dict>
             <dict>
@@ -308,7 +308,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -319,7 +319,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -363,7 +363,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#06000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -374,7 +374,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#06000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -385,7 +385,7 @@
                 <key>settings</key>
                 <dict>
                     <key>foreground</key>
-                    <string>#06000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
             <dict>
@@ -418,7 +418,7 @@
                 <key>settings</key>
                 <dict>
                     <key>background</key>
-                    <string>#03000000</string>
+                    <string>#04000000</string>
                 </dict>
             </dict>
         </array>
