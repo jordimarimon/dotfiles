@@ -12,11 +12,7 @@ local bg_diff_add = "#d4ffdf"
 local bg_diff_delete = "#ffd8d4"
 local bg_context = "#eff6ff"
 local bg_status_line_mode = "#d4d4fc"
-local bg_heading_1_markdown = "#030712"
-local bg_heading_2_markdown = "#1f2937"
-local bg_heading_3_markdown = "#4b5563"
-local bg_heading_4_markdown = "#9ca3af"
-local bg_heading_5_markdown = "#FFFFFF"
+local bg_heading_markdown = "#dbeafe"
 
 local fg = "#333333"
 local fg_keyword = fg
@@ -33,7 +29,6 @@ local fg_string = "#03770d"
 local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
-local fg_heading_markdown = "#FFFFFF"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -153,47 +148,21 @@ vim.api.nvim_set_hl(0, "GitSignsDeleteInline", {fg = fg_error, bg = bg_diff_dele
 vim.api.nvim_set_hl(0, "GitSignsChangeInline", {fg = fg, bg = bg_diff_line})
 
 -- Render Markdown
-vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_1_markdown})
-
-vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", {bg = bg_heading_2_markdown})
-
-vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH3", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", {bg = bg_heading_3_markdown})
-
-vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_4_markdown})
-
-vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg_heading_markdown, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_5_markdown})
-
-vim.api.nvim_create_autocmd('ModeChanged', {
-  desc = 'Change heading colors in markdown',
-  group = vim.api.nvim_create_augroup('MarkdownHighlightGroupChange', { clear = true }),
-  callback = function()
-    local mode = vim.fn.mode()
-
-    if mode ~= 'n' then
-      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg, bold = true})
-    else
-      vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg_heading_markdown, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg_heading_markdown, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg_heading_markdown, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg_heading_markdown, bold = true})
-      vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg_heading_markdown, bold = true})
-    end
-  end,
-})
+vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH3", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_markdown})
 
 -- HTML
 vim.api.nvim_set_hl(0, "@markup.heading.1.html", {fg = fg})
