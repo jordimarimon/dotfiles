@@ -11,7 +11,8 @@
 	navigate = true
 	light = true
 	line-numbers = true
-	side-by-side = true
+	side-by-side = false
+	inspect-raw-lines = false
 [ssh]
 	postBuffer = 1048576000
 [http]
@@ -35,10 +36,9 @@
 	users="shortlog --summary --numbered --email"
 	d="diff"
 	ds="diff --staged"
+	dc="diff --check"
 	dt="diff-tree --no-commit-id --name-only -r"
-	dlog="-c diff.external=difft log --ext-diff"
-	dshow="-c diff.external=difft show --ext-diff"
-	ddiff="-c diff.external=difft diff"
+	f="fetch"
 	fp="fetch --prune"
 	l="!. ~/Scripts/githelpers.sh && pretty_git_log"
 	la="log --all --format=fuller"
