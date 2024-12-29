@@ -91,7 +91,7 @@ return {
 
             -- Signature help support
             signature = {
-                enabled = true,
+                enabled = false,
                 window = {
                     border = 'single',
                 },
