@@ -15,15 +15,13 @@ local bg_status_line_mode = "#d4d4fc"
 local bg_heading_markdown = "#dbeafe"
 
 local fg = "#333333"
-local fg_member = fg
-local fg_constant = fg
 local fg_status_line = "#FFFFFF"
 local fg_info = "#2563EB"
 local fg_success = "#03770d"
 local fg_warn = "#938c02"
 local fg_comment = "#b0b0b0"
 local fg_function = "#1504a5"
-local fg_ts_uvar = fg_function
+local fg_ts_uvar = "#1504a5"
 local fg_string = "#03770d"
 local fg_number = "#009999"
 local fg_type = "#690363"
@@ -32,36 +30,8 @@ local fg_error = "#dd0808"
 vim.g.colors_name = "light"
 vim.o.background = "light"
 
-vim.api.nvim_set_hl(0, "Normal", {fg = fg, bg = bg})
-
--- Programming languages
-vim.api.nvim_set_hl(0, "Special", {bold = true})
-vim.api.nvim_set_hl(0, "String", {fg = fg_string})
-vim.api.nvim_set_hl(0, "Operator", {fg = fg})
-vim.api.nvim_set_hl(0, "Delimiter", {fg = fg})
-vim.api.nvim_set_hl(0, "Function", {fg = fg_function, bold = true})
-vim.api.nvim_set_hl(0, "Type", {fg = fg_type, bold = true})
-vim.api.nvim_set_hl(0, "Constant", {fg = fg_constant})
-vim.api.nvim_set_hl(0, "Identifier", {fg = fg})
-vim.api.nvim_set_hl(0, "@type", {fg = fg_type, bold = true})
-vim.api.nvim_set_hl(0, "@type.builtin", {fg = fg_type, bold = true})
-vim.api.nvim_set_hl(0, "@variable", {fg = fg})
-vim.api.nvim_set_hl(0, "@constant", {fg = fg})
-vim.api.nvim_set_hl(0, "@variable.member", {fg = fg_member})
-vim.api.nvim_set_hl(0, "@keyword", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@keyword.angular", {fg = fg, bold = false})
-vim.api.nvim_set_hl(0, "@function.builtin", {fg = fg_function, bold = true})
-vim.api.nvim_set_hl(0, "@function.call", {fg = fg_function, bold = true})
-vim.api.nvim_set_hl(0, "@boolean", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@number", {fg = fg_number})
-vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
-vim.api.nvim_set_hl(0, "@tag.attribute", {fg = fg, bold = false})
-vim.api.nvim_set_hl(0, "@punctuation.bracket", {fg = fg, bold = false})
-vim.api.nvim_set_hl(0, "@punctuation.special", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
-vim.api.nvim_set_hl(0, "@tag", {fg = fg, bold = true})
-
 -- Common
+vim.api.nvim_set_hl(0, "Normal", {fg = fg, bg = bg})
 vim.api.nvim_set_hl(0, "Title", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "DiagnosticInfo", {fg = fg_info, bold = true})
 vim.api.nvim_set_hl(0, "DiagnosticError", {fg = fg_error, bold = true})
@@ -143,12 +113,53 @@ vim.api.nvim_set_hl(0, "GitSignsAddInline", {fg = fg_success, bg = bg_diff_add})
 vim.api.nvim_set_hl(0, "GitSignsDeleteInline", {fg = fg_error, bg = bg_diff_delete})
 vim.api.nvim_set_hl(0, "GitSignsChangeInline", {fg = fg, bg = bg_diff_line})
 
--- Render Markdown
+-- Programming languages
+vim.api.nvim_set_hl(0, "Special", {bold = true})
+vim.api.nvim_set_hl(0, "String", {fg = fg_string})
+vim.api.nvim_set_hl(0, "Operator", {fg = fg})
+vim.api.nvim_set_hl(0, "Delimiter", {fg = fg})
+vim.api.nvim_set_hl(0, "Function", {fg = fg_function, bold = true})
+vim.api.nvim_set_hl(0, "Type", {fg = fg_type, bold = true})
+vim.api.nvim_set_hl(0, "Constant", {fg = fg})
+vim.api.nvim_set_hl(0, "Identifier", {fg = fg})
+vim.api.nvim_set_hl(0, "@type", {fg = fg_type, bold = true})
+vim.api.nvim_set_hl(0, "@type.builtin", {fg = fg_type, bold = true})
+vim.api.nvim_set_hl(0, "@variable", {fg = fg})
+vim.api.nvim_set_hl(0, "@constant", {fg = fg})
+vim.api.nvim_set_hl(0, "@variable.member", {fg = fg})
+vim.api.nvim_set_hl(0, "@keyword", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@keyword.conditional.ternary", {fg = fg, bold = false})
+vim.api.nvim_set_hl(0, "@function.builtin", {fg = fg_function, bold = true})
+vim.api.nvim_set_hl(0, "@function.call", {fg = fg_function, bold = true})
+vim.api.nvim_set_hl(0, "@boolean", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@number", {fg = fg_number})
+vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
+vim.api.nvim_set_hl(0, "@tag.attribute", {fg = fg, bold = false})
+vim.api.nvim_set_hl(0, "@punctuation.bracket", {fg = fg, bold = false})
+vim.api.nvim_set_hl(0, "@punctuation.special", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@tag", {fg = fg, bold = true})
+
+-- TypeScript
+vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
+
+-- HTML
+vim.api.nvim_set_hl(0, "@markup.heading", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.1", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.2", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.3", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.4", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.5", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.heading.6", {fg = fg})
+vim.api.nvim_set_hl(0, "@markup.strong", {bold = false})
+
+-- Markdown
+vim.api.nvim_set_hl(0, "@markup.heading.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.1.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.2.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.3.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@markup.strong.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg, bold = true})
@@ -159,19 +170,3 @@ vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_markdown})
-
--- HTML
-vim.api.nvim_set_hl(0, "@markup.heading.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.1.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.2.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.3.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.4.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.5.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.6.html", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.1.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.2.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.3.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.4.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.5.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.heading.6.angular", {fg = fg})
-vim.api.nvim_set_hl(0, "@markup.strong", {bold = false})
