@@ -11,6 +11,11 @@ export MOZ_ENABLE_WAYLAND=1
 export QT_QPA_PLATFORM="wayland;xcb"
 export QT_AUTO_SCREEN_SCALE_FACTOR=1
 export QT_ENABLE_HIGHDPI_SCALING=1
+export QT_WAYLAND_DISABLE_WINDOWDECORATION=1
+export QT_QPA_PLATFORMTHEME=qt6ct
+export ELECTRON_OZONE_PLATFORM_HINT=auto
+export XCURSOR_SIZE=24
+export XCURSOR_THEME="Bibata"
 export MANPAGER="nvim +Man!" # Nvim as manpager
 export XKB_DEFAULT_LAYOUT="es"
 export NODE_OPTIONS=--max_old_space_size=4096
