@@ -209,6 +209,8 @@ return {
                 capabilities = capabilities,
                 settings = {
                     separate_diagnostic_server = false,
+                    complete_function_calls = false,
+                    expose_as_code_action = "all",
                 },
             })
 
