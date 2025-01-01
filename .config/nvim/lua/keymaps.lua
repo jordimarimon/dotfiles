@@ -50,3 +50,6 @@ vim.keymap.set({"n", "v"}, "<leader>gl", "<cmd>diffget //3<CR>")
 
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
+
+-- Toggle Markdown Preview
+vim.keymap.set("n", "<leader>mt", "<cmd>MarkdownPreviewToggle<CR>")
