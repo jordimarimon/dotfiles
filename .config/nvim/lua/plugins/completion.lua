@@ -1,7 +1,8 @@
 -- Autocompletion
 return {
 	"saghen/blink.cmp",
-    version = "v0.8.2",
+    version = "*",
+    build = "cargo build --release",
     dependencies = {
         { "folke/lazydev.nvim", ft = "lua" },
     },
