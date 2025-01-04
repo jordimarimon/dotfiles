@@ -53,3 +53,22 @@ vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
 -- Toggle Markdown Preview
 vim.keymap.set("n", "<leader>mt", "<cmd>MarkdownPreviewToggle<CR>")
+
+-- Save current word for later substitute command
+vim.keymap.set({"n", "v"}, "<leader>s", function()
+    local mode = vim.fn.mode()
+    -- Check if in visual mode
+    if mode == "v" then
+        -- Get the selected text in visual mode
+        local selection = vim.fn.getregion(vim.fn.getpos("."), vim.fn.getpos("v"))
+        -- Set the search register to the selection
+        vim.fn.setreg('/', table.concat(selection, "\n"))
+    elseif mode == "n" then
+        -- Get the word under the cursor
+        local word = vim.fn.expand("<cword>")
+        -- Set the search register to the word
+        vim.fn.setreg("/", word)
+    end
+
+    print("Search saved!")
+end, { desc = "[S]ave [S]earch"  })
