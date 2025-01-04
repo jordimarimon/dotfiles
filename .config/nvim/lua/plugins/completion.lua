@@ -9,7 +9,7 @@ return {
     event = { "BufReadPost", "BufNewFile" },
 	config = function()
         require("blink.cmp").setup({
-            -- 'default' for mappings similar to built-in completion
+            -- "default" for mappings similar to built-in completion
             keymap = {
                 preset = "default",
                 ["<Tab>"] = {},
@@ -74,11 +74,15 @@ return {
             completion = {
                 -- Add borders around floating windows
                 menu = {
-                    border = 'single',
+                    border = "single",
+                    draw = {
+                        treesitter = { "lsp" },
+                    },
                 },
+
                 documentation = {
                     window = {
-                        border = 'single',
+                        border = "single",
                     },
                 },
 
@@ -94,7 +98,7 @@ return {
             signature = {
                 enabled = false,
                 window = {
-                    border = 'single',
+                    border = "single",
                 },
             },
         })
