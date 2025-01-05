@@ -55,6 +55,7 @@
 	sl="stash list"
 	sd="stash drop"
 	spu="stash push"
+	sspu="stash push --staged"
 	spo="stash pop"
 [push]
 	default = simple
