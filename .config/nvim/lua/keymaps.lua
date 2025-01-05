@@ -48,6 +48,19 @@ vim.api.nvim_create_user_command('Wq', 'wq', { desc = "Write and quit" })
 vim.keymap.set({"n", "v"}, "<leader>gh", "<cmd>diffget //2<CR>")
 vim.keymap.set({"n", "v"}, "<leader>gl", "<cmd>diffget //3<CR>")
 
+-- Stay in visual mode after indenting visual selection
+vim.keymap.set("v", "<", "<gv")
+vim.keymap.set("v", ">", ">gv")
+
+-- Keep current search result centered on the screen
+vim.keymap.set("n", "n", "nzz", { noremap = true })
+vim.keymap.set("n", "N", "Nzz", { noremap = true })
+
+-- Keep current cursor position while entering and exiting insert mode
+vim.keymap.set("i", "<Esc>", function()
+  return vim.fn.pumvisible() == 1 and "<Esc>i<Right>" or "<Right><Esc>"
+end, { noremap = true, expr = true })
+
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 

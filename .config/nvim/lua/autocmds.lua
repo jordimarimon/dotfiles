@@ -59,3 +59,25 @@ vim.api.nvim_create_user_command("DiffOrig", function()
     -- Start diff mode on the current buffer
     vim.cmd("diffthis")
 end, {})
+
+-- Highlight current line on active window only
+local active_line_highligh = vim.api.nvim_create_augroup('HighlightActiveLine', { clear = true })
+vim.api.nvim_create_autocmd('WinEnter', {
+  desc = 'show cursorline',
+  callback = function() vim.wo.cursorline = true end,
+  group = active_line_highligh
+})
+vim.api.nvim_create_autocmd('WinLeave', {
+  desc = 'hide cursorline',
+  callback = function() vim.wo.cursorline = false end,
+  group = active_line_highligh
+})
+
+-- Use vertical splits for help windows
+local vertical_help = vim.api.nvim_create_augroup('VerticalHelp', { clear = true })
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'make help split vertical',
+  pattern='help',
+  command = 'wincmd L',
+  group = vertical_help
+})
