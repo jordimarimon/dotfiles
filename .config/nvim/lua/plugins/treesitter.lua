@@ -36,7 +36,7 @@ return {
                     "sql", "tsx", "yaml", "python", "editorconfig", "make",
                     "markdown", "markdown_inline"
                 },
-                auto_install = true,
+                auto_install = false,
                 sync_install = false,
                 modules = {},
                 ignore_install = {},

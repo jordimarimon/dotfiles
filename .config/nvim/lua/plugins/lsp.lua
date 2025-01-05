@@ -138,10 +138,6 @@ return {
 
             vim.diagnostic.config({ float = { border = "single" } })
 
-            require('lspconfig.ui.windows').default_options = {
-                border = "single"
-            }
-
             -- LSP servers and clients are able to communicate to each other what features they support.
             -- By default, Neovim doesn't support everything that is in the LSP specification.
             -- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -169,29 +165,20 @@ return {
             }
 
             ---@diagnostic disable-next-line: missing-fields
-            require("mason").setup({
-                ui = {
-                    border = "single",
-                },
-            })
+            require("mason").setup({ ui = { border = "single" } })
+            require("mason-lspconfig").setup()
 
-            require("mason-lspconfig").setup({
-                ensure_installed = vim.tbl_keys(servers),
-                automatic_installation = true,
-                handlers = {
-                    function(server_name)
-                        local server = servers[server_name] or {}
-                        -- This handles overriding only values explicitly passed
-                        -- by the server configuration above. Useful when disabling
-                        -- certain features of an LSP (for example, turning off formatting for tsserver)
-                        server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-                        server.on_init = function(client, _)
-                            client.server_capabilities.semanticTokensProvider = nil
-                        end
-                        require("lspconfig")[server_name].setup(server)
-                    end,
-                },
-            })
+            require('lspconfig.ui.windows').default_options = {
+                border = "single"
+            }
+
+            for server_name, server_settings in pairs(servers) do
+                server_settings.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_settings.capabilities or {})
+                server_settings.on_init = function(client, _)
+                    client.server_capabilities.semanticTokensProvider = nil
+                end
+                require("lspconfig")[server_name].setup(server_settings)
+            end
         end,
     },
     {
