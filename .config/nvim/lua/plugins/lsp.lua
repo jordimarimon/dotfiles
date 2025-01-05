@@ -162,6 +162,7 @@ return {
                 cssls = {},
                 jsonls = {},
                 html = {},
+                bashls = {},
             }
 
             ---@diagnostic disable-next-line: missing-fields
