@@ -55,6 +55,7 @@ exec ~/.config/sway/import-gsettings.sh &
 exec dunst &
 exec cliphist wipe &
 exec wl-paste --watch cliphist store &
+exec pcmanfm -d &
 
 #################
 ### Input configuration
