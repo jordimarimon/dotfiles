@@ -22,7 +22,7 @@
 	email = jordimarimon7@gmail.com
 	name = Jordi Marimon
 [alias]
-	alias="! git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ / | grep -v ^'alias ' | sort"
+	alias="!git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ / | grep -v ^'alias ' | sort"
 	a="add"
 	afz="!git ls-files -m -o --exclude-standard | fzf --print0 -m | xargs -0 -t -o git add"
 	aa="add -A"
@@ -57,6 +57,7 @@
 	spu="stash push"
 	sspu="stash push --staged"
 	spo="stash pop"
+	first="!git rev-list --max-parents=0 HEAD | xargs git show -s --format=%ai"
 [push]
 	default = simple
 	followTags = true
