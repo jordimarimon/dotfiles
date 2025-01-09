@@ -114,7 +114,7 @@ return {
         dependencies = { "nvim-treesitter/nvim-treesitter" },
         config = function()
             require("treesj").setup({
-                use_default_keympas = false,
+                use_default_keymaps = false,
             })
 
             vim.keymap.set("n", "<leader>ts", function() require("treesj").split() end, { desc = "[T]reesitter [S]plit" })
