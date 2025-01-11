@@ -29,7 +29,7 @@ vim.api.nvim_set_keymap("i", "<C-j>", "<Down>", { desc = "Move down", silent = t
 vim.api.nvim_set_keymap("i", "<C-k>", "<Up>", { desc = "Move up", silent = true })
 
 -- Copy current buffer path to system clipboard
-vim.keymap.set("n", "<leader>cf", function() vim.fn.setreg("+", vim.fn.expand('%')) end, { desc = "[C]opy [F]ile path", silent = true })
+vim.keymap.set("n", "<leader>yf", function() vim.fn.setreg("+", vim.fn.expand('%')) end, { desc = "[C]opy [F]ile path", silent = true })
 
 -- To move between tabs
 vim.api.nvim_set_keymap("n", "<M-h>", ":tabp<CR>", { silent = true, noremap = true })

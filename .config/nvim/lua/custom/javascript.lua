@@ -1,21 +1,5 @@
+local treesitter_utils = require("custom.treesitter")
 local M = {};
-
----@param  types string[] Will return the first node that matches one of these types
----@param  node  TSNode|nil
----@return TSNode|nil
-function M.find_node_ancestor(types, node)
-    if not node then
-        return nil
-    end
-
-    if vim.tbl_contains(types, node:type()) then
-        return node
-    end
-
-    local parent = node:parent()
-
-    return M.find_node_ancestor(types, parent)
-end
 
 function M.add_async()
     vim.api.nvim_feedkeys("t", "n", true)
@@ -29,7 +13,7 @@ function M.add_async()
 
     local current_node = vim.treesitter.get_node({ ignore_injections = false })
     local function_types = { "arrow_function", "function_declaration", "function", "method_definition" }
-    local function_node = M.find_node_ancestor(function_types, current_node)
+    local function_node = treesitter_utils.find_node_ancestor(function_types, current_node)
 
     if not function_node then
         return
