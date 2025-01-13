@@ -122,12 +122,19 @@ return {
                         })
                     end
 
-                    -- The following autocommand is used to enable inlay hints in your
-                    -- code, if the language server you are using supports them
+                    -- The following keymap is used to enable inlay hints
+                    -- if the language server you are using supports them
                     if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
                         map("<leader>th", function()
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }))
                         end, "[T]oggle Inlay [H]ints")
+                    end
+
+                    -- Enable LSP folding
+                    if client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) then
+                        local win = vim.api.nvim_get_current_win()
+                        vim.wo[win][0].foldmethod = "expr"
+                        vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
                     end
                 end,
             })
