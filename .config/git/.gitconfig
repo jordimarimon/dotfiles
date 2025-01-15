@@ -28,6 +28,7 @@
 	aa="add -A"
 	b="branch"
 	bd="!f() { git branch -d \"$1\" && git push --delete origin \"$1\"; }; f"
+	bdp="!f() { pb=$(git rev-parse --abbrev-ref @{-1} 2>/dev/null) && [ -n \"$pb\" ] && git branch -d \"$pb\" && git push --delete origin \"$pb\" || echo \"No previous branch exists.\"; }; f"
 	c="commit"
 	ca="commit --amend"
 	ce="commit --amend --no-edit"
