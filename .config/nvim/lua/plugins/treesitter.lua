@@ -17,17 +17,6 @@ return {
             local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
             local context = require("treesitter-context")
 
-            parser_config.css = {
-                filetype = "css",
-                install_info = {
-                    url = "~/Projects/tree-sitter-css",
-                    files = { "src/parser.c", "src/scanner.c" },
-                    branch = "master",
-                    generate_requires_npm = false,
-                    requires_generate_from_grammar = false,
-                },
-            }
-
             configs.setup({
                 ensure_installed = {
                     "c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
