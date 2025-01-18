@@ -85,3 +85,7 @@ vim.keymap.set({"n", "v"}, "<leader>s", function()
 
     print("Search saved!")
 end, { desc = "[S]ave [S]earch"  })
+
+vim.keymap.set("n", "<leader>od", function()
+    require("custom.npm-outdated").toggle()
+end, { desc = "[O]utdated [D]ependencies" })
