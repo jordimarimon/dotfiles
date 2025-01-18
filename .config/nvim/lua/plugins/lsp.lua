@@ -22,7 +22,6 @@ return {
         dependencies = {
             -- Automatically install LSPs to "data" stdpath for neovim
             "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
 
             -- Useful status updates for LSP
             { "j-hui/fidget.nvim", opts = {} },
@@ -176,7 +175,6 @@ return {
 
             ---@diagnostic disable-next-line: missing-fields
             require("mason").setup({ ui = { border = "single" } })
-            require("mason-lspconfig").setup()
 
             require('lspconfig.ui.windows').default_options = {
                 border = "single"
