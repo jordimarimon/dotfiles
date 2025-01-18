@@ -12,10 +12,6 @@ local state = {
         lines = {},
     },
     dependencies = {
-        runtime = {},
-        dev = {},
-        peer = {},
-        optional = {},
         outdated = {},
     },
 }
@@ -32,10 +28,6 @@ vim.api.nvim_create_autocmd("BufDelete", {
         state.buffer.id = -1
         state.buffer.lines = {}
         state.dependencies = {
-            runtime = {},
-            dev = {},
-            peer = {},
-            optional = {},
             outdated = {},
         }
     end,
@@ -54,41 +46,6 @@ end
 local reload_buffer = function()
     vim.bo[state.buffer.id].autoread = true
     vim.cmd(":checktime")
-end
-
---- Strips ^ and ~ from version
----
---- @param value string Value from which to strip ^ and ~ from
---- @return string?
-local clean_version = function(value)
-    if value == nil then
-        return nil
-    end
-
-    ---@diagnostic disable-next-line: redundant-return-value
-    return value:gsub("%^", ""):gsub("~", "")
-end
-
---- @param json table
-local get_current_version = function(json)
-    local result = {}
-    for name, version in pairs(json) do
-        result[name] = {
-            current = clean_version(version),
-        }
-    end
-    return result
-end
-
-local parse_buffer = function()
-    local buffer_lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
-    local buffer_json_value = vim.json.decode(table.concat(buffer_lines))
-
-    state.buffer.lines = buffer_lines
-    state.dependencies.runtime = get_current_version(buffer_json_value["dependencies"] or {})
-    state.dependencies.dev = get_current_version(buffer_json_value["devDependencies"] or {})
-    state.dependencies.optional = get_current_version(buffer_json_value["optionalDependencies"] or {})
-    state.dependencies.peer = get_current_version(buffer_json_value["peerDependencies"] or {})
 end
 
 local clear = function()
@@ -178,13 +135,25 @@ local on_error = function()
     state.is_pending = false
 end
 
-local get_outdated_dependencies = function()
+local on_exit = function (obj)
+    local ok, json_value = pcall(vim.json.decode, obj.stdout)
+
+    if not ok then
+        log_error("Error while parsing command output")
+        on_error()
+        return
+    end
+
+    state.dependencies.outdated = json_value
+    on_success()
+end
+
+local display_outdated_dependencies = function()
+    -- If we have them already, we don't need to compute them again
     if next(state.dependencies.outdated) ~= nil then
         on_success()
         return
     end
-
-    local value = ""
 
     if vim.fn.executable("npm") == 0 then
         log_error("NPM command not found")
@@ -194,37 +163,20 @@ local get_outdated_dependencies = function()
 
     -- Don't check the exit code because the command
     -- always returns "1"
-    vim.fn.jobstart("npm outdated --json", {
-        cwd = vim.fn.getcwd(),
-        on_exit = function()
-            local ok, json_value = pcall(vim.json.decode, value)
-
-            if not ok then
-                log_error("Error while parsing command output")
-                on_error()
-                return
-            end
-
-            state.dependencies.outdated = json_value
-            on_success()
-        end,
-        on_stdout = function(_, stdout)
-            value = value .. table.concat(stdout)
-        end,
-    })
+    vim.system({"npm", "outdated", "--json"}, {text = true}, function (obj)
+        vim.schedule(function() on_exit(obj) end)
+    end)
 end
 
 local show = function()
-    if next(state.buffer.lines) == nil then
-        -- Reload buffer before reading it
-        reload_buffer()
+    -- Reload buffer before reading it
+    reload_buffer()
 
-        -- Parse buffer as JSON
-        parse_buffer();
-    end
+    -- Read the buffer content
+    state.buffer.lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
 
     --Run "npm outdated" command
-    get_outdated_dependencies()
+    display_outdated_dependencies()
 end
 
 local hide = function()
