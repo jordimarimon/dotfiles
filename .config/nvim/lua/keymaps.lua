@@ -64,9 +64,6 @@ end, { noremap = true, expr = true })
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
--- Toggle Markdown Preview
-vim.keymap.set("n", "<leader>mt", "<cmd>MarkdownPreviewToggle<CR>")
-
 -- Save current word for later substitute command
 vim.keymap.set({"n", "v"}, "<leader>s", function()
     local mode = vim.fn.mode()
@@ -85,7 +82,3 @@ vim.keymap.set({"n", "v"}, "<leader>s", function()
 
     print("Search saved!")
 end, { desc = "[S]ave [S]earch"  })
-
-vim.keymap.set("n", "<leader>od", function()
-    require("custom.npm-outdated").toggle()
-end, { desc = "[O]utdated [D]ependencies" })

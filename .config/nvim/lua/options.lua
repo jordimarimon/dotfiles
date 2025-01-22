@@ -45,7 +45,7 @@ vim.opt.splitright = true
 vim.opt.signcolumn = "yes"
 
 -- Don't have `o` add a comment
-vim.opt.formatoptions:remove "o"
+vim.opt.formatoptions:remove("o")
 
 -- Decrease update time
 vim.o.updatetime = 250

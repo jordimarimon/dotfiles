@@ -99,6 +99,7 @@ vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {undercurl = true, underline =
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {undercurl = true, underline = true, sp = fg_info})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineOk", {undercurl = true, underline = true, sp = fg_success})
 vim.api.nvim_set_hl(0, "PmenuThumb", {fg = fg, bg = fg})
+vim.api.nvim_set_hl(0, "ColorColumn", {bg = bg})
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", {fg = fg, bg = bg_status_line_mode})
@@ -171,3 +172,4 @@ vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownCode", {bg = bg})
