@@ -29,8 +29,7 @@ return {
         vim.keymap.set("n", "<leader>hr", function() harpoon:list():remove() end, { desc = "[H]arpoon [R]emove" })
         vim.keymap.set("n", "<leader>hc", function() harpoon:list():clear() end, { desc = "[H]arpoon [C]lear" })
         vim.keymap.set("n", "<leader>hl", function() toggle_telescope(harpoon:list()) end, { desc = "[H]arpoon [L]ist" })
-        vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end,
-            { desc = "[H]arpoon navigate [P]revious" })
+        vim.keymap.set("n", "<leader>hp", function() harpoon:list():prev() end, { desc = "[H]arpoon navigate [P]revious" })
         vim.keymap.set("n", "<leader>hn", function() harpoon:list():next() end, { desc = "[H]arpoon navigate [N]ext" })
 
         -- Set <space>1..<space>5 for moving between files

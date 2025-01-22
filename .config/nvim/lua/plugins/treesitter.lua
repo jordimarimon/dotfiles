@@ -10,12 +10,9 @@ return {
         main = "nvim-treesitter.configs",
         dependencies = {
             "nvim-treesitter/nvim-treesitter-textobjects",
-            "nvim-treesitter/nvim-treesitter-context",
         },
         config = function()
             local configs = require("nvim-treesitter.configs")
-            local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-            local context = require("treesitter-context")
 
             configs.setup({
                 ensure_installed = {
@@ -39,19 +36,11 @@ return {
                     enable = true,
                 },
                 incremental_selection = {
-                    enable = true,
-                    keymaps = {
-                        init_selection = "<Leader>ss",
-                        node_incremental = "<Leader>si",
-                        scope_incremental = "<Leader>sc",
-                        node_decremental = "<Leader>sd",
-                    },
+                    enable = false,
                 },
                 textobjects = {
                     swap = {
-                        enable = true,
-                        swap_next = { ["<Leader>>"] = "@parameter.inner" },
-                        swap_previous = { ["<Leader><"] = "@parameter.inner" },
+                        enable = false,
                     },
                     select = {
                         enable = true,
@@ -86,14 +75,6 @@ return {
                         },
                     },
                 },
-            })
-
-            context.setup({
-                enable = false,
-                mode = 'topline',
-                on_attach = function(bufnr)
-                    return vim.bo[bufnr].filetype ~= "markdown"
-                end,
             })
         end,
     },

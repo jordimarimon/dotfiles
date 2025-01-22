@@ -1,8 +1,13 @@
-local M = {}
+local fidget = require("fidget.notification")
 
+local M = {}
 local state = {
     is_visible = false,
     is_pending = false,
+    notification = {
+        key = "NpmOutdated",
+        group = "NpmOutdated",
+    },
     augroup = vim.api.nvim_create_augroup("NpmOutdated", { clear = true }),
     namespace = {
         id = vim.api.nvim_create_namespace("npm-outdated"),
@@ -35,12 +40,20 @@ vim.api.nvim_create_autocmd("BufDelete", {
 
 --- @param msg string
 local log_error = function(msg)
-    vim.notify(msg, vim.log.levels.ERROR)
+    fidget.notify(msg, vim.log.levels.ERROR, {
+        group = state.notification.group,
+        key = state.notification.key,
+        ttl = 10,
+    })
 end
 
 --- @param msg string
-local log_info = function(msg)
-    vim.notify(msg, vim.log.levels.INFO)
+local log_info = function(msg, ttl)
+    fidget.notify(msg, vim.log.levels.INFO, {
+        group = state.notification.group,
+        key = state.notification.key,
+        ttl = ttl,
+    })
 end
 
 local reload_buffer = function()
@@ -128,7 +141,7 @@ local on_success = function()
     state.is_visible = true
     state.is_pending = false
 
-    log_info("Updated package.json!")
+    log_info("Updated package.json!", 5)
 end
 
 local on_error = function()
@@ -189,7 +202,7 @@ local hide = function()
     state.is_visible = false
     state.is_pending = false
 
-    log_info("Updated package.json!")
+    log_info("Updated package.json!", 5)
 end
 
 function M.toggle()
@@ -206,7 +219,7 @@ function M.toggle()
         return
     end
 
-    log_info("Updating package.json....")
+    log_info("Updating package.json...", 120)
 
     state.is_pending = true
     state.buffer.id = vim.fn.bufnr()

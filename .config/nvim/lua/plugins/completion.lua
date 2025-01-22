@@ -1,13 +1,13 @@
 -- Autocompletion
 return {
-	"saghen/blink.cmp",
+    "saghen/blink.cmp",
     version = "*",
     build = "cargo build --release",
     dependencies = {
         { "folke/lazydev.nvim", ft = "lua" },
     },
     event = { "BufReadPost", "BufNewFile" },
-	config = function()
+    config = function()
         require("blink.cmp").setup({
             -- "default" for mappings similar to built-in completion
             keymap = {
@@ -102,5 +102,5 @@ return {
                 },
             },
         })
-	end,
+    end,
 }
