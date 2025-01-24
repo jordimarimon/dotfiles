@@ -45,9 +45,9 @@
             "@Directive({",
             "\tstandalone: true,",
             "\tselector: '[${1:selector-name}]',",
-            "\texportAs: '[${1:export-name}]',",
+            "\texportAs: '[${2:export-name}]',",
             "})",
-            "export class ${2:Name}Directive {",
+            "export class ${3:Name}Directive {",
             "",
             "\tconstructor() { }",
             "",
@@ -121,11 +121,11 @@
         ],
         "description": "For-Of Loop"
     },
-    "comment": {
-        "prefix": "/**",
+    "Comment": {
+        "prefix": "doc",
         "body": [
             "/**",
-            " * $0",
+            " * ${1:text}",
             " */"
         ],
         "description": "A simpple JSDoc comment."
