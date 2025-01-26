@@ -2,13 +2,13 @@
 
 
 function open_notes() {
-	notes=($(ls "$HOME/Notes/"));
+    notes=($(ls "$HOME/Notes/"));
 
-	IFS=$'\n';
-	note=$(printf '%q' "`echo \"${notes[*]}\" | fzf`");
-	IFS=' ';
+    IFS=$'\n';
+    note=$(printf '%q' "`echo \"${notes[*]}\" | fzf`");
+    IFS=' ';
 
-	if [[ ! -z "$note" && "$note" != "''" ]]; then
-		nvim "$HOME/Notes/$note";
-	fi
+    if [[ ! -z "$note" && "$note" != "''" ]]; then
+        nvim "$HOME/Notes/$note";
+    fi
 }
