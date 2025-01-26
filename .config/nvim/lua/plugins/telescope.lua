@@ -35,7 +35,9 @@ return {
         local finders = require("telescope.finders")
         local make_entry = require("telescope.make_entry")
 
-        local live_grep_filters = {
+        local picker_state = {
+            ---@type "grep"|"files"
+            mode = "grep",
             ---@type nil|string
             extension = nil,
             ---@type nil|string[]
@@ -44,10 +46,17 @@ return {
 
         local custom_live_grep = function(current_input)
             builtin.live_grep({
-                additional_args = live_grep_filters.extension and function()
-                    return { "-g", "**" .. os_sep .. "*." .. live_grep_filters.extension }
+                additional_args = picker_state.extension and function()
+                    return { "-g", "**" .. os_sep .. "*." .. picker_state.extension }
                 end,
-                search_dirs = live_grep_filters.directories,
+                search_dirs = picker_state.directories,
+                default_text = current_input,
+            })
+        end
+
+        local custom_find_files = function(current_input)
+            builtin.find_files({
+                search_dirs = picker_state.directories,
                 default_text = current_input,
             })
         end
@@ -60,7 +69,7 @@ return {
                     return
                 end
 
-                live_grep_filters.extension = input
+                picker_state.extension = input
 
                 actions.close(prompt_bufnr)
 
@@ -86,7 +95,7 @@ return {
             actions.close(prompt_bufnr)
 
             local picker_opts = {
-                prompt_title = "Folders for Live Grep",
+                prompt_title = "Select Folders",
                 finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
                 previewer = conf.file_previewer({}),
                 sorter = conf.file_sorter({}),
@@ -104,11 +113,15 @@ return {
                             end
                         end
 
-                        live_grep_filters.directories = dirs
+                        picker_state.directories = dirs
 
                         actions.close(bufnr)
 
-                        custom_live_grep(current_input)
+                        if picker_state.mode == "grep" then
+                            custom_live_grep(current_input)
+                        else
+                            custom_find_files(current_input)
+                        end
                     end)
 
                     return true
@@ -155,7 +168,20 @@ return {
                     mappings = {
                         i = {
                             ["<c-f>"] = set_extensions,
-                            ["<c-l>"] = set_directories,
+                            ["<c-l>"] = function (prompt_bufnr)
+                                picker_state.mode = "grep"
+                                set_directories(prompt_bufnr)
+                            end,
+                        },
+                    },
+                },
+                find_files = {
+                    mappings = {
+                        i = {
+                            ["<c-l>"] = function (prompt_bufnr)
+                                picker_state.mode = "files"
+                                set_directories(prompt_bufnr)
+                            end,
                         },
                     },
                 },
