@@ -89,3 +89,6 @@ vim.opt.foldenable = false
 -- Spell checking
 vim.opt.spelllang = 'es,en,ca'
 vim.opt.spell = false
+
+-- Better diff
+vim.opt.diffopt="internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
