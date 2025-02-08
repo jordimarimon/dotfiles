@@ -1,3 +1,5 @@
+-- Based on: https://github.com/vuki656/package-info.nvim
+
 local fidget = require("fidget.notification")
 
 local M = {}

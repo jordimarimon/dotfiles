@@ -25,6 +25,7 @@ function M.rm_qf_item()
     vim.api.nvim_win_set_cursor(winid, {new_idx, 0})
 end
 
+-- Quickfix list delete multiple items
 function M.rm_qf_items()
     local startidx = vim.fn.line("v")
     local endidx = vim.fn.line(".")
