@@ -8,10 +8,10 @@ return {
         todo_comments.setup({
             signs = false,
             highlight = {
-                pattern = [[(KEYWORDS)\s*(\([^\)]*\))?:]],
+                pattern = [[.*<((KEYWORDS)%(\(.{-1,}\))?):]],
             },
             search = {
-                pattern = [[(KEYWORDS)\s*(\([^\)]*\))?:]],
+                pattern = [[\b(KEYWORDS)(\([^\)]*\))?:]],
             },
         })
 
