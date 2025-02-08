@@ -41,8 +41,10 @@ vim.opt.smartcase = true
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
--- Keep signcolumn on by default
-vim.opt.signcolumn = "yes"
+-- Signcolumn of 5 columnwidth with signs
+vim.opt.numberwidth = 3
+vim.opt.signcolumn = "yes:1"
+vim.opt.statuscolumn = "%l%s" -- number sign
 
 -- Don't have `o` add a comment
 vim.opt.formatoptions:remove("o")

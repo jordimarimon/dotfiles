@@ -138,11 +138,30 @@ return {
                 end,
             })
 
+            vim.keymap.set("n", "<leader>sc", function()
+                vim.lsp.stop_client(vim.lsp.get_clients())
+            end, { desc = "[S]top [C]lients" })
 
-            vim.keymap.set("n", "<leader>sc", function() vim.lsp.stop_client(vim.lsp.get_clients()) end,
-                { desc = "[S]top [C]lients" })
+            -- Add border when showing diagnostics in a floting popup,
+            -- and also color the linenumber instead of addding a sign
+            vim.diagnostic.config({
+                float = { border = "single" },
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = '',
+                        [vim.diagnostic.severity.WARN] = '',
+                        [vim.diagnostic.severity.INFO] = '',
+                        [vim.diagnostic.severity.HINT] = '',
+                    },
+                    numhl = {
+                        [vim.diagnostic.severity.WARN] = 'WarningMsg',
+                        [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
+                        [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
+                        [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
 
-            vim.diagnostic.config({ float = { border = "single" } })
+                    },
+                },
+            })
 
             -- LSP servers and clients are able to communicate to each other what features they support.
             -- By default, Neovim doesn't support everything that is in the LSP specification.
