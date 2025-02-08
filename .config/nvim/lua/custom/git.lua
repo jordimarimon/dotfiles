@@ -1,4 +1,5 @@
 -- Based on: https://github.com/Almo7aya/openingh.nvim
+-- There is also GBrowse of fugitive
 
 local M = {}
 
@@ -129,7 +130,7 @@ function M.open_repo()
         url = repo_url .. "/src/" .. get_current_commit_hash()
     end
 
-    vim.fn.system("xdg-open " .. url)
+    vim.ui.open(url)
 
     vim.notify("Remote repository opened!", vim.log.levels.INFO)
 end
@@ -162,7 +163,7 @@ function M.open_repo_file(line_start, line_end)
         end
     end
 
-    vim.fn.system("xdg-open " .. url)
+    vim.ui.open(url)
 
     vim.notify("File opened in remote repository!", vim.log.levels.INFO)
 end

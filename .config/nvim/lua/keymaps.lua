@@ -64,6 +64,15 @@ end, { noremap = true, expr = true })
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
+-- Jumps between buffers in the jumplist
+vim.keymap.set("n", "<M-o>", function ()
+    require("custom.buffer-jumps").backward()
+end, { noremap = true, silent = true, desc = "Jump to previous buffer" })
+
+vim.keymap.set("n", "<M-i>", function ()
+    require("custom.buffer-jumps").foward()
+end, { noremap = true, silent = true, desc = "Jump to next buffer" })
+
 -- Save current word for later substitute command
 vim.keymap.set({"n", "v"}, "<leader>s", function()
     local mode = vim.fn.mode()
