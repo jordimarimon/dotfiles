@@ -75,23 +75,28 @@ vim.api.nvim_create_user_command("GitFile", function(opts)
 end, { range = true, bang = true, nargs = "*" })
 
 -- Highlight current line on active window only
-local active_line_highligh = vim.api.nvim_create_augroup('HighlightActiveLine', { clear = true })
-vim.api.nvim_create_autocmd('WinEnter', {
-    desc = 'show cursorline',
+local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
+vim.api.nvim_create_autocmd("WinEnter", {
+    desc = "show cursorline",
     callback = function() vim.wo.cursorline = true end,
     group = active_line_highligh
 })
-vim.api.nvim_create_autocmd('WinLeave', {
-    desc = 'hide cursorline',
+vim.api.nvim_create_autocmd("WinLeave", {
+    desc = "hide cursorline",
     callback = function() vim.wo.cursorline = false end,
     group = active_line_highligh
 })
 
 -- Use vertical splits for help windows
-local vertical_help = vim.api.nvim_create_augroup('VerticalHelp', { clear = true })
-vim.api.nvim_create_autocmd('FileType', {
-    desc = 'make help split vertical',
-    pattern = 'help',
-    command = 'wincmd L',
+local vertical_help = vim.api.nvim_create_augroup("VerticalHelp", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    desc = "make help split vertical",
+    pattern = "help",
+    command = "wincmd L",
     group = vertical_help
 })
+
+-- Open `:messages` command in a buffer
+vim.api.nvim_create_user_command("Messages", function ()
+    require("custom.command-scratch-buffer").redirect("messages")
+end, { nargs = 0 })

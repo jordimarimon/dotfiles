@@ -122,7 +122,7 @@
         "description": "For-Of Loop"
     },
     "Comment": {
-        "prefix": "doc",
+        "prefix": "/*",
         "body": [
             "/**",
             " * ${1:text}",
