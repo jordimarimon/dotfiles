@@ -100,3 +100,10 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_user_command("Messages", function ()
     require("custom.command-scratch-buffer").redirect("messages")
 end, { nargs = 0 })
+
+-- Prevent default ftplugins to insert comments when using "o" or "O"
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function()
+        vim.opt.formatoptions:remove({ "o", "r" })
+    end
+})

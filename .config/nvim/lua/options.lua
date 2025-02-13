@@ -47,7 +47,7 @@ vim.opt.signcolumn = "yes:1"
 vim.opt.statuscolumn = "%l%s" -- number sign
 
 -- Don't have `o` add a comment
-vim.opt.formatoptions:remove("o")
+vim.opt.formatoptions:remove({"o", "r"})
 
 -- Decrease update time
 vim.o.updatetime = 250
