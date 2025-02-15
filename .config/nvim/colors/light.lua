@@ -12,7 +12,11 @@ local bg_diff_add = "#d4ffdf"
 local bg_diff_delete = "#ffd8d4"
 local bg_context = "#eff6ff"
 local bg_status_line_mode = "#d4d4fc"
-local bg_heading_markdown = "#dbeafe"
+local bg_heading_1_markdown = "#dbeafe"
+local bg_heading_2_markdown = "#ffedd5"
+local bg_heading_3_markdown = "#fef3c7"
+local bg_heading_4_markdown = "#ecfccb"
+local bg_heading_5_markdown = "#ccfbf1"
 
 local fg = "#333333"
 local fg_status_line = "#FFFFFF"
@@ -163,13 +167,13 @@ vim.api.nvim_set_hl(0, "@markup.heading.4.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.heading.5.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@markup.strong.markdown", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "RenderMarkdownH1", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH1Bg", {bg = bg_heading_1_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH2", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH2Bg", {bg = bg_heading_2_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH3", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH3Bg", {bg = bg_heading_3_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH4", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH4Bg", {bg = bg_heading_4_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownH5", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_markdown})
+vim.api.nvim_set_hl(0, "RenderMarkdownH5Bg", {bg = bg_heading_5_markdown})
 vim.api.nvim_set_hl(0, "RenderMarkdownCode", {bg = bg})

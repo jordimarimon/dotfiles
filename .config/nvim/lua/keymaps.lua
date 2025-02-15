@@ -73,6 +73,11 @@ vim.keymap.set("n", "<M-i>", function ()
     require("custom.buffer-jumps").foward()
 end, { noremap = true, silent = true, desc = "Jump to next buffer" })
 
+-- Remove outer scope
+vim.keymap.set("n", "<leader>do", function ()
+    require("custom.delete-outer-scope").remove()
+end, { noremap = true, silent = true, desc = "[D]elete [O]uter scope" })
+
 -- Save current word for later substitute command
 vim.keymap.set({"n", "v"}, "<leader>s", function()
     local mode = vim.fn.mode()
