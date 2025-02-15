@@ -3,9 +3,3 @@ vim.filetype.add({
         h = "c",
     },
 })
-
-vim.filetype.add({
-    pattern = {
-        [".*%.component%.html"] = "htmlangular",
-    },
-})
