@@ -1,6 +1,7 @@
 -- Based on: https://github.com/Almo7aya/openingh.nvim
 -- There is also GBrowse of fugitive
 
+local String = require("custom.string")
 local M = {}
 
 local priority = {
@@ -12,45 +13,15 @@ local state = {
     priority = priority.BRANCH,
 }
 
--- url encode
--- see: https://datatracker.ietf.org/doc/html/rfc3986#section-2.3
---- @param url string
---- @return string
-local function encode_uri_component(url)
-  return (url:gsub("[^%w_~%.%-]", function(c)
-    return url.format("%%%02X", url.byte(c))
-  end))
-end
-
--- Remove leading and trailing whitespace from the output of git commands
---- @param value string
---- @return string
-local function trim(value)
-    return string.match(value, "^%s*(.-)%s*$")
-end
-
---- @param value string
---- @param sep string
-local function split(value, sep)
-  local result = {}
-  local reg = value.format("([^%s]+)", sep)
-
-  for mem in value.gmatch(value, reg) do
-    table.insert(result, mem)
-  end
-
-  return result
-end
-
 -- get the active buf relative file path form the .git
 local function get_current_relative_file_path()
   local absolute_file_path = vim.api.nvim_buf_get_name(0)
   local git_path = vim.fn.system("git rev-parse --show-toplevel")
-  local relative_file_path_components = split(string.sub(absolute_file_path, git_path:len() + 1), "/")
+  local relative_file_path_components = String.split(string.sub(absolute_file_path, git_path:len() + 1), "/")
   local encoded_components = {}
 
   for i, path_component in pairs(relative_file_path_components) do
-    table.insert(encoded_components, i, encode_uri_component(path_component))
+    table.insert(encoded_components, i, String.encode_uri_component(path_component))
   end
 
   return "/" .. table.concat(encoded_components, "/")
@@ -59,13 +30,13 @@ end
 -- Get the current working branch
 --- @return string
 local function get_current_branch()
-  return encode_uri_component(trim(vim.fn.system("git rev-parse --abbrev-ref HEAD")))
+  return String.encode_uri_component(String.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD")))
 end
 
 -- Get the commit hash of the most recent commit
 --- @return string
 local function get_current_commit_hash()
-  return encode_uri_component(trim(vim.fn.system("git rev-parse HEAD")))
+  return String.encode_uri_component(String.trim(vim.fn.system("git rev-parse HEAD")))
 end
 
 --- @param url string
@@ -95,13 +66,13 @@ end
 --- @return string|nil
 local function get_repo_url()
     -- Get the remote
-    local remote = trim(vim.fn.system("git config remote.pushDefault"))
+    local remote = String.trim(vim.fn.system("git config remote.pushDefault"))
     if not remote or remote == "" then
         remote = "origin"
     end
 
     -- Get the repository url
-    local git_url = trim(vim.fn.system("git config --get remote." .. remote .. ".url"))
+    local git_url = String.trim(vim.fn.system("git config --get remote." .. remote .. ".url"))
     if not git_url or git_url == "" then
         vim.notify("No repository URL was found.", vim.log.levels.ERROR)
         return nil

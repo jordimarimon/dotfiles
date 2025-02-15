@@ -62,14 +62,14 @@ end, {})
 
 -- Open the git remote repository in the browser
 vim.api.nvim_create_user_command("GitRepo", function(opts)
-    local git = require("custom.git")
+    local git = require("custom.git-browse")
     git.update_priority(opts.bang)
     git.open_repo()
 end, { range = true, bang = true, nargs = "*" })
 
 -- Open the current file in the git remote repository in the browser
 vim.api.nvim_create_user_command("GitFile", function(opts)
-    local git = require("custom.git")
+    local git = require("custom.git-browse")
     git.update_priority(opts.bang)
     git.open_repo_file(opts.line1, opts.line2)
 end, { range = true, bang = true, nargs = "*" })

@@ -26,3 +26,8 @@ end
 vim.keymap.set("n", "<M-j>", move_to_next_qf, { desc = "Move to next QF entry", buffer = true, silent = true })
 vim.keymap.set("n", "<M-k>", move_to_prev_qf, { desc = "Move to previous QF entry", buffer = true, silent = true })
 
+-- Open diff of an entry
+vim.keymap.set("n", "o", function ()
+    require("custom.git-difftool").diff()
+end, { buffer = true, silent = true, desc = "[O]pen diff vertically" })
+
