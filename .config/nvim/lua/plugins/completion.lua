@@ -14,6 +14,7 @@ return {
                 preset = "default",
                 ["<Tab>"] = {},
                 ["<S-Tab>"] = {},
+                ["<C-k>"] = {},
                 ["<M-l>"] = { "snippet_forward", "fallback" },
                 ["<M-h>"] = { "snippet_backward", "fallback" },
             },
@@ -30,17 +31,17 @@ return {
 
                 providers = {
                     lsp = {
-                        min_keyword_length = 2,
+                        min_keyword_length = 0,
                         score_offset = 0,
                     },
                     path = {
                         min_keyword_length = 0,
                     },
                     snippets = {
-                        min_keyword_length = 2,
+                        min_keyword_length = 1,
                     },
                     buffer = {
-                        min_keyword_length = 3,
+                        min_keyword_length = 0,
                         max_items = 5,
                     },
                     dadbod = {

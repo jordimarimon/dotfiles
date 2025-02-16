@@ -52,6 +52,8 @@ return {
                     --- Displays hover information about the symbol under the cursor in a floating window
                     map("K", function() vim.lsp.buf.hover({ border = "single" }) end, "Show symbol info")
 
+                    map("<C-s>", function() vim.lsp.buf.signature_help({ border = "single" }) end, "Show signature help", {"n", "i"})
+
                     -- Jump to the implementation of the word under your cursor.
                     -- Useful when your language has ways of declaring types without an actual implementation.
                     map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
