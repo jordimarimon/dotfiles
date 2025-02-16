@@ -1,6 +1,9 @@
 -- Based on: https://github.com/Almo7aya/openingh.nvim
 -- There is also GBrowse of fugitive
 
+-- TODO: Look at snacks implementation:
+--       https://github.com/folke/snacks.nvim/blob/main/docs/gitbrowse.md
+
 local String = require("custom.string")
 local M = {}
 
