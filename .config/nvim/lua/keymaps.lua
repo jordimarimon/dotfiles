@@ -15,6 +15,10 @@ vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = tr
 vim.keymap.set({"n", "v"}, "<C-u>", "5k", { silent = true })
 vim.keymap.set({"n", "v"}, "<C-d>", "5j", { silent = true })
 
+-- Center cursor when moving up or down
+vim.keymap.set({"n", "v"}, "<C-f>", "<C-f>zz", { silent = true })
+vim.keymap.set({"n", "v"}, "<C-b>", "<C-b>zz", { silent = true })
+
 -- Keybinds to make split navigation easier.
 -- See `:help wincmd` for a list of all window commands
 vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window", silent = true })
