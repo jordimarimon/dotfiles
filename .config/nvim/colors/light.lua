@@ -30,6 +30,7 @@ local fg_string = "#03770d"
 local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
+local fg_tag = "#78716c"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -143,7 +144,7 @@ vim.api.nvim_set_hl(0, "@markup.italic", {fg = fg})
 vim.api.nvim_set_hl(0, "@tag.attribute", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@punctuation.bracket", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@punctuation.special", {fg = fg, bold = true})
-vim.api.nvim_set_hl(0, "@tag", {fg = fg, bold = true})
+vim.api.nvim_set_hl(0, "@tag", {fg = fg_tag, bold = true})
 
 -- TypeScript
 vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
