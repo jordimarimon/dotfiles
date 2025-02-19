@@ -145,6 +145,7 @@ vim.api.nvim_set_hl(0, "@tag.attribute", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@punctuation.bracket", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@punctuation.special", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@tag", {fg = fg_tag, bold = true})
+vim.api.nvim_set_hl(0, "@tag.builtin", {fg = fg_tag, bold = true})
 
 -- TypeScript
 vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
