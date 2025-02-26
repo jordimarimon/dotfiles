@@ -18,7 +18,7 @@ local bg_heading_3_markdown = "#fef3c7"
 local bg_heading_4_markdown = "#ecfccb"
 local bg_heading_5_markdown = "#ccfbf1"
 
-local fg = "#333333"
+local fg = "#000000"
 local fg_status_line = "#FFFFFF"
 local fg_info = "#2563EB"
 local fg_success = "#03770d"
@@ -31,6 +31,7 @@ local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_tag = "#78716c"
+local fg_member = "#44403c"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -45,8 +46,8 @@ vim.api.nvim_set_hl(0, "DiagnosticHint", {fg = fg_info, bold = true})
 vim.api.nvim_set_hl(0, "DiagnosticOk", {fg = fg_success, bold = true})
 vim.api.nvim_set_hl(0, "Statement", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "Directory", {fg = fg})
-vim.api.nvim_set_hl(0, "Visual", {fg = fg, bg = bg_visual})
-vim.api.nvim_set_hl(0, "VisualNC", {fg = fg, bg = bg_visual})
+vim.api.nvim_set_hl(0, "Visual", {bg = bg_visual})
+vim.api.nvim_set_hl(0, "VisualNC", {bg = bg_visual})
 vim.api.nvim_set_hl(0, "StatusLine", {fg = fg_status_line, bg = bg_status_line})
 vim.api.nvim_set_hl(0, "StatusLineNC", {fg = fg_status_line, bg = bg_status_line})
 vim.api.nvim_set_hl(0, "TabLine", {fg = fg_status_line, bg = bg_status_line})
@@ -131,9 +132,9 @@ vim.api.nvim_set_hl(0, "Identifier", {fg = fg})
 vim.api.nvim_set_hl(0, "@type", {fg = fg_type, bold = true})
 vim.api.nvim_set_hl(0, "@type.builtin", {fg = fg_type, bold = true})
 vim.api.nvim_set_hl(0, "@variable", {fg = fg})
+vim.api.nvim_set_hl(0, "@variable.member", {fg = fg_member})
 vim.api.nvim_set_hl(0, "@variable.builtin", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@constant", {fg = fg})
-vim.api.nvim_set_hl(0, "@variable.member", {fg = fg})
 vim.api.nvim_set_hl(0, "@keyword", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@keyword.conditional.ternary", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@function.builtin", {fg = fg_function, bold = true})
