@@ -19,6 +19,28 @@ return {
                 ["<M-h>"] = { "snippet_backward", "fallback" },
             },
 
+            cmdline = {
+                completion = {
+                    menu = {
+                        auto_show = function()
+                            return vim.fn.getcmdtype() == ":" or vim.fn.getcmdtype() == "@"
+                        end,
+                    },
+                },
+                keymap = {
+                    ["<Tab>"] = {},
+                    ["<S-Tab>"] = {},
+                    ["<C-space>"] = {
+                        function(cmp)
+                            if cmp.is_ghost_text_visible() and not cmp.is_menu_visible() then return cmp.accept() end
+                        end,
+                        "show",
+                    },
+                    ["<C-n>"] = { "select_next", "fallback" },
+                    ["<C-p>"] = { "select_prev", "fallback" },
+                },
+            },
+
             -- Default list of enabled providers
             sources = {
                 default = { "lazydev", "lsp", "path", "snippets", "buffer" },

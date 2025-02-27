@@ -31,7 +31,7 @@ local fg_number = "#009999"
 local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_tag = "#78716c"
-local fg_member = "#44403c"
+local fg_member = "#000000"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -147,11 +147,6 @@ vim.api.nvim_set_hl(0, "@punctuation.bracket", {fg = fg, bold = false})
 vim.api.nvim_set_hl(0, "@punctuation.special", {fg = fg, bold = true})
 vim.api.nvim_set_hl(0, "@tag", {fg = fg_tag, bold = true})
 vim.api.nvim_set_hl(0, "@tag.builtin", {fg = fg_tag, bold = true})
-
--- TypeScript
-vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
-
--- HTML
 vim.api.nvim_set_hl(0, "@markup.heading", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.1", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.2", {fg = fg})
@@ -160,6 +155,9 @@ vim.api.nvim_set_hl(0, "@markup.heading.4", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.5", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.heading.6", {fg = fg})
 vim.api.nvim_set_hl(0, "@markup.strong", {bold = false})
+
+-- TypeScript
+vim.api.nvim_set_hl(0, "@typescript.uppercase_variable", {fg = fg_ts_uvar})
 
 -- Markdown
 vim.api.nvim_set_hl(0, "@markup.heading.markdown", {fg = fg, bold = true})
