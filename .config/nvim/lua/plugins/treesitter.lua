@@ -56,7 +56,6 @@ return {
                         enable = true,
                         set_jumps = true,
                         goto_next_start = {
-                            ["]]"] = "@jsx.element",
                             ["]f"] = "@function.outer",
                             ["]m"] = "@class.outer",
                         },
@@ -65,7 +64,6 @@ return {
                             ["]M"] = "@class.outer",
                         },
                         goto_previous_start = {
-                            ["[["] = "@jsx.element",
                             ["[f"] = "@function.outer",
                             ["[m"] = "@class.outer",
                         },

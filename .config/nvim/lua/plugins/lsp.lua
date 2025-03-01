@@ -60,8 +60,7 @@ return {
 
                     -- Fuzzy find all the symbols in your current document.
                     -- Symbols are things like variables, functions, types, etc.
-                    -- The default keymap is "g0"
-                    map("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+                    map("gO", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
 
                     -- Jump to the definition of the word under your cursor.
                     -- This is where a variable was first declared, or where a function is defined, etc.

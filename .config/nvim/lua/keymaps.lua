@@ -68,6 +68,9 @@ end, { noremap = true, expr = true })
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
+-- Search inside a visual selection
+vim.keymap.set("x", "g/", "<Esc>/\\%V")
+
 -- Jumps between buffers in the jumplist
 vim.keymap.set("n", "<M-o>", function ()
     require("custom.buffer-jumps").backward()

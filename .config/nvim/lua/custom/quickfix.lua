@@ -56,4 +56,48 @@ function M.rm_qf_items()
     vim.api.nvim_win_set_cursor(winid, {startidx, 0})
 end
 
+function M.get_list_type()
+    local all_windows = vim.fn.getwininfo()
+    local is_qf = true
+
+    for _, window in ipairs(all_windows) do
+        if window.loclist == 1 then
+            is_qf = false
+            break
+        end
+    end
+
+    return is_qf and "quickfix" or "location"
+end
+
+function M.move_to_next()
+    local list_type = M.get_list_type()
+    local next_command = list_type == "quickfix" and "cnext" or "lnext"
+    local first_command = list_type == "quickfix" and "cfirst" or "lfirst"
+    local open_command = list_type == "quickfix" and "copen" or "lopen"
+
+    local success = pcall(function() vim.cmd(next_command) end)
+
+    if not success then
+        vim.cmd(first_command)
+    end
+
+    vim.cmd(open_command)
+end
+
+function M.move_to_prev()
+    local list_type = M.get_list_type()
+    local prev_command = list_type == "quickfix" and "cprev" or "lprev"
+    local last_command = list_type == "quickfix" and "clast" or "llast"
+    local open_command = list_type == "quickfix" and "copen" or "lopen"
+
+    local success = pcall(function() vim.cmd(prev_command) end)
+
+    if not success then
+        vim.cmd(last_command)
+    end
+
+    vim.cmd(open_command)
+end
+
 return M
