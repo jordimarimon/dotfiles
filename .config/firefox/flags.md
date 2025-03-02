@@ -1,0 +1,12 @@
+browser.tabs.closeWindowWithLastTab=false
+browser.tabs.firefox-view.ui-state.recentlyclosed.open=true
+browser.tabs.inTitlebar=1
+browser.toolbars.bookmarks.visibility=never
+browser.translations.automaticallyPopup=false
+browser.urlbar.shortcuts.bookmarks=false
+browser.urlbar.suggest.engines=false
+browser.urlbar.suggest.openpage=false
+browser.urlbar.suggest.topsites=false
+devtools.chrome.enabled=true
+devtools.debugger.remote-enabled=true
+toolkit.legacyUserProfileCustomizations.stylesheets=true
