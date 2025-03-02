@@ -248,4 +248,5 @@ exec_always ~/.config/sway/lid-reload.sh
 #################
 
 for_window [class="feh"] floating enable, move position center
+for_window [title="gf2"] floating enable, move position center
 
