@@ -183,11 +183,7 @@ return {
                 clangd = {},
                 phpactor = {},
                 lua_ls = {},
-                tailwindcss = {
-                    filetypes = {"html", "htmlangular"},
-                },
                 css_variables = {},
-                cssls = {},
                 jsonls = {},
                 html = {},
                 bashls = {},
