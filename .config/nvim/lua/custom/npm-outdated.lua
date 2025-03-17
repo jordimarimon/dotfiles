@@ -60,7 +60,7 @@ end
 
 local reload_buffer = function()
     vim.bo[state.buffer.id].autoread = true
-    vim.cmd(":checktime")
+    vim.cmd("checktime")
 end
 
 local clear = function()

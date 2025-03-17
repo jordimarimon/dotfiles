@@ -97,7 +97,7 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 
 -- Open `:messages` command in a buffer
-vim.api.nvim_create_user_command("Messages", function ()
+vim.api.nvim_create_user_command("Messages", function()
     require("custom.command-scratch-buffer").redirect("messages")
 end, { nargs = 0 })
 
@@ -106,4 +106,16 @@ vim.api.nvim_create_autocmd("BufEnter", {
     callback = function()
         vim.opt.formatoptions:remove({ "o", "r" })
     end
+})
+
+-- Format files after writting the buffer
+vim.api.nvim_create_autocmd("BufWritePost", {
+    pattern = "*",
+    callback = function(args)
+        if not vim.api.nvim_buf_is_valid(args.buf) or vim.bo[args.buf].buftype ~= "" then
+            return
+        end
+
+        require("custom.format").format(args.buf)
+    end,
 })
