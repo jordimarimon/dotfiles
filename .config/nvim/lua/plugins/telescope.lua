@@ -97,7 +97,7 @@ return {
             local picker_opts = {
                 prompt_title = "Select Folders",
                 finder = finders.new_table({ results = data, entry_maker = make_entry.gen_from_file({}) }),
-                previewer = conf.file_previewer({}),
+                previewer = false,
                 sorter = conf.file_sorter({}),
                 attach_mappings = function(bufnr)
                     action_set.select:replace(function()
@@ -156,10 +156,7 @@ return {
             defaults = {
                 -- TODO: Improve it using the suggestions in:
                 -- https://github.com/nvim-telescope/telescope.nvim/issues/2014
-                path_display = function(opts, file_path)
-                    local tail = require("telescope.utils").path_tail(file_path)
-                    return string.format("%s (%s)", tail, file_path), { { { 1, #tail }, "Constant" } }
-                end,
+                path_display = { "truncate", "filename_first" },
                 layout_strategy = "horizontal",
                 sorting_strategy = "ascending",
                 layout_config = {
@@ -181,6 +178,7 @@ return {
                     },
                 },
                 find_files = {
+                    previewer = false,
                     mappings = {
                         i = {
                             ["<c-l>"] = function(prompt_bufnr)

@@ -46,13 +46,15 @@ return {
                     end
 
                     -- Find references for the word under your cursor.
-                    map("grr", function() require("telescope.builtin").lsp_references({ include_declaration = false }) end,
+                    map("grr",
+                        function() require("telescope.builtin").lsp_references({ include_declaration = false }) end,
                         "[G]oto [R]eferences")
 
                     --- Displays hover information about the symbol under the cursor in a floating window
                     map("K", function() vim.lsp.buf.hover({ border = "single" }) end, "Show symbol info")
 
-                    map("<C-s>", function() vim.lsp.buf.signature_help({ border = "single" }) end, "Show signature help", {"n", "i"})
+                    map("<C-s>", function() vim.lsp.buf.signature_help({ border = "single" }) end, "Show signature help",
+                        { "n", "i" })
 
                     -- Jump to the implementation of the word under your cursor.
                     -- Useful when your language has ways of declaring types without an actual implementation.
@@ -171,6 +173,13 @@ return {
             local capabilities = vim.lsp.protocol.make_client_capabilities()
             capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
+            local get_intelephense_license = function()
+                local f = assert(io.open(os.getenv("HOME") .. "/intelephense/license.txt", "rb"))
+                local content = f:read("*a")
+                f:close()
+                return string.gsub(content, "%s+", "")
+            end
+
             -- LSP servers to enable
             -- Additional override configuration in the following tables.
             -- Available keys are:
@@ -181,7 +190,11 @@ return {
             local servers = {
                 basedpyright = {},
                 clangd = {},
-                phpactor = {},
+                intelephense = {
+                    init_options = {
+                        licenceKey = get_intelephense_license(),
+                    },
+                },
                 lua_ls = {},
                 css_variables = {},
                 jsonls = {},
