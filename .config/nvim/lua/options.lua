@@ -23,7 +23,7 @@ vim.opt.mouse = "a"
 
 -- Sync clipboard between OS and Neovim.
 --  See `:help 'clipboard'`
-vim.schedule(function ()
+vim.schedule(function()
     vim.opt.clipboard = "unnamedplus"
 end)
 
@@ -47,7 +47,7 @@ vim.opt.signcolumn = "yes:1"
 vim.opt.statuscolumn = "%l%s" -- number sign
 
 -- Don't have `o` add a comment
-vim.opt.formatoptions:remove({"o", "r"})
+vim.opt.formatoptions:remove({ "o", "r" })
 
 -- Decrease update time
 vim.o.updatetime = 250
@@ -93,4 +93,4 @@ vim.opt.spelllang = 'es,en,ca'
 vim.opt.spell = false
 
 -- Better diff
-vim.opt.diffopt="internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
+vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"

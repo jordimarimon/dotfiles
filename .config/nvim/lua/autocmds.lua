@@ -101,21 +101,20 @@ vim.api.nvim_create_user_command("Messages", function()
     require("custom.command-scratch-buffer").redirect("messages")
 end, { nargs = 0 })
 
--- Prevent default ftplugins to insert comments when using "o" or "O"
+-- Prevent default ftplugins from overriding some options
 vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function()
-        vim.opt.formatoptions:remove({ "o", "r" })
-    end
-})
-
--- Format files after writting the buffer
-vim.api.nvim_create_autocmd("BufWritePost", {
-    pattern = "*",
     callback = function(args)
-        if not vim.api.nvim_buf_is_valid(args.buf) or vim.bo[args.buf].buftype ~= "" then
+        local buftype = vim.bo[args.buf].buftype
+        local filetype = vim.bo[args.buf].filetype
+
+        if not vim.api.nvim_buf_is_valid(args.buf) or buftype ~= "" or filetype == "" then
             return
         end
 
-        require("custom.format").format(args.buf)
-    end,
+        -- Don't insert comments when using "o" or "O"
+        vim.opt.formatoptions:remove({ "o", "r" })
+
+        -- Change how many lines scrolls C-d and C-u
+        vim.o.scroll = 5
+    end
 })

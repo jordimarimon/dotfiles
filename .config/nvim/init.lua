@@ -24,6 +24,7 @@ require("lazy").setup(
     {import = "plugins.oil"},
     {import = "plugins.harpoon"},
     {import = "plugins.undotree"},
+    {import = "plugins.format"},
   },
   {
     ui = {border = "single"},
