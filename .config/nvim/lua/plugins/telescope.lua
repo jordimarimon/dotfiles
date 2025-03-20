@@ -154,7 +154,12 @@ return {
         -- See `:help telescope` and `:help telescope.setup()`
         require("telescope").setup({
             defaults = {
-                path_display = { "truncate" },
+                -- TODO: Improve it using the suggestions in:
+                -- https://github.com/nvim-telescope/telescope.nvim/issues/2014
+                path_display = function(opts, file_path)
+                    local tail = require("telescope.utils").path_tail(file_path)
+                    return string.format("%s (%s)", tail, file_path), { { { 1, #tail }, "Constant" } }
+                end,
                 layout_strategy = "horizontal",
                 sorting_strategy = "ascending",
                 layout_config = {
@@ -168,7 +173,7 @@ return {
                     mappings = {
                         i = {
                             ["<c-f>"] = set_extensions,
-                            ["<c-l>"] = function (prompt_bufnr)
+                            ["<c-l>"] = function(prompt_bufnr)
                                 picker_state.mode = "grep"
                                 set_directories(prompt_bufnr)
                             end,
@@ -178,7 +183,7 @@ return {
                 find_files = {
                     mappings = {
                         i = {
-                            ["<c-l>"] = function (prompt_bufnr)
+                            ["<c-l>"] = function(prompt_bufnr)
                                 picker_state.mode = "files"
                                 set_directories(prompt_bufnr)
                             end,

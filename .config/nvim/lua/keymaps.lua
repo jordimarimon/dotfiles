@@ -17,6 +17,7 @@ vim.keymap.set({ "n", "v" }, "<C-b>", "<C-b>zz", { silent = true })
 
 -- Useful keympas for deleting and pasting
 vim.keymap.set({ "n", "v" }, "<leader>d", "\"_d", { desc = "Deletes to black hole register", silent = true })
+vim.keymap.set({ "n", "v" }, "<leader>x", "\"_x", { desc = "Deletes to black hole register", silent = true })
 vim.keymap.set({ "n", "v" }, "<leader>c", "\"_c", { desc = "Changes to black hole register", silent = true })
 vim.keymap.set({ "n", "v" }, "<leader>p", "\"0p", { desc = "Pastes from yank buffer", silent = true })
 
