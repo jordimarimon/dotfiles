@@ -30,6 +30,9 @@ set wildmenu
 " Make wildmenu behave like similar to Bash completion.
 set wildmode=list:longest
 
+" Use the system clipboard
+set clipboard^=unnamed,unnamedplus
+
 " This enables relative line numbering mode. With both number and
 " relativenumber enabled, the current line shows the true line number, while
 " all other lines (above and below) are numbered relative to the current line.
