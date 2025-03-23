@@ -101,6 +101,29 @@ set nobackup
 set background=light
 colorscheme light
 
+" Move +-5 up and down when using C-d and C-u
+set scroll=5
+
+" }}}
+
+" VARIABLES ---------------------------------------------------------------- {{{
+
+" Use space as the leader key
+let mapleader = " "
+
+" Use a line cursor within insert mode and a block cursor everywhere else.
+"
+" Reference chart of values:
+"   Ps = 0  -> blinking block.
+"   Ps = 1  -> blinking block (default).
+"   Ps = 2  -> steady block.
+"   Ps = 3  -> blinking underline.
+"   Ps = 4  -> steady underline.
+"   Ps = 5  -> blinking bar (xterm).
+"   Ps = 6  -> steady bar (xterm).
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
 " }}}
 
 " PLUGINS ---------------------------------------------------------------- {{{
@@ -133,6 +156,10 @@ inoremap <Left>  <ESC>:echoe "Use h"<CR>
 inoremap <Right> <ESC>:echoe "Use l"<CR>
 inoremap <Up>    <ESC>:echoe "Use k"<CR>
 inoremap <Down>  <ESC>:echoe "Use j"<CR>
+
+" }}}
+
+" AUTOCOMMANDS ---------------------------------------------------------------- {{{
 
 " }}}
 

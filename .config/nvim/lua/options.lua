@@ -89,8 +89,12 @@ vim.opt.virtualedit = "block"
 vim.opt.foldenable = false
 
 -- Spell checking
-vim.opt.spelllang = 'es,en,ca'
+vim.opt.spelllang = "es,en,ca"
 vim.opt.spell = false
+vim.opt.spelloptions = "camel,noplainbuffer"
 
 -- Better diff
 vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
+
+-- Set border for floating windows
+-- vim.o.winborder = "single"

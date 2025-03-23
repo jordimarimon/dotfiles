@@ -11,6 +11,11 @@ vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { silent = true })
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
+-- Move up and down only 5 lines. Sadly the "scroll" option
+-- gets overriden in a lot of places
+vim.keymap.set({ "n", "v" }, "<C-u>", "5k", { silent = true })
+vim.keymap.set({ "n", "v" }, "<C-d>", "5j", { silent = true })
+
 -- Center cursor when moving up or down
 vim.keymap.set({ "n", "v" }, "<C-f>", "<C-f>zz", { silent = true })
 vim.keymap.set({ "n", "v" }, "<C-b>", "<C-b>zz", { silent = true })
