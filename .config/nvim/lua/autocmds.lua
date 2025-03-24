@@ -118,3 +118,26 @@ vim.api.nvim_create_autocmd("BufEnter", {
         vim.o.scroll = 5
     end
 })
+
+-- Stop LSP clients when they're not attached to any buffer
+vim.api.nvim_create_autocmd({ "LspDetach" }, {
+    group = vim.api.nvim_create_augroup("LspStopWithLastClient", {}),
+    desc = "Stop lsp client when no buffer is attached",
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+        if not client or not client.attached_buffers then
+            return
+        end
+
+        for buf_id in pairs(client.attached_buffers) do
+            if buf_id ~= args.buf then
+                return
+            end
+        end
+
+        print('LSP client closed!')
+
+        client:stop()
+    end,
+})
