@@ -64,17 +64,31 @@ exec pcmanfm -d &
 ### Input configuration
 #################
 
-# old keyboard
-input "1133:49978:Logitech_G413_Carbon_Mechanical_Gaming_Keyboard" {
-    xkb_layout es
-    xkb_model pc105
-    xkb_options caps:escape
-}
-
-# current keyboard
+# kinesis keyboard
 input "10730:866:Kinesis_Corporation_Adv360_Pro_Keyboard" {
     xkb_layout us(intl)
     xkb_model kinesis
+}
+
+# totem keyboard
+input "14908:2:GEIST_TOTEM" {
+    xkb_layout us(intl)
+}
+input "14908:2:GEIST_TOTEM_Keyboard" {
+    xkb_layout us(intl)
+}
+input "14908:2:GEIST_TOTEM_Consumer_Control" {
+    xkb_layout us(intl)
+}
+input "14908:2:GEIST_TOTEM_System_Control" {
+    xkb_layout us(intl)
+}
+
+# laptop keyboard
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout es
+    xkb_model pc105
+    xkb_options caps:escape
 }
 
 # company keyboard

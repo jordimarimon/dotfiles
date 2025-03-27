@@ -149,6 +149,8 @@ return {
             -- and also color the linenumber instead of addding a sign
             vim.diagnostic.config({
                 float = { border = "single" },
+                virtual_text = true,
+                virtual_lines = false,
                 signs = {
                     text = {
                         [vim.diagnostic.severity.ERROR] = '',
@@ -210,7 +212,8 @@ return {
             }
 
             for server_name, server_settings in pairs(servers) do
-                server_settings.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_settings.capabilities or {})
+                server_settings.capabilities = vim.tbl_deep_extend("force", {}, capabilities,
+                    server_settings.capabilities or {})
                 server_settings.on_init = function(client, _)
                     client.server_capabilities.semanticTokensProvider = nil
                 end
