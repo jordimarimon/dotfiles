@@ -1,11 +1,56 @@
--- Based on: https://github.com/Almo7aya/openingh.nvim
--- There is also GBrowse of fugitive
-
--- TODO: Look at snacks implementation:
---       https://github.com/folke/snacks.nvim/blob/main/docs/gitbrowse.md
+-- Based on:
+-- - https://github.com/Almo7aya/openingh.nvim
+-- - https://github.com/folke/snacks.nvim/blob/main/docs/gitbrowse.md
 
 local String = require("custom.string")
 local M = {}
+
+local remote_patterns = {
+    { "^(https?://.*)%.git$",               "%1" },
+    { "^git@(.+):(.+)%.git$",               "https://%1/%2" },
+    { "^git@(.+):(.+)$",                    "https://%1/%2" },
+    { "^git@(.+)/(.+)$",                    "https://%1/%2" },
+    { "^org%-%d+@(.+):(.+)%.git$",          "https://%1/%2" },
+    { "^ssh://git@(.*)$",                   "https://%1" },
+    { "^ssh://([^:/]+)(:%d+)/(.*)$",        "https://%1/%3" },
+    { "^ssh://([^/]+)/(.*)$",               "https://%1/%2" },
+    { "ssh%.dev%.azure%.com/v3/(.*)/(.*)$", "dev.azure.com/%1/_git/%2" },
+    { "^https://%w*@(.*)",                  "https://%1" },
+    { "^git@(.*)",                          "https://%1" },
+    { ":%d+",                               "" },
+    { "%.git$",                             "" },
+}
+
+local url_patterns = {
+    ["github%.com"] = {
+        branch = "/tree/{branch}",
+        branch_permalink = "/blob/{commit}",
+        file = "/blob/{branch}/{file}#L{line_start}-L{line_end}",
+        permalink = "/blob/{commit}/{file}#L{line_start}-L{line_end}",
+        commit = "/commit/{commit}",
+    },
+    ["gitlab%.com"] = {
+        branch = "/-/tree/{branch}",
+        branch_permalink = "/-/blob/{commit}",
+        file = "/-/blob/{branch}/{file}#L{line_start}-L{line_end}",
+        permalink = "/-/blob/{commit}/{file}#L{line_start}-L{line_end}",
+        commit = "/-/commit/{commit}",
+    },
+    ["bitbucket%.org"] = {
+        branch = "/src/{branch}",
+        branch_permalink = "/src/{commit}",
+        file = "/src/{branch}/{file}#lines-{line_start}:{line_end}",
+        permalink = "/src/{commit}/{file}#lines-{line_start}:{line_end}",
+        commit = "/commits/{commit}",
+    },
+    ["git.sr.ht"] = {
+        branch = "/tree/{branch}",
+        branch_permalink = "/tree/{commit}",
+        file = "/tree/{branch}/item/{file}",
+        permalink = "/tree/{commit}/item/{file}#L{line_start}",
+        commit = "/commit/{commit}",
+    },
+}
 
 local priority = {
     BRANCH = 1,
@@ -17,92 +62,93 @@ local state = {
 }
 
 -- get the active buf relative file path form the .git
-local function get_current_relative_file_path()
-  local absolute_file_path = vim.api.nvim_buf_get_name(0)
-  local git_path = vim.fn.system("git rev-parse --show-toplevel")
-  local relative_file_path_components = String.split(string.sub(absolute_file_path, git_path:len() + 1), "/")
-  local encoded_components = {}
+local function get_relative_file_path()
+    local absolute_file_path = vim.api.nvim_buf_get_name(0)
+    local git_path = vim.fn.system("git rev-parse --show-toplevel")
+    local relative_file_path_components = String.split(string.sub(absolute_file_path, git_path:len() + 1), "/")
+    local encoded_components = {}
 
-  for i, path_component in pairs(relative_file_path_components) do
-    table.insert(encoded_components, i, String.encode_uri_component(path_component))
-  end
+    for i, path_component in pairs(relative_file_path_components) do
+        table.insert(encoded_components, i, String.encode_uri_component(path_component))
+    end
 
-  return "/" .. table.concat(encoded_components, "/")
+    return table.concat(encoded_components, "/")
 end
 
 -- Get the current working branch
 --- @return string
-local function get_current_branch()
-  return String.encode_uri_component(String.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD")))
+local function get_branch()
+    return String.trim(vim.fn.system("git rev-parse --abbrev-ref HEAD"))
 end
 
 -- Get the commit hash of the most recent commit
 --- @return string
-local function get_current_commit_hash()
-  return String.encode_uri_component(String.trim(vim.fn.system("git rev-parse HEAD")))
-end
-
---- @param url string
-local function parse_remote(url)
-  -- The URL can be of type:
-  -- http://domain/user_or_org/reponame
-  -- https://domain/user_or_org/reponame
-  -- https://domain/user_or_org/group/reponame
-  -- git@domain:user_or_org/reponame.git
-  -- ssh://git@domain/user_or_org/reponame.git
-  -- ssh://org-e2345@domain/org/reponame.git
-  local matches = { string.find(url, "^.+[@/]([%w%.]+%.%w+)[/:](.+)/(%S+)") }
-
-  if matches[1] == nil then
-    return nil
-  end
-
-  local _, _, host, user_or_org, repo_name = unpack(matches)
-
-  return {
-      host = host,
-      user_or_org = user_or_org,
-      reponame = string.gsub(repo_name, ".git", ""),
-  }
+local function get_commit_hash()
+    return String.trim(vim.fn.system("git rev-parse HEAD"))
 end
 
 --- @return string|nil
-local function get_repo_url()
-    -- Get the remote
-    local remote = String.trim(vim.fn.system("git config remote.pushDefault"))
-    if not remote or remote == "" then
-        remote = "origin"
+local function get_repo()
+    -- Get the remote name
+    local remote_name = String.trim(vim.fn.system("git config remote.pushDefault"))
+    if not remote_name or remote_name == "" then
+        remote_name = "origin"
     end
 
-    -- Get the repository url
-    local git_url = String.trim(vim.fn.system("git config --get remote." .. remote .. ".url"))
-    if not git_url or git_url == "" then
-        vim.notify("No repository URL was found.", vim.log.levels.ERROR)
+    -- Get the remote url
+    local remote_url = String.trim(vim.fn.system("git config --get remote." .. remote_name .. ".url"))
+    if not remote_url or remote_url == "" then
+        vim.notify("No remote URL was found.", vim.log.levels.ERROR)
         return nil
     end
 
-    local parsed_url = parse_remote(git_url)
-    if not parsed_url then
-        vim.notify("Can't parse repository URL.", vim.log.levels.ERROR)
-        return nil
+    local url = remote_url
+    for _, pattern in ipairs(remote_patterns) do
+        url = url:gsub(pattern[1], pattern[2]) --[[@as string]]
     end
 
-    return string.format("https://%s/%s/%s", parsed_url.host, parsed_url.user_or_org, parsed_url.reponame)
+    return (url:find("https://") == 1 and url) or ("https://%s"):format(url)
+end
+
+local function get_url(repo, fields)
+    -- Bitbucket does not support branches with "/" in the name even when encoded.
+    -- They use a query parameter "at={branch}" with a permalink instead.
+    local is_branch = state.priority == priority.BRANCH and not fields.branch:find("/")
+
+    fields.line_start = fields.line_start or 1
+    fields.line_end = fields.line_end or 1
+    fields.branch = (fields.branch and String.encode_uri_component(fields.branch)) or ""
+    fields.commit = (fields.commit and String.encode_uri_component(fields.commit)) or ""
+
+    for remote, patterns in pairs(url_patterns) do
+        if repo:find(remote) then
+            local pattern = nil
+
+            if is_branch then
+                pattern = patterns["branch"]
+            else
+                pattern = (fields.file and patterns["permalink"]) or patterns["branch_permalink"]
+            end
+
+            return repo .. pattern:gsub("(%b{})", function(key)
+                return tostring(fields[key:sub(2, -2)] or key)
+            end)
+        end
+    end
+
+    return repo
 end
 
 function M.open_repo()
-    local repo_url = get_repo_url()
+    local repo = get_repo()
 
-    if not repo_url then
+    if not repo then
         return
     end
 
-    local url = ""
-    if state.priority == priority.BRANCH then
-        url = repo_url .. "/src/" .. get_current_branch()
-    else
-        url = repo_url .. "/src/" .. get_current_commit_hash()
-    end
+    local branch = get_branch()
+    local commit = get_commit_hash()
+    local url = get_url(repo, { branch = branch, commit = commit })
 
     vim.ui.open(url)
 
@@ -112,37 +158,33 @@ end
 --- @param line_start? integer
 --- @param line_end? integer
 function M.open_repo_file(line_start, line_end)
-    -- Get the absolute path of the buffer directory and escape any
-    -- square bracket in the path.
-    -- Square brackets have a special meaning in lua patterns.
-    local file_path = get_current_relative_file_path()
-    local repo_url = get_repo_url()
+    if line_start > line_end then
+        line_start, line_end = line_end, line_start
+    end
 
-    if not repo_url then
+    local file = get_relative_file_path()
+    local repo = get_repo()
+
+    if not repo then
         return
     end
 
-    local url = ""
-    if state.priority == priority.BRANCH then
-        url = repo_url .. "/src/" .. get_current_branch() .. file_path
-    else
-        url = repo_url .. "/src/" .. get_current_commit_hash() .. file_path
-    end
-
-    if line_start ~= 1 or line_end ~= 1 then
-        url = url .. "#lines-" .. line_start
-
-        if line_end ~= line_start then
-            url = url .. ":" .. line_end
-        end
-    end
+    local branch = get_branch()
+    local commit = get_commit_hash()
+    local url = get_url(repo, {
+        branch = branch,
+        commit = commit,
+        file = file,
+        line_start = line_start,
+        line_end = line_end,
+    })
 
     vim.ui.open(url)
 
     vim.notify("File opened in remote repository!", vim.log.levels.INFO)
 end
 
--- When the command executed with bang `!`, 
+-- When the command executed with bang `!`,
 -- prioritizes commit rather than branch.
 --- @param bang boolean
 function M.update_priority(bang)
