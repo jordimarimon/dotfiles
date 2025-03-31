@@ -157,12 +157,12 @@ return {
                 -- TODO: Improve it using the suggestions in:
                 -- https://github.com/nvim-telescope/telescope.nvim/issues/2014
                 path_display = { "truncate", "filename_first" },
-                layout_strategy = "horizontal",
+                layout_strategy = "vertical",
                 sorting_strategy = "ascending",
                 layout_config = {
                     prompt_position = "top",
                     height = 0.95,
-                    mirror = false,
+                    mirror = true,
                 },
             },
             pickers = {
