@@ -111,10 +111,6 @@ local function get_repo()
 end
 
 local function get_url(repo, fields)
-    -- Bitbucket does not support branches with "/" in the name even when encoded.
-    -- They use a query parameter "at={branch}" with a permalink instead.
-    local is_branch = state.priority == priority.BRANCH and not fields.branch:find("/")
-
     fields.line_start = fields.line_start or 1
     fields.line_end = fields.line_end or 1
     fields.branch = (fields.branch and String.encode_uri_component(fields.branch)) or ""
@@ -124,10 +120,20 @@ local function get_url(repo, fields)
         if repo:find(remote) then
             local pattern = nil
 
-            if is_branch then
-                pattern = patterns["branch"]
+            if fields.file then
+                if state.priority == priority.BRANCH then
+                    pattern = patterns["file"]
+                else
+                    pattern = patterns["permalink"]
+                end
             else
-                pattern = (fields.file and patterns["permalink"]) or patterns["branch_permalink"]
+                -- Bitbucket does not support branches with "/" in the name even when encoded.
+                -- They use a query parameter "at={branch}" with a permalink instead.
+                if state.priority == priority.BRANCH and not fields.branch:find("/") then
+                    pattern = patterns["branch"]
+                else
+                    pattern = patterns["branch_permalink"]
+                end
             end
 
             return repo .. pattern:gsub("(%b{})", function(key)

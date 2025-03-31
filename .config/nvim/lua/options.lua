@@ -90,7 +90,6 @@ vim.opt.foldenable = false
 vim.o.foldlevel = 99
 vim.opt.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-vim.o.foldtext = ""
 vim.opt.foldcolumn = "0"
 vim.opt.fillchars:append({ fold = " " })
 
