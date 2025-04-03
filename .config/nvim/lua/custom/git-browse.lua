@@ -116,20 +116,22 @@ local function get_url(repo, fields)
     fields.branch = (fields.branch and String.encode_uri_component(fields.branch)) or ""
     fields.commit = (fields.commit and String.encode_uri_component(fields.commit)) or ""
 
+    -- Bitbucket does not support branches with "/" in the name even when encoded.
+    -- They use a query parameter "at={branch}" with a permalink instead.
+    local has_slash_in_branch = fields.branch:find("/")
+
     for remote, patterns in pairs(url_patterns) do
         if repo:find(remote) then
             local pattern = nil
 
             if fields.file then
-                if state.priority == priority.BRANCH then
+                if state.priority == priority.BRANCH and not has_slash_in_branch then
                     pattern = patterns["file"]
                 else
                     pattern = patterns["permalink"]
                 end
             else
-                -- Bitbucket does not support branches with "/" in the name even when encoded.
-                -- They use a query parameter "at={branch}" with a permalink instead.
-                if state.priority == priority.BRANCH and not fields.branch:find("/") then
+                if state.priority == priority.BRANCH and not has_slash_in_branch then
                     pattern = patterns["branch"]
                 else
                     pattern = patterns["branch_permalink"]
