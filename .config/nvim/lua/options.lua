@@ -72,7 +72,7 @@ vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 
 -- Set completeopt to have a better completion experience
-vim.opt.completeopt = "menuone,noselect"
+vim.opt.completeopt = "fuzzy,menuone,noselect"
 
 -- Enables 24-bit RGB color in the TUI
 vim.opt.termguicolors = true

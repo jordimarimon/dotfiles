@@ -5,13 +5,16 @@
             {
                 "language": [
                     "typescript",
-                    "javascript"
+                    "typescriptreact",
+                    "javascript",
+                    "javascriptreact"
                 ],
                 "path": "./typescript.json"
             },
             {
                 "language": [
-                    "html"
+                    "html",
+                    "htmlangular"
                 ],
                 "path": "./html.json"
             }
