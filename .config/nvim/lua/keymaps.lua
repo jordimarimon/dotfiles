@@ -94,6 +94,9 @@ vim.keymap.set("n", "<leader>do", function()
     require("custom.delete-outer-scope").remove()
 end, { noremap = true, silent = true, desc = "[D]elete [O]uter scope" })
 
+-- List all loaded buffers and populates the prompt for changing to a specific buffer
+vim.keymap.set("n", "gb", ":ls<CR>:b<Space>", { noremap = true, silent = true, desc = "Search in loaded buffers" })
+
 -- Save current word for later substitute command
 vim.keymap.set({ "n", "v" }, "<leader>s", function()
     local mode = vim.fn.mode()
