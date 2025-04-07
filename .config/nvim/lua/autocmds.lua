@@ -124,3 +124,19 @@ vim.api.nvim_create_autocmd({ "LspDetach" }, {
         client:stop()
     end,
 })
+
+-- Search query using Google
+vim.api.nvim_create_user_command("Google", function(o)
+    local escaped = require("custom.url").encode(o.args)
+    local url = ("https://www.google.com/search?q=%s"):format(escaped)
+    vim.ui.open(url)
+    print("Google search done!")
+end, { nargs = 1, desc = "Search using google" })
+
+-- Search query using DuckDuckGo
+vim.api.nvim_create_user_command("DuckDuckGo", function(o)
+    local escaped = require("custom.url").encode(o.args)
+    local url = ("https://duckduckgo.com/?q=%s"):format(escaped)
+    vim.ui.open(url)
+    print("DuckDuckGo search done!")
+end, { nargs = 1, desc = "Search using duckduckgo" })

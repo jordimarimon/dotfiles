@@ -3,6 +3,7 @@
 -- - https://github.com/folke/snacks.nvim/blob/main/docs/gitbrowse.md
 
 local String = require("custom.string")
+local Url = require("custom.url")
 local M = {}
 
 local remote_patterns = {
@@ -69,7 +70,7 @@ local function get_relative_file_path()
     local encoded_components = {}
 
     for i, path_component in pairs(relative_file_path_components) do
-        table.insert(encoded_components, i, String.encode_uri_component(path_component))
+        table.insert(encoded_components, i, Url.encode(path_component))
     end
 
     return table.concat(encoded_components, "/")
@@ -113,8 +114,8 @@ end
 local function get_url(repo, fields)
     fields.line_start = fields.line_start or 1
     fields.line_end = fields.line_end or 1
-    fields.branch = (fields.branch and String.encode_uri_component(fields.branch)) or ""
-    fields.commit = (fields.commit and String.encode_uri_component(fields.commit)) or ""
+    fields.branch = (fields.branch and Url.encode(fields.branch)) or ""
+    fields.commit = (fields.commit and Url.encode(fields.commit)) or ""
 
     -- Bitbucket does not support branches with "/" in the name even when encoded.
     -- They use a query parameter "at={branch}" with a permalink instead.

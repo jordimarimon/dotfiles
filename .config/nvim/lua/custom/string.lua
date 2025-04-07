@@ -20,16 +20,16 @@ function M.split(value, sep)
     return result
 end
 
--- url encode
--- see: https://datatracker.ietf.org/doc/html/rfc3986#section-2.3
---- @param url string|number
+--- @param c string
 --- @return string
-function M.encode_uri_component(url)
-    url = tostring(url)
+function M.char_to_hex(c)
+    return string.format("%%%02X", string.byte(c))
+end
 
-    return (url:gsub("[^%w_~%.%-]", function(c)
-        return url.format("%%%02X", url.byte(c))
-    end))
+--- @param x string
+--- @return string
+function M.hex_to_char(x)
+    return string.char(tonumber(x, 16))
 end
 
 return M
