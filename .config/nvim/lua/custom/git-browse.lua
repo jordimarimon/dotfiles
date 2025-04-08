@@ -126,13 +126,13 @@ local function get_url(repo, fields)
             local pattern = nil
 
             if fields.file then
-                if state.priority == priority.BRANCH and not has_slash_in_branch then
+                if state.priority == priority.BRANCH and has_slash_in_branch ~= nil then
                     pattern = patterns["file"]
                 else
                     pattern = patterns["permalink"]
                 end
             else
-                if state.priority == priority.BRANCH and not has_slash_in_branch then
+                if state.priority == priority.BRANCH and has_slash_in_branch ~= nil then
                     pattern = patterns["branch"]
                 else
                     pattern = patterns["branch_permalink"]
