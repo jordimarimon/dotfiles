@@ -140,3 +140,38 @@ vim.api.nvim_create_user_command("DuckDuckGo", function(o)
     vim.ui.open(url)
     print("DuckDuckGo search done!")
 end, { nargs = 1, desc = "Search using duckduckgo" })
+
+-- Translate text using Google
+vim.api.nvim_create_user_command("Translate", function(o)
+    local src_lang = o.fargs[1]
+    local target_lang = o.fargs[2]
+
+    local text = ""
+    if o.range ~= 0 then
+        local start_pos  = vim.fn.getpos("'<")
+        local start_line = start_pos[2]
+        local start_col  = start_pos[3]
+
+        local end_pos    = vim.fn.getpos("'>")
+        local end_line   = end_pos[2]
+        local end_col    = end_pos[3]
+
+        if start_line == end_line then
+            local line = vim.api.nvim_buf_get_lines(0, start_line - 1, start_line, false)[1]
+            text = string.sub(line, start_col, end_col)
+        else
+            local lines   = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
+            lines[1]      = string.sub(lines[1], start_col)
+            lines[#lines] = string.sub(lines[#lines], 1, end_col)
+            text          = table.concat(lines, "\n")
+        end
+    else
+        text = table.concat(o.fargs, " ", 3, #o.fargs)
+    end
+
+    local escaped = require("custom.url").encode(text)
+    local url = ("https://translate.google.com/?sl=%s&tl=%s&text=%s&op=translate"):format(src_lang, target_lang, escaped)
+
+    vim.ui.open(url)
+    print("Translation done!")
+end, { nargs = "+", range = true, desc = "" })
