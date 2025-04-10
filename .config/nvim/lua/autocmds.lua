@@ -148,22 +148,29 @@ vim.api.nvim_create_user_command("Translate", function(o)
 
     local text = ""
     if o.range ~= 0 then
-        local start_pos  = vim.fn.getpos("'<")
-        local start_line = start_pos[2]
-        local start_col  = start_pos[3]
+        local v_start_pos         = vim.fn.getpos("'<")
+        local v_start_line        = v_start_pos[2]
+        local v_start_col         = v_start_pos[3]
 
-        local end_pos    = vim.fn.getpos("'>")
-        local end_line   = end_pos[2]
-        local end_col    = end_pos[3]
+        local v_end_pos           = vim.fn.getpos("'>")
+        local v_end_line          = v_end_pos[2]
+        local v_end_col           = v_end_pos[3]
 
-        if start_line == end_line then
-            local line = vim.api.nvim_buf_get_lines(0, start_line - 1, start_line, false)[1]
-            text = string.sub(line, start_col, end_col)
+        local is_visual_selection = v_start_line == o.line1 and v_end_line == o.line2
+
+        if is_visual_selection then
+            if v_start_line == v_end_line then
+                local line = vim.api.nvim_buf_get_lines(0, v_start_line - 1, v_start_line, false)[1]
+                text = string.sub(line, v_start_col, v_end_col)
+            else
+                local lines   = vim.api.nvim_buf_get_lines(0, v_start_line - 1, v_end_line, false)
+                lines[1]      = string.sub(lines[1], v_start_col)
+                lines[#lines] = string.sub(lines[#lines], 1, v_end_col)
+                text          = table.concat(lines, "\n")
+            end
         else
-            local lines   = vim.api.nvim_buf_get_lines(0, start_line - 1, end_line, false)
-            lines[1]      = string.sub(lines[1], start_col)
-            lines[#lines] = string.sub(lines[#lines], 1, end_col)
-            text          = table.concat(lines, "\n")
+            local lines = vim.api.nvim_buf_get_lines(0, o.line1 - 1, o.line2, false)
+            text = table.concat(lines, "\n")
         end
     else
         text = table.concat(o.fargs, " ", 3, #o.fargs)
