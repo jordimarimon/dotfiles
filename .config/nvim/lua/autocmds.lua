@@ -11,6 +11,85 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- Yank-Ring
+local prev_reg0_content = vim.fn.getreg("0")
+vim.api.nvim_create_autocmd("TextYankPost", {
+    desc = "Make yank work as delete and use the registers 1-9",
+    group = vim.api.nvim_create_augroup("YankRing", { clear = true }),
+    callback = function()
+        if vim.v.event.operator == "y" then
+            for i = 9, 2, -1 do
+                vim.fn.setreg(tostring(i), vim.fn.getreg(tostring(i - 1)))
+            end
+            vim.fn.setreg("1", prev_reg0_content)
+            prev_reg0_content = vim.fn.getreg("0")
+        end
+    end,
+})
+
+-- Highlight current line on active window only
+local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
+vim.api.nvim_create_autocmd("WinEnter", {
+    desc = "show cursorline",
+    callback = function() vim.wo.cursorline = true end,
+    group = active_line_highligh
+})
+vim.api.nvim_create_autocmd("WinLeave", {
+    desc = "hide cursorline",
+    callback = function() vim.wo.cursorline = false end,
+    group = active_line_highligh
+})
+
+-- Use vertical splits for help windows
+local vertical_help = vim.api.nvim_create_augroup("VerticalHelp", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+    desc = "make help split vertical",
+    pattern = "help",
+    command = "wincmd L",
+    group = vertical_help
+})
+
+-- Prevent default ftplugins from overriding some options
+vim.api.nvim_create_autocmd("BufEnter", {
+    callback = function(args)
+        local buftype = vim.bo[args.buf].buftype
+        local filetype = vim.bo[args.buf].filetype
+
+        if not vim.api.nvim_buf_is_valid(args.buf) or buftype ~= "" or filetype == "" then
+            return
+        end
+
+        -- Don't insert comments when using "o" or "O"
+        vim.opt.formatoptions:remove({ "o", "r" })
+
+        -- Change how many lines scrolls C-d and C-u
+        vim.o.scroll = 5
+    end
+})
+
+-- Stop LSP clients when they're not attached to any buffer
+vim.api.nvim_create_autocmd({ "LspDetach" }, {
+    group = vim.api.nvim_create_augroup("LspStopWithLastClient", {}),
+    desc = "Stop lsp client when no buffer is attached",
+    callback = function(args)
+        local client = vim.lsp.get_client_by_id(args.data.client_id)
+
+        if not client or not client.attached_buffers then
+            return
+        end
+
+        for buf_id in pairs(client.attached_buffers) do
+            if buf_id ~= args.buf then
+                return
+            end
+        end
+
+        print('LSP client closed!')
+
+        client:stop()
+    end,
+})
+
 -- https://neovim.io/doc/user/diff.html#%3ADiffOrig
 vim.api.nvim_create_user_command("DiffOrig", function()
     -- Get the current buffer's name
@@ -57,73 +136,10 @@ vim.api.nvim_create_user_command("GitFile", function(opts)
     git.open_repo_file(opts.line1, opts.line2)
 end, { range = true, bang = true, nargs = "*" })
 
--- Highlight current line on active window only
-local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
-vim.api.nvim_create_autocmd("WinEnter", {
-    desc = "show cursorline",
-    callback = function() vim.wo.cursorline = true end,
-    group = active_line_highligh
-})
-vim.api.nvim_create_autocmd("WinLeave", {
-    desc = "hide cursorline",
-    callback = function() vim.wo.cursorline = false end,
-    group = active_line_highligh
-})
-
--- Use vertical splits for help windows
-local vertical_help = vim.api.nvim_create_augroup("VerticalHelp", { clear = true })
-vim.api.nvim_create_autocmd("FileType", {
-    desc = "make help split vertical",
-    pattern = "help",
-    command = "wincmd L",
-    group = vertical_help
-})
-
 -- Open `:messages` command in a buffer
 vim.api.nvim_create_user_command("Messages", function()
     require("custom.command-scratch-buffer").redirect("messages")
 end, { nargs = 0 })
-
--- Prevent default ftplugins from overriding some options
-vim.api.nvim_create_autocmd("BufEnter", {
-    callback = function(args)
-        local buftype = vim.bo[args.buf].buftype
-        local filetype = vim.bo[args.buf].filetype
-
-        if not vim.api.nvim_buf_is_valid(args.buf) or buftype ~= "" or filetype == "" then
-            return
-        end
-
-        -- Don't insert comments when using "o" or "O"
-        vim.opt.formatoptions:remove({ "o", "r" })
-
-        -- Change how many lines scrolls C-d and C-u
-        vim.o.scroll = 5
-    end
-})
-
--- Stop LSP clients when they're not attached to any buffer
-vim.api.nvim_create_autocmd({ "LspDetach" }, {
-    group = vim.api.nvim_create_augroup("LspStopWithLastClient", {}),
-    desc = "Stop lsp client when no buffer is attached",
-    callback = function(args)
-        local client = vim.lsp.get_client_by_id(args.data.client_id)
-
-        if not client or not client.attached_buffers then
-            return
-        end
-
-        for buf_id in pairs(client.attached_buffers) do
-            if buf_id ~= args.buf then
-                return
-            end
-        end
-
-        print('LSP client closed!')
-
-        client:stop()
-    end,
-})
 
 -- Search query using Google
 vim.api.nvim_create_user_command("Google", function(o)
