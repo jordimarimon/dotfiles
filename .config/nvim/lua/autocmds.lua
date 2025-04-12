@@ -198,3 +198,25 @@ vim.api.nvim_create_user_command("Translate", function(o)
     vim.ui.open(url)
     print("Translation done!")
 end, { nargs = "+", range = true, desc = "" })
+
+-- Does HTTP requests that follow JetBrains http syntax
+-- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
+vim.api.nvim_create_user_command("HttpRequest", function()
+    require("custom.http").request()
+end, { nargs = 0, desc = "Do Http request" })
+
+vim.api.nvim_create_user_command("HttpChange", function()
+    require("custom.http").change_env()
+end, { nargs = 0, desc = "Change HTTP environment" })
+
+vim.api.nvim_create_user_command("HttpView", function()
+    require("custom.http").select_from_cache()
+end, { nargs = 0, desc = "View a previously done HTTP response" })
+
+vim.api.nvim_create_user_command("HttpCacheClear", function()
+    require("custom.http").clear_cache()
+end, { nargs = 0, desc = "Clear the cache of HTTP responses" })
+
+vim.api.nvim_create_user_command("HttpCookieClear", function()
+    require("custom.http").clear_cookie()
+end, { nargs = 0, desc = "Clear the saved cookie" })

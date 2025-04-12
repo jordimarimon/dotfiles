@@ -1,5 +1,5 @@
 local treesitter_utils = require("custom.treesitter")
-local M = {};
+local M = {}
 
 function M.add_async()
     vim.api.nvim_feedkeys("t", "n", true)
@@ -29,4 +29,3 @@ function M.add_async()
 end
 
 return M
-

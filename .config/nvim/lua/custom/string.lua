@@ -9,6 +9,7 @@ end
 
 --- @param value string
 --- @param sep string
+--- @return table
 function M.split(value, sep)
     local result = {}
     local reg = value.format("([^%s]+)", sep)
