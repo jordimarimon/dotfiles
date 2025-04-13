@@ -233,6 +233,10 @@ vim.api.nvim_create_user_command("HttpRequest", function()
     require("custom.http").request()
 end, { nargs = 0, desc = "Do Http request" })
 
+vim.api.nvim_create_user_command("HttpCopy", function()
+    require("custom.http").copy()
+end, { nargs = 0, desc = "Copy curl command to clipboard" })
+
 vim.api.nvim_create_user_command("HttpChange", function()
     require("custom.http").change_env()
 end, { nargs = 0, desc = "Change HTTP environment" })

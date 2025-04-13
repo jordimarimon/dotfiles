@@ -35,14 +35,18 @@ vim.fn.sign_define("MarkSign", {
     hl_mode = "combine",
 })
 
+---@param char string
 local function is_upper(char)
     return (65 <= char:byte() and char:byte() <= 90)
 end
 
+---@param char string
 local function is_lower(char)
     return (97 <= char:byte() and char:byte() <= 122)
 end
 
+---@param buffer integer
+---@param data vim.fn.getmarklist.ret.item
 local function set_mark(buffer, data)
     local line = data.pos[2]
     local mark_name = data.mark
@@ -63,7 +67,7 @@ local function set_mark(buffer, data)
         priority = 10,
     })
 
-    vim.hl.range(buffer, state.ns_id, "MarkHighlight", { line, 0 }, { line - 1, -1 })
+    -- vim.hl.range(buffer, state.ns_id, "MarkHighlight", { line, 0 }, { line - 1, -1 })
 end
 
 --- @param bufnr integer

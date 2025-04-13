@@ -3,14 +3,31 @@
 -- https://github.com/mistweaverco/kulala.nvim
 -- https://github.com/oysandvik94/curl.nvim
 
+-- More information about the syntax:
+-- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
+
 local fs = require("custom.fs")
 local String = require("custom.string")
 
 ---@class Request
+---@field ok boolean
 ---@field method string|nil
 ---@field url string|nil
 ---@field headers table
 ---@field body string[]
+---@field curl_cmd string[]
+
+---@class Response
+---@field status integer
+---@field headers table
+---@field body string[]
+
+---@class CachedRequest
+---@field request Request
+---@field response Response
+
+---@class ParseOptions
+---@field shell boolean
 
 local M = {}
 
@@ -18,7 +35,7 @@ local state = {
     cookie = nil,
     env = {
         available = nil,
-        selected = nil,
+        selected = "dev",
     },
     cache = {},
     window_id = -1,
@@ -31,12 +48,8 @@ local parse_stages = {
     BODY = "body",
 }
 
---- @param on_success (fun():nil)|nil
-local function read_env(on_success)
+local function read_env()
     if state.env.available ~= nil then
-        if on_success ~= nil then
-            on_success()
-        end
         return
     end
 
@@ -79,8 +92,6 @@ local function read_env(on_success)
     end
 
     state.env.available = json_value
-
-    M.change_env(on_success)
 end
 
 local function toggle_floating_window()
@@ -120,33 +131,63 @@ local function toggle_floating_window()
     end, { buffer = state.buffer_id, noremap = true })
 end
 
----@param obj table
+---@param value string
 ---@return string[]
-local function format_json(obj)
-    local ok, json = pcall(vim.json.encode, obj)
-    if not ok then
-        return { "" }
-    end
-
-    local job = vim.system({ "jq", "." }, { text = true, stdin = json })
+local function format_json(value)
+    local job = vim.system({ "jq", "." }, { text = true, stdin = value })
     local result = job:wait()
 
     if result.code ~= 0 then
-        return { "" }
+        return String.split(value, "\n")
     end
 
     return String.split(result.stdout, "\n")
 end
 
-local function render_markdown(request, response)
-    if vim.fn.executable("jq") == 0 then
-        vim.notify("Can't find jq executable.", vim.log.levels.ERROR)
-        return
+---@param mime_type string
+---@param value string
+---@return string[]
+local function format_value(mime_type, value)
+    if mime_type == "application/json" then
+        return format_json(value)
     end
 
-    local output = {}
+    vim.notify("Format not supported " .. mime_type, vim.log.levels.WARN)
 
-    table.insert(output, "# HTTP REQUEST RESULT")
+    return String.split(value, "\n")
+end
+
+---@param mime_type string
+---@return string
+local function get_code_block_type(mime_type)
+    if mime_type == "application/json" then
+        return "json"
+    end
+
+    return ""
+end
+
+---@param headers table
+---@return string[]
+local function format_headers(headers)
+    local ok, json_str = pcall(vim.json.encode, headers)
+
+    if not ok then
+        vim.notify("Unable to format headers.", vim.log.levels.ERROR)
+        return { "" }
+    end
+
+    return format_json(json_str)
+end
+
+---@param cached_request CachedRequest
+local function render_markdown(cached_request)
+    local output = {}
+    local request, response = cached_request.request, cached_request.response
+    local req_body_mime_type = request.headers["Content-Type"] or ""
+    local res_body_mime_type = response.headers["Content-Type"] or ""
+
+    table.insert(output, "# HTTP RESULT")
     table.insert(output, "")
 
     -- Request
@@ -161,7 +202,7 @@ local function render_markdown(request, response)
         table.insert(output, "## REQUEST HEADERS")
         table.insert(output, "")
         table.insert(output, "```json")
-        vim.list_extend(output, format_json(request.headers))
+        vim.list_extend(output, format_headers(request.headers))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -169,8 +210,8 @@ local function render_markdown(request, response)
     if #request.body ~= 0 then
         table.insert(output, "## REQUEST BODY")
         table.insert(output, "")
-        table.insert(output, "```json")
-        vim.list_extend(output, request.body)
+        table.insert(output, "```" .. get_code_block_type(req_body_mime_type))
+        vim.list_extend(output, format_value(req_body_mime_type, table.concat(request.body, "\n")))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -184,14 +225,14 @@ local function render_markdown(request, response)
     table.insert(output, "## RESPONSE HEADERS")
     table.insert(output, "")
     table.insert(output, "```json")
-    vim.list_extend(output, format_json(response.headers))
+    vim.list_extend(output, format_headers(response.headers))
     table.insert(output, "```")
     table.insert(output, "")
 
     table.insert(output, "## RESPONSE BODY")
     table.insert(output, "")
-    table.insert(output, "```json")
-    vim.list_extend(output, format_json(response.body))
+    table.insert(output, "```" .. get_code_block_type(res_body_mime_type))
+    vim.list_extend(output, format_value(res_body_mime_type, table.concat(response.body, "\n")))
     table.insert(output, "```")
 
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
@@ -200,8 +241,6 @@ end
 ---@param request Request
 ---@param response vim.SystemCompleted
 local function process_response(request, response)
-    vim.notify("HTTP response done!", vim.log.levels.INFO)
-
     if not request.url or not request.method then
         return
     end
@@ -221,12 +260,12 @@ local function process_response(request, response)
 
     local header_str, body_str = response.stdout:match("^(.-)\n\n(.*)$")
 
-    local status = nil
+    local status = -1
     local headers = {}
     local header_lines = header_str:gmatch("[^\n]+")
     for line in header_lines do
         if vim.startswith(line, "HTTP") then
-            status = line:match("HTTP/%d+%.%d+ (%d+)")
+            status = math.floor(line:match("HTTP/%d+%.%d+ (%d+)"))
             goto continue
         end
 
@@ -238,22 +277,17 @@ local function process_response(request, response)
         ::continue::
     end
 
-    local ok, body = pcall(vim.json.decode, body_str)
-    if not ok then
-        vim.notify("Error parsing HTTP response body.", vim.log.levels.ERROR)
-        return
-    end
-
     if headers["Set-Cookie"] then
         state.cookie = String.split(headers["Set-Cookie"], ";")[1]
     end
 
+    ---@type CachedRequest
     local cached_request = {
         request = request,
         response = {
             status = status,
             headers = headers,
-            body = body,
+            body = String.split(tostring(body_str), "\n"),
         },
     }
 
@@ -262,16 +296,42 @@ local function process_response(request, response)
 
     toggle_floating_window()
 
-    render_markdown(cached_request.request, cached_request.response)
+    render_markdown(cached_request)
 
     vim.notify("Response parsed!", vim.log.levels.INFO)
 end
 
-local function make_request()
+---@param request Request
+local function execute_curl(request)
+    if vim.fn.executable("curl") == 0 then
+        vim.notify("Can't find curl executable.", vim.log.levels.ERROR)
+        return
+    end
+
+    vim.notify("Making HTTP request...", vim.log.levels.INFO)
+
+    vim.system(request.curl_cmd, { text = true }, function(response)
+        vim.schedule(function() process_response(request, response) end)
+    end)
+end
+
+---@param options ParseOptions
+---@return Request
+local function parse_request(options)
+    ---@type Request
+    local request = {
+        ok = false,
+        method = nil,
+        url = nil,
+        headers = {},
+        body = {},
+        curl_cmd = {},
+    }
+
     local ft = vim.bo.filetype
     if ft ~= "http" then
         vim.notify("Expected the HTTP request to be in an http filetype", vim.log.levels.ERROR)
-        return
+        return request
     end
 
     -- Cursor is expected to be at the first line of the HTTP request
@@ -282,16 +342,8 @@ local function make_request()
     local lines = vim.api.nvim_buf_get_lines(0, start_line - 1, total_lines, false)
     if not lines or #lines == 0 then
         vim.notify("No lines in current buffer to parse", vim.log.levels.ERROR)
-        return
+        return request
     end
-
-    -- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
-    local request = {
-        method = nil,
-        url = nil,
-        headers = {},
-        body = {},
-    }
 
     local parse_stage = parse_stages.METHOD_URL
 
@@ -336,7 +388,7 @@ local function make_request()
 
     if not request.url then
         vim.notify("Unable to parse URL of request", vim.log.levels.ERROR)
-        return
+        return request
     end
 
     local missing_env = false
@@ -350,7 +402,7 @@ local function make_request()
         return ""
     end)
 
-    local curl_cmd = { "curl", "-i", "-X", request.method, request.url }
+    request.curl_cmd = { "curl", "-i", "-X", request.method, request.url }
 
     if state.cookie ~= nil then
         request.headers["Cookie"] = state.cookie
@@ -368,8 +420,12 @@ local function make_request()
 
         request.headers[header_name] = value
 
-        table.insert(curl_cmd, "-H")
-        table.insert(curl_cmd, string.format("%s: %s", header_name, value))
+        if options.shell then
+            table.insert(request.curl_cmd, "-H " .. "\"" .. string.format("%s: %s", header_name, value) .. "\"")
+        else
+            table.insert(request.curl_cmd, "-H")
+            table.insert(request.curl_cmd, string.format("%s: %s", header_name, value))
+        end
     end
 
     if #request.body ~= 0 then
@@ -390,31 +446,30 @@ local function make_request()
 
         request.body = new_body_lines
 
-        table.insert(curl_cmd, "-d")
-        table.insert(curl_cmd, table.concat(new_body_lines, "\n"))
+        if options.shell then
+            table.insert(request.curl_cmd, "--data @- << EOF\n" .. table.concat(new_body_lines, "\n") .. "\nEOF")
+        else
+            table.insert(request.curl_cmd, "--data")
+            table.insert(request.curl_cmd, table.concat(new_body_lines, "\n"))
+        end
     end
 
     if missing_env then
-        vim.notify("Found environment variables but not environment file to use.", vim.log.levels.ERROR)
-        return
+        vim.notify("Found variables not present in the environment file.", vim.log.levels.ERROR)
+        return request
     end
 
-    if vim.fn.executable("curl") == 0 then
-        vim.notify("Can't find curl executable.", vim.log.levels.ERROR)
-        return
-    end
-
-    vim.notify("Making HTTP request...", vim.log.levels.INFO)
-
-    vim.system(curl_cmd, { text = true }, function(response)
-        vim.schedule(function() process_response(request, response) end)
-    end)
+    request.ok = true
+    return request
 end
 
---- @param on_success (fun():nil)|nil
-function M.change_env(on_success)
+function M.change_env()
     if state.env.available == nil then
-        read_env(on_success)
+        read_env()
+    end
+
+    if state.env.available == nil then
+        vim.notify("No environment file was found.", vim.log.levels.ERROR)
         return
     end
 
@@ -432,10 +487,6 @@ function M.change_env(on_success)
             end
 
             state.env.selected = choice
-
-            if on_success ~= nil then
-                on_success()
-            end
         end
     )
 end
@@ -467,7 +518,7 @@ function M.select_from_cache()
 
                     if choice == selected_choice then
                         toggle_floating_window()
-                        render_markdown(cached_request.request, cached_request.response)
+                        render_markdown(cached_request)
                         return
                     end
                 end
@@ -484,8 +535,30 @@ function M.clear_cookie()
     state.cookie = nil
 end
 
+function M.copy()
+    read_env()
+
+    local request = parse_request({ shell = true })
+
+    if not request.ok then
+        return
+    end
+
+    vim.fn.setreg("+", table.concat(request.curl_cmd, " \\\n"))
+
+    vim.notify("Curl command copied to clipboard!", vim.log.levels.INFO)
+end
+
 function M.request()
-    read_env(make_request)
+    read_env()
+
+    local request = parse_request({ shell = false })
+
+    if not request.ok then
+        return
+    end
+
+    execute_curl(request)
 end
 
 return M
