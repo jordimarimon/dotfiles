@@ -90,6 +90,34 @@ vim.api.nvim_create_autocmd({ "LspDetach" }, {
     end,
 })
 
+-- Marks
+-- Refresh on file write
+-- Refresh on buffer enter/read
+-- Clean up on buffer delete
+local group = vim.api.nvim_create_augroup("MarksAutocmds", { clear = true })
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
+    callback = function(args)
+        vim.defer_fn(function()
+            require("custom.marks").update(args.buf)
+        end, 200)
+    end,
+})
+vim.api.nvim_create_autocmd({ "BufEnter", "BufRead" }, {
+    group = group,
+    callback = function(args)
+        vim.defer_fn(function()
+            require("custom.marks").update(args.buf)
+        end, 200)
+    end,
+})
+vim.api.nvim_create_autocmd({ "BufDelete" }, {
+    group = group,
+    callback = function(args)
+        require("custom.marks").remove(args.buf)
+    end,
+})
+
 -- https://neovim.io/doc/user/diff.html#%3ADiffOrig
 vim.api.nvim_create_user_command("DiffOrig", function()
     -- Get the current buffer's name

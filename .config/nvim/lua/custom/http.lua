@@ -122,7 +122,7 @@ end
 
 ---@param obj table
 ---@return string[]
-local function prettyfy_json(obj)
+local function format_json(obj)
     local ok, json = pcall(vim.json.encode, obj)
     if not ok then
         return { "" }
@@ -161,7 +161,7 @@ local function render_markdown(request, response)
         table.insert(output, "## REQUEST HEADERS")
         table.insert(output, "")
         table.insert(output, "```json")
-        vim.list_extend(output, prettyfy_json(request.headers))
+        vim.list_extend(output, format_json(request.headers))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -184,14 +184,14 @@ local function render_markdown(request, response)
     table.insert(output, "## RESPONSE HEADERS")
     table.insert(output, "")
     table.insert(output, "```json")
-    vim.list_extend(output, prettyfy_json(response.headers))
+    vim.list_extend(output, format_json(response.headers))
     table.insert(output, "```")
     table.insert(output, "")
 
     table.insert(output, "## RESPONSE BODY")
     table.insert(output, "")
     table.insert(output, "```json")
-    vim.list_extend(output, prettyfy_json(response.body))
+    vim.list_extend(output, format_json(response.body))
     table.insert(output, "```")
 
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
