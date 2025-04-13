@@ -18,9 +18,9 @@ return {
                 ensure_installed = {
                     "c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
                     "javascript", "typescript", "php", "html",
-                    "css", "angular", "bash", "json",
+                    "css", "angular", "bash", "json", "jsonc", "json5",
                     "sql", "tsx", "yaml", "python", "editorconfig", "make",
-                    "markdown", "markdown_inline"
+                    "markdown", "markdown_inline", "http", "nginx", "sway",
                 },
                 auto_install = false,
                 sync_install = false,

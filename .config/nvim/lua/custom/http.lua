@@ -1,3 +1,8 @@
+-- Other plugins for inspiration:
+-- https://github.com/darrenburns/posting
+-- https://github.com/mistweaverco/kulala.nvim
+-- https://github.com/oysandvik94/curl.nvim
+
 local fs = require("custom.fs")
 local String = require("custom.string")
 
