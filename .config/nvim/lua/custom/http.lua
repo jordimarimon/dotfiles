@@ -469,7 +469,6 @@ function M.change_env()
     end
 
     if state.env.available == nil then
-        vim.notify("No environment file was found.", vim.log.levels.ERROR)
         return
     end
 
