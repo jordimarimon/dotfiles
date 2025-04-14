@@ -72,10 +72,14 @@ end
 
 --- @param bufnr integer
 function M.remove(bufnr)
-    local buftype = vim.bo[bufnr].buftype
-    local filetype = vim.bo[bufnr].filetype
+    local buffer = bufnr or vim.api.nvim_get_current_buf()
+    if not vim.api.nvim_buf_is_valid(buffer) then
+        return
+    end
 
-    if not vim.api.nvim_buf_is_valid(bufnr) or buftype ~= "" or filetype == "" then
+    local buftype = vim.bo[buffer].buftype
+    local filetype = vim.bo[buffer].filetype
+    if buftype ~= "" or filetype == "" then
         return
     end
 
@@ -86,10 +90,13 @@ end
 --- @param bufnr integer?
 function M.update(bufnr)
     local buffer = bufnr or vim.api.nvim_get_current_buf()
+    if not vim.api.nvim_buf_is_valid(buffer) then
+        return
+    end
+
     local buftype = vim.bo[buffer].buftype
     local filetype = vim.bo[buffer].filetype
-
-    if not vim.api.nvim_buf_is_valid(buffer) or buftype ~= "" or filetype == "" then
+    if buftype ~= "" or filetype == "" then
         return
     end
 

@@ -52,10 +52,13 @@ vim.api.nvim_create_autocmd("FileType", {
 -- Prevent default ftplugins from overriding some options
 vim.api.nvim_create_autocmd("BufEnter", {
     callback = function(args)
+        if not vim.api.nvim_buf_is_valid(args.buf) then
+            return
+        end
+
         local buftype = vim.bo[args.buf].buftype
         local filetype = vim.bo[args.buf].filetype
-
-        if not vim.api.nvim_buf_is_valid(args.buf) or buftype ~= "" or filetype == "" then
+        if buftype ~= "" or filetype == "" then
             return
         end
 
