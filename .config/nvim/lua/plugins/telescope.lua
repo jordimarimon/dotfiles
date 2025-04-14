@@ -188,6 +188,9 @@ return {
                         },
                     },
                 },
+                buffers = {
+                    previewer = false,
+                },
             },
             extensions = {
                 ["ui-select"] = {
