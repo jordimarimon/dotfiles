@@ -39,19 +39,12 @@ vim.api.nvim_set_keymap("i", "<C-l>", "<Right>", { desc = "Move to the right", s
 vim.api.nvim_set_keymap("i", "<C-j>", "<Down>", { desc = "Move down", silent = true })
 vim.api.nvim_set_keymap("i", "<C-k>", "<Up>", { desc = "Move up", silent = true })
 
--- Copy current buffer path to system clipboard
-vim.keymap.set("n", "<leader>yf", function() vim.fn.setreg("+", vim.fn.expand('%')) end,
-    { desc = "[C]opy [F]ile path", silent = true })
-
 -- To move between tabs
 vim.api.nvim_set_keymap("n", "<M-h>", ":tabp<CR>", { silent = true, noremap = true })
 vim.api.nvim_set_keymap("n", "<M-l>", ":tabn<CR>", { silent = true, noremap = true })
 vim.api.nvim_set_keymap("n", "<M-S-h>", ":-tabmove<CR>",
     { silent = true, noremap = true, desc = "[T]ab [M]ove [P]revious" })
 vim.api.nvim_set_keymap("n", "<M-S-l>", ":+tabmove<CR>", { silent = true, noremap = true, desc = "[T]ab [M]ove [N]ext" })
-
--- Reload the current file and delete other buffers
-vim.keymap.set("n", "<leader>rb", "<cmd>%bd|e#|bd#<CR>", { desc = "[R]eload [B]uffer", silent = true })
 
 -- I have the bad habit of not releasing the shift key when saving
 vim.api.nvim_create_user_command('Wa', 'wa', { desc = "Write all" })

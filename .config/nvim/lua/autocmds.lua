@@ -255,3 +255,22 @@ end, { nargs = 0, desc = "Clear the cache of HTTP responses" })
 vim.api.nvim_create_user_command("HttpCookieClear", function()
     require("custom.http").clear_cookie()
 end, { nargs = 0, desc = "Clear the saved cookie" })
+
+-- Copy current buffer path to system clipboard
+vim.api.nvim_create_user_command("YankPath", function()
+    vim.fn.setreg("+", vim.fn.expand('%'))
+end, { nargs = 0, desc = "Copy current buffer path to system clipboard" })
+
+-- Delete other buffers
+vim.api.nvim_create_user_command("ClearBuffers", function(opts)
+    local active_buff = vim.api.nvim_get_current_buf()
+    local all_buffers = vim.api.nvim_list_bufs()
+
+    for _, b in ipairs(all_buffers) do
+        if b ~= active_buff and vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted then
+            pcall(function()
+                vim.cmd((opts.bang and "bwipeout! " or "bdelete! ") .. b)
+            end)
+        end
+    end
+end, { nargs = 0, bang = true, desc = "Delete all buffers except the active one" })

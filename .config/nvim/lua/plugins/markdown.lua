@@ -16,13 +16,6 @@ return {
         },
         config = function()
             require("render-markdown").setup({
-                win_options = {
-                    -- FIXME: Remove it when the glitch in insert mode dissapears
-                    conceallevel = {
-                        default = 0,
-                        rendered = 0,
-                    },
-                },
                 code = {
                     above = "",
                     below = "",
