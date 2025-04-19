@@ -59,8 +59,8 @@ vim.keymap.set("v", "<", "<gv")
 vim.keymap.set("v", ">", ">gv")
 
 -- Keep current search result centered on the screen
-vim.keymap.set("n", "n", "nzz", { noremap = true })
-vim.keymap.set("n", "N", "Nzz", { noremap = true })
+vim.keymap.set("n", "n", ":keepjumps normal! nzz<CR>", { noremap = true })
+vim.keymap.set("n", "N", ":keepjumps normal! Nzz<CR>", { noremap = true })
 
 -- Keep current cursor position while entering and exiting insert mode
 vim.keymap.set("i", "<Esc>", function()
