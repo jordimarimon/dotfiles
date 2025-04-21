@@ -8,8 +8,13 @@ vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>", { silent = true })
 vim.keymap.set("t", "<esc><esc>", "<c-\\><c-n>", { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
+vim.keymap.set("n", "k", function()
+    return vim.v.count > 0 and "m'" .. vim.v.count .. "k" or "gk"
+end, { expr = true, silent = true })
+
+vim.keymap.set("n", "j", function()
+    return vim.v.count > 0 and "m'" .. vim.v.count .. "j" or "gj"
+end, { expr = true, silent = true })
 
 -- Move up and down only 5 lines. Sadly the "scroll" option
 -- gets overriden in a lot of places

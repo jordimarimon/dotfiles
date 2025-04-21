@@ -9,3 +9,15 @@ vim.filetype.add({
         [".*%.component%.html"] = "htmlangular",
     },
 })
+
+vim.filetype.add({
+    extension = {
+        env = "dotenv",
+    },
+    filename = {
+        [".env"] = "dotenv",
+    },
+    pattern = {
+        ["%.env%.[%w_.-]+"] = "dotenv",
+    },
+})
