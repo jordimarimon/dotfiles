@@ -158,14 +158,20 @@ vim.api.nvim_create_user_command("GitRepo", function(opts)
     local git = require("custom.git-browse")
     git.update_priority(opts.bang)
     git.open_repo()
-end, { range = true, bang = true, nargs = "*" })
+end, { bang = true, nargs = 0 })
+
+-- Open the git commit where HEAD is pointing
+vim.api.nvim_create_user_command("GitCommit", function(opts)
+    local git = require("custom.git-browse")
+    git.open_commit(opts.fargs[1])
+end, { nargs = "*" })
 
 -- Open the current file in the git remote repository in the browser
 vim.api.nvim_create_user_command("GitFile", function(opts)
     local git = require("custom.git-browse")
     git.update_priority(opts.bang)
     git.open_repo_file(opts.line1, opts.line2)
-end, { range = true, bang = true, nargs = "*" })
+end, { range = true, bang = true, nargs = 0 })
 
 -- Open `:messages` command in a buffer
 vim.api.nvim_create_user_command("Messages", function()

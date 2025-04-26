@@ -83,9 +83,11 @@ local function get_branch()
 end
 
 -- Get the commit hash of the most recent commit
+--- @param revision string|nil
 --- @return string
-local function get_commit_hash()
-    return String.trim(vim.fn.system("git rev-parse HEAD"))
+local function get_commit_hash(revision)
+    local rev = revision or "HEAD"
+    return String.trim(vim.fn.system(("git rev-parse %s"):format(rev)))
 end
 
 --- @return string|nil
@@ -125,18 +127,20 @@ local function get_url(repo, fields)
         if repo:find(remote) then
             local pattern = nil
 
-            if fields.file then
+            if fields.file ~= nil and fields.file ~= "" then
                 if state.priority == priority.BRANCH and has_slash_in_branch ~= nil then
                     pattern = patterns["file"]
                 else
                     pattern = patterns["permalink"]
                 end
-            else
+            elseif fields.branch ~= "" then
                 if state.priority == priority.BRANCH and has_slash_in_branch ~= nil then
                     pattern = patterns["branch"]
                 else
                     pattern = patterns["branch_permalink"]
                 end
+            else
+                pattern = patterns["commit"]
             end
 
             return repo .. pattern:gsub("(%b{})", function(key)
@@ -162,6 +166,22 @@ function M.open_repo()
     vim.ui.open(url)
 
     vim.notify("Remote repository opened!", vim.log.levels.INFO)
+end
+
+--- @param revision string|nil
+function M.open_commit(revision)
+    local repo = get_repo()
+
+    if not repo then
+        return
+    end
+
+    local commit = get_commit_hash(revision)
+    local url = get_url(repo, { commit = commit })
+
+    vim.ui.open(url)
+
+    vim.notify("Commit opened!", vim.log.levels.INFO)
 end
 
 --- @param line_start? integer
