@@ -243,7 +243,9 @@ return {
                 server_settings.on_init = function(client, _)
                     client.server_capabilities.semanticTokensProvider = nil
                 end
-                require("lspconfig")[server_name].setup(server_settings)
+
+                vim.lsp.config(server_name, server_settings)
+                vim.lsp.enable(server_name)
             end
         end,
     },
