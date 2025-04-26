@@ -207,6 +207,19 @@ return {
                 },
                 lua_ls = {},
                 css_variables = {},
+                cssls = {
+                    settings = {
+                        css = {
+                            validate = false,
+                        },
+                        less = {
+                            validate = false,
+                        },
+                        scss = {
+                            validate = false,
+                        }
+                    },
+                },
                 jsonls = {},
                 html = {},
                 bashls = {},
