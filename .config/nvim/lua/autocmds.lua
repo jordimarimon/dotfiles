@@ -280,3 +280,8 @@ vim.api.nvim_create_user_command("ClearBuffers", function(opts)
         end
     end
 end, { nargs = 0, bang = true, desc = "Delete all buffers except the active one" })
+
+-- Shows outdated dependencies for NPM
+vim.api.nvim_create_user_command("NpmOutdated", function()
+    require("custom.npm-outdated").toggle()
+end, { nargs = 0, desc = "Shout outdated npm dependencies" })
