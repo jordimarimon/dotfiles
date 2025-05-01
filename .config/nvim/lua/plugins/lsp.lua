@@ -143,6 +143,46 @@ return {
                     if client:supports_method("textDocument/documentColor") then
                         vim.lsp.document_color.enable(true, args.buf, { style = "virtual" })
                     end
+
+                    -- https://github.com/typescript-language-server/typescript-language-server/blob/master/src/commands.ts
+                    if client.name == "ts_ls" then
+                        local file = vim.api.nvim_buf_get_name(args.buf)
+
+                        vim.api.nvim_buf_create_user_command(args.buf, "OrganizeImports", function()
+                            ---@type lsp.Command
+                            local cmd = {
+                                command = "_typescript.organizeImports",
+                                arguments = { file },
+                                title = ""
+                            }
+
+                            client:exec_cmd(cmd)
+                        end, { nargs = 0 })
+
+                        vim.api.nvim_buf_create_user_command(args.buf, "RenameFile", function()
+                            vim.ui.input({ prompt = "New name: " }, function(input)
+                                if input == nil or #input == 0 then
+                                    return
+                                end
+
+                                local dir = require("custom.fs").dir()
+
+                                ---@type lsp.Command
+                                local cmd = {
+                                    command = "_typescript.applyRenameFile",
+                                    arguments = {
+                                        {
+                                            sourceUri = file,
+                                            targetUri = dir .. "/" .. input,
+                                        },
+                                    },
+                                    title = ""
+                                }
+
+                                client:exec_cmd(cmd)
+                            end)
+                        end, { nargs = 0 })
+                    end
                 end,
             })
 
@@ -153,7 +193,9 @@ return {
             -- Add border when showing diagnostics in a floting popup,
             -- and also color the linenumber instead of addding a sign
             vim.diagnostic.config({
-                float = { border = "single" },
+                float = {
+                    border = "single",
+                },
                 virtual_text = true,
                 virtual_lines = false,
                 signs = {
@@ -172,13 +214,6 @@ return {
                     },
                 },
             })
-
-            -- LSP servers and clients are able to communicate to each other what features they support.
-            -- By default, Neovim doesn't support everything that is in the LSP specification.
-            -- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-            -- So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
 
             local get_intelephense_license = function()
                 local f = assert(io.open(os.getenv("HOME") .. "/intelephense/license.txt", "rb"))
@@ -228,6 +263,7 @@ return {
                 jsonls = {},
                 html = {},
                 bashls = {},
+                ts_ls = {},
             }
 
             ---@diagnostic disable-next-line: missing-fields
@@ -237,44 +273,26 @@ return {
                 border = "single"
             }
 
-            for server_name, server_settings in pairs(servers) do
-                server_settings.capabilities = vim.tbl_deep_extend("force", {}, capabilities,
-                    server_settings.capabilities or {})
-                server_settings.on_init = function(client, _)
+            -- LSP servers and clients are able to communicate to each other what features they support.
+            -- By default, Neovim doesn't support everything that is in the LSP specification.
+            -- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+            -- So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+            vim.lsp.config("*", {
+                --- @type lsp.ClientCapabilities
+                capabilities = vim.tbl_extend(
+                    "force",
+                    vim.lsp.protocol.make_client_capabilities(),
+                    require("blink.cmp").get_lsp_capabilities()
+                ),
+                on_init = function(client, _)
                     client.server_capabilities.semanticTokensProvider = nil
-                end
+                end,
+            })
 
+            for server_name, server_settings in pairs(servers) do
                 vim.lsp.config(server_name, server_settings)
                 vim.lsp.enable(server_name)
             end
         end,
-    },
-    {
-        "pmizio/typescript-tools.nvim",
-        ft = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-        dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-        config = function()
-            local capabilities = vim.lsp.protocol.make_client_capabilities()
-            capabilities = vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities())
-
-            require("typescript-tools").setup({
-                on_init = function(client, _)
-                    client.server_capabilities.semanticTokensProvider = nil
-                end,
-                capabilities = capabilities,
-                settings = {
-                    separate_diagnostic_server = false,
-                    complete_function_calls = false,
-                    expose_as_code_action = "all",
-                },
-            })
-
-            vim.keymap.set("n", "<leader>ri", vim.cmd.TSToolsRemoveUnusedImports, { desc = "[R]emove [I]mports" })
-            vim.keymap.set("n", "<leader>ai", vim.cmd.TSToolsAddMissingImports, { desc = "[A]dd missing [I]mports" })
-            vim.keymap.set("n", "<leader>ru", vim.cmd.TSToolsRemoveUnused, { desc = "[R]emove [U]nused statements" })
-            vim.keymap.set("n", "<leader>rf", vim.cmd.TSToolsRenameFile, { desc = "[R]ename [F]ile" })
-            vim.keymap.set("n", "<leader>oi", vim.cmd.TSToolsOrganizeImports, { desc = "[O]rganize [I]mports" })
-            vim.keymap.set("n", "<leader>fr", vim.cmd.TSToolsFileReferences, { desc = "[F]ile [R]eferences" })
-        end
     },
 }
