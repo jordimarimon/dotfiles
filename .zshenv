@@ -18,7 +18,7 @@ export XCURSOR_SIZE=24
 export XCURSOR_THEME="Bibata"
 export MANPAGER="nvim +Man!" # Nvim as manpager
 export XKB_DEFAULT_LAYOUT="es"
-export NODE_OPTIONS=--max_old_space_size=4096
+export NODE_OPTIONS=--max_old_space_size=8192
 export HISTSIZE=10000
 export HISTFILESIZE=$HISTSIZE
 export SAVEHIST=$HISTSIZE
