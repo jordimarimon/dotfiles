@@ -16,8 +16,5 @@ return {
         })
 
         vim.keymap.set("n", "<leader>st", vim.cmd.TodoTelescope, { desc = "[S]earch [T]odos", silent = true })
-        vim.keymap.set("n", "]t", function() todo_comments.jump_next() end, { desc = "Next todo comment", silent = true })
-        vim.keymap.set("n", "[t", function() todo_comments.jump_prev() end,
-            { desc = "Previous todo comment", silent = true })
     end
 }
