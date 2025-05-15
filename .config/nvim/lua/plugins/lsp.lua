@@ -264,6 +264,7 @@ return {
                 html = {},
                 bashls = {},
                 ts_ls = {},
+                gopls = {},
             }
 
             ---@diagnostic disable-next-line: missing-fields

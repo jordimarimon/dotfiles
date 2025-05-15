@@ -16,6 +16,7 @@ return {
                 htmlangular = { "prettier" },
                 json = { "prettier" },
                 markdown = { "prettier" },
+                go = { "goimports", "gofmt" },
             },
         })
     end
