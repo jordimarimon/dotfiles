@@ -87,7 +87,7 @@ vim.api.nvim_create_autocmd({ "LspDetach" }, {
             end
         end
 
-        print('LSP client closed!')
+        print("LSP " .. client.name .. " closed!")
 
         client:stop()
     end,

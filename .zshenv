@@ -25,6 +25,7 @@ export SAVEHIST=$HISTSIZE
 export HISTFILE=~/.zsh_history
 export HISTDUP=erase
 export BAT_THEME="GitHub"
+export GLOW_STYLE="$HOME/.config/glow/light.json"
 export FZF_DEFAULT_OPTS=" \
 --color=light,bg+:#ffffff,bg:-1,spinner:#000000,hl:#000000 \
 --color=fg:-1,header:#000000,info:#000000,pointer:#000000 \
