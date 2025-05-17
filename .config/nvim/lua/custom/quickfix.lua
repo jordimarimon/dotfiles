@@ -1,6 +1,5 @@
-local M = {
-    ns = vim.api.nvim_create_namespace("qflist")
-}
+local M = {}
+local ns = vim.api.nvim_create_namespace("qflist")
 
 -- Quickfix list delete item
 function M.rm_qf_item()
@@ -116,15 +115,7 @@ function M.entries_text(info)
     -- We also specify what information we want to retrieve
     local list = {}
     local query = { id = info.id, items = 1, qfbufnr = 1 }
-
     local entries = {}
-    local highlights = {
-        E = "DiagnosticSignError",
-        W = "DiagnosticSignWarn",
-        I = "DiagnosticSignInfo",
-        N = "DiagnosticSignHint",
-        H = "DiagnosticSignHint",
-    }
 
     if info.quickfix == 1 then
         list = vim.fn.getqflist(query)
@@ -145,15 +136,13 @@ function M.entries_text(info)
             break
         end
 
-        if item.bufnr == 0 then
-            table.insert(entry, { item.text, "qfText" })
-        else
-            table.insert(entry, { "" .. item.lnum .. ": ", "qfLineNr" })
-            local text = item.text:match("^%s*(.-)%s*$") -- trim item.text
-            local hl = highlights[item.type] or "qfText"
-            table.insert(entry, { text, hl })
-        end
+        local text = item.text:match("^%s*(.-)%s*$") -- trim item.text
 
+        table.insert(entry, { fname, "qfFilename" })
+        table.insert(entry, { ":", "qfText" })
+        table.insert(entry, { item.lnum, "qfLineNr" })
+        table.insert(entry, { ": ", "qfText" })
+        table.insert(entry, { text, "qfText" })
         table.insert(entries, entry)
     end
 
@@ -166,8 +155,8 @@ function M.entries_text(info)
         for i, entry in ipairs(entries) do
             local col = 0
             for _, text in ipairs(entry) do
-                vim.hl.range(list.qfbufnr, M.ns, text[2], { i - 1, col }, { i - 1, col + #text[1] })
-                col = col + #text[1]
+                vim.hl.range(list.qfbufnr, ns, text[2], { i - 1, col }, { i - 1, col + #tostring(text[1]) })
+                col = col + #tostring(text[1])
             end
         end
     end)

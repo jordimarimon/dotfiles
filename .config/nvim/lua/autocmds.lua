@@ -121,40 +121,6 @@ vim.api.nvim_create_autocmd({ "BufDelete" }, {
     end,
 })
 
--- Add virtual lines with the file name of each entry in the quickfix
-vim.api.nvim_create_autocmd('BufReadPost', {
-    desc = "Quickfix list filenames as virtual lines",
-    callback = function ()
-        if vim.bo[0].buftype ~= "quickfix" then
-            return
-        end
-
-        local ns = require("custom.quickfix").ns
-        local list = vim.fn.getqflist({ id = 0, winid = 1, qfbufnr = 1, items = 1 })
-        vim.api.nvim_buf_clear_namespace(list.qfbufnr, ns, 0, -1)
-
-        local lastfname = ""
-        for i, item in ipairs(list.items) do
-            local fname = vim.fn.bufname(item.bufnr)
-            fname = vim.fn.fnamemodify(fname, ":p:.")
-
-            if fname:find("^fugitive://") then
-                vim.api.nvim_buf_clear_namespace(list.qfbufnr, ns, 0, -1)
-                break
-            end
-
-            if fname ~= "" and fname ~= lastfname then
-                lastfname = fname
-                vim.api.nvim_buf_set_extmark(list.qfbufnr, ns, i - 1, 0, {
-                    virt_lines = { { { fname .. ":", "qfFilename" } } },
-                    virt_lines_above = true,
-                    strict = false,
-                })
-            end
-        end
-    end,
-})
-
 -- https://neovim.io/doc/user/diff.html#%3ADiffOrig
 vim.api.nvim_create_user_command("DiffOrig", function()
     -- Get the current buffer's name
