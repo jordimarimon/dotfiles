@@ -1,4 +1,6 @@
-local M = {}
+local M = {
+    ns = vim.api.nvim_create_namespace("qflist")
+}
 
 -- Quickfix list delete item
 function M.rm_qf_item()
@@ -7,7 +9,7 @@ function M.rm_qf_item()
 
     -- Return if there are no items to remove
     if #qfall == 0 then
-      return
+        return
     end
 
     -- Remove the item from the quickfix list
@@ -22,7 +24,7 @@ function M.rm_qf_item()
 
     -- Set the cursor position directly in the quickfix window
     local winid = vim.fn.win_getid() -- Get the window ID of the quickfix window
-    vim.api.nvim_win_set_cursor(winid, {new_idx, 0})
+    vim.api.nvim_win_set_cursor(winid, { new_idx, 0 })
 end
 
 -- Quickfix list delete multiple items
@@ -33,7 +35,7 @@ function M.rm_qf_items()
 
     -- Return if there are no items to remove
     if #qfall == 0 then
-      return
+        return
     end
 
     -- Ensure the indices are within the valid range
@@ -53,7 +55,7 @@ function M.rm_qf_items()
 
     -- Set the cursor position directly in the quickfix window
     local winid = vim.fn.win_getid() -- Get the window ID of the quickfix window
-    vim.api.nvim_win_set_cursor(winid, {startidx, 0})
+    vim.api.nvim_win_set_cursor(winid, { startidx, 0 })
 end
 
 function M.get_list_type()
@@ -98,6 +100,92 @@ function M.move_to_prev()
     end
 
     vim.cmd(open_command)
+end
+
+-- :help quickfix-window-function
+--- @class QuickFixInfo
+--- @field quickfix integer
+--- @field winid integer
+--- @field id integer
+--- @field start_idx integer
+--- @field end_idx integer
+
+---@param info QuickFixInfo
+function M.entries_text(info)
+    -- Get the quickfix list or location list.
+    -- We also specify what information we want to retrieve
+    local list = {}
+    local query = { id = info.id, items = 1, qfbufnr = 1 }
+
+    local entries = {}
+    local highlights = {
+        E = "DiagnosticSignError",
+        W = "DiagnosticSignWarn",
+        I = "DiagnosticSignInfo",
+        N = "DiagnosticSignHint",
+        H = "DiagnosticSignHint",
+    }
+
+    if info.quickfix == 1 then
+        list = vim.fn.getqflist(query)
+    else
+        list = vim.fn.getloclist(info.winid, query)
+    end
+
+    local is_git = false
+
+    -- Create each entry with the highlights
+    for _, item in ipairs(list.items) do
+        local entry = { { "  ", "qfText" } }
+        local fname = vim.fn.bufname(item.bufnr)
+        fname = vim.fn.fnamemodify(fname, ":p:.")
+
+        if fname:find("^fugitive://") then
+            is_git = true
+            break
+        end
+
+        if item.bufnr == 0 then
+            table.insert(entry, { item.text, "qfText" })
+        else
+            table.insert(entry, { "" .. item.lnum .. ": ", "qfLineNr" })
+            local text = item.text:match("^%s*(.-)%s*$") -- trim item.text
+            local hl = highlights[item.type] or "qfText"
+            table.insert(entry, { text, hl })
+        end
+
+        table.insert(entries, entry)
+    end
+
+    if is_git then
+        return {}
+    end
+
+    -- Apply highlights
+    vim.schedule(function()
+        for i, entry in ipairs(entries) do
+            local col = 0
+            for _, text in ipairs(entry) do
+                vim.hl.range(list.qfbufnr, M.ns, text[2], { i - 1, col }, { i - 1, col + #text[1] })
+                col = col + #text[1]
+            end
+        end
+    end)
+
+    -- Concatenate text of each entry
+    local lines = {}
+
+    for _, entry in ipairs(entries) do
+        local line = ""
+
+        for _, text in ipairs(entry) do
+            line = line .. text[1]
+        end
+
+        table.insert(lines, line)
+    end
+
+    return lines
 end
 
 return M

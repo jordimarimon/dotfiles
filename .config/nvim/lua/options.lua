@@ -101,5 +101,9 @@ vim.opt.spelloptions = "camel,noplainbuffer"
 -- Better diff
 vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"
 
+-- Improve quickfix/loclist display
+_G.quickfix_entries_text = require("custom.quickfix").entries_text
+vim.o.quickfixtextfunc = "v:lua.quickfix_entries_text"
+
 -- Set border for floating windows
 -- vim.o.winborder = "single"
