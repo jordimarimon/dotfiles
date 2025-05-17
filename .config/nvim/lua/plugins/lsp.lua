@@ -182,6 +182,28 @@ return {
                                 client:exec_cmd(cmd)
                             end)
                         end, { nargs = 0 })
+
+                        vim.api.nvim_buf_create_user_command(args.buf, "RemoveUnusedImports", function ()
+                            vim.lsp.buf.code_action({
+                                apply = true,
+                                context = {
+                                    diagnostics = {},
+                                    ---@diagnostic disable-next-line: assign-type-mismatch
+                                    only = { "source.removeUnusedImports" },
+                                },
+                            })
+                        end, { nargs = 0 })
+
+                        vim.api.nvim_buf_create_user_command(args.buf, "AddMissingImports", function ()
+                            vim.lsp.buf.code_action({
+                                apply = true,
+                                context = {
+                                    diagnostics = {},
+                                    ---@diagnostic disable-next-line: assign-type-mismatch
+                                    only = { "source.addMissingImports" },
+                                },
+                            })
+                        end, { nargs = 0 })
                     end
                 end,
             })
