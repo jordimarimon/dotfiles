@@ -5,8 +5,14 @@
 	compression = 0
 	filemode = false
 	pager = delta
+	whitespace = error
 [interactive]
 	diffFilter = delta --color-only
+[status]
+	branch = true
+	short = true
+	showStash = true
+	showUntrackedFiles = all
 [delta]
 	navigate = true
 	light = true
@@ -61,13 +67,17 @@
 	spo="stash pop"
 	first="!git rev-list --max-parents=0 HEAD | xargs git show -s --format=%ai"
 [push]
-	default = simple
+	default = current
 	followTags = true
 	autoSetupRemote = true
 [init]
 	defaultBranch = main
 [pull]
+	default = current
 	rebase = true
+[rebase]
+	autoStash = true
+	missingCommitsCheck = warn
 [merge]
 	conflictstyle = diff3
 [diff]

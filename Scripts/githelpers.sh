@@ -14,5 +14,5 @@ function pretty_git_log() {
     local FIRST_LINE="$HASH - $DATE $REFS"
     local SECOND_LINE="$SUBJECT - $AUTHOR"
 
-    git log --graph --abbrev-commit --decorate --all --pretty="format:$FIRST_LINE$SECOND_LINE" $*
+    git log --graph --abbrev-commit --decorate --all --pretty="format:$FIRST_LINE$SECOND_LINE%n" $*
 }
