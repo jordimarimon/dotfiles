@@ -108,7 +108,7 @@ vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { undercurl = true, underline 
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineOk", { undercurl = true, underline = true, sp = fg_success })
 vim.api.nvim_set_hl(0, "PmenuThumb", { fg = fg, bg = fg })
 vim.api.nvim_set_hl(0, "ColorColumn", { bg = bg })
-vim.api.nvim_set_hl(0, "qfFilename", {fg = fg_info})
+vim.api.nvim_set_hl(0, "qfFilename", {fg = fg_comment})
 vim.api.nvim_set_hl(0, "qfText", {fg = fg})
 vim.api.nvim_set_hl(0, "qfLineNr", {fg = fg_number})
 
