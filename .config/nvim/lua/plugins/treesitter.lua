@@ -21,6 +21,7 @@ return {
                     "css", "angular", "bash", "json", "jsonc", "json5",
                     "sql", "tsx", "yaml", "python", "editorconfig", "make",
                     "markdown", "markdown_inline", "http", "nginx", "sway",
+                    "go", "gomod", "gosum"
                 },
                 auto_install = false,
                 sync_install = false,
