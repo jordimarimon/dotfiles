@@ -96,5 +96,8 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # ghcup
 [ -f "$HOME/.ghcup/env" ] && source "$HOME/.ghcup/env"
 
+# go
+export GOPATH="$HOME/go"
+
 # Rust
 . "$HOME/.cargo/env"
