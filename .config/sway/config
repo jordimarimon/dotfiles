@@ -20,11 +20,11 @@ set $external HDMI-A-1
 
 # Colors
 set $bg-color            #0000ff
-set $inactive-bg-color   #f9fafb
+set $inactive-bg-color   #0000ff
 set $text-color          #ffffff
-set $inactive-text-color #000000
-set $urgent-bg-color     #fffbeb
-set $indicator-color     #0000ff
+set $inactive-text-color #ffffff
+set $urgent-bg-color     #0000ff
+set $indicator-color     #ffffff
 
 #################
 ### Output configuration

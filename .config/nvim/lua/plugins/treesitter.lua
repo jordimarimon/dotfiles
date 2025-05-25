@@ -7,80 +7,52 @@ return {
     {
         "nvim-treesitter/nvim-treesitter",
         build = ":TSUpdate",
-        main = "nvim-treesitter.configs",
-        dependencies = {
-            "nvim-treesitter/nvim-treesitter-textobjects",
-        },
+        branch = "main",
+        lazy = false,
         config = function()
-            local configs = require("nvim-treesitter.configs")
-
-            configs.setup({
-                ensure_installed = {
-                    "c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
-                    "javascript", "typescript", "php", "html",
-                    "css", "angular", "bash", "json", "jsonc", "json5",
-                    "sql", "tsx", "yaml", "python", "editorconfig", "make",
-                    "markdown", "markdown_inline", "http", "nginx", "sway",
-                    "go", "gomod", "gosum"
-                },
-                auto_install = false,
-                sync_install = false,
-                modules = {},
-                ignore_install = {},
-                highlight = {
-                    enable = true,
-                },
-                match = {
-                    enable = true,
-                },
-                indent = {
-                    enable = true,
-                },
-                incremental_selection = {
-                    enable = false,
-                },
-                textobjects = {
-                    swap = {
-                        enable = false,
-                    },
-                    select = {
-                        enable = true,
-                        lookahead = true,
-                        keymaps = {
-                            ["af"] = "@function.outer",
-                            ["if"] = "@function.inner",
-                            ["ac"] = "@class.outer",
-                            ["ic"] = "@class.inner",
-                        },
-                    },
-                    move = {
-                        enable = true,
-                        set_jumps = true,
-                        goto_next_start = {
-                            ["]f"] = "@function.outer",
-                            ["]m"] = "@class.outer",
-                        },
-                        goto_next_end = {
-                            ["]F"] = "@function.outer",
-                            ["]M"] = "@class.outer",
-                        },
-                        goto_previous_start = {
-                            ["[f"] = "@function.outer",
-                            ["[m"] = "@class.outer",
-                        },
-                        goto_previous_end = {
-                            ["[F"] = "@function.outer",
-                            ["[M"] = "@class.outer",
-                        },
-                    },
-                },
+            require("nvim-treesitter").setup()
+            require("nvim-treesitter").install({
+                "c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
+                "javascript", "typescript", "php", "html",
+                "css", "angular", "bash", "json", "jsonc", "json5",
+                "sql", "tsx", "yaml", "python", "editorconfig", "make",
+                "markdown", "markdown_inline", "http", "nginx", "sway",
+                "go", "gomod", "gosum"
             })
+        end,
+    },
+    {
+        "nvim-treesitter/nvim-treesitter-textobjects",
+        branch = "main",
+        lazy = false,
+        config = function()
+            -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
+            require("nvim-treesitter-textobjects").setup({
+                select = {
+                    lookahead = true,
+                },
+                move = {
+                    set_jumps = true,
+                }
+            })
+
+            vim.keymap.set({ "x", "o" }, "af", function()
+                require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+            end)
+
+            vim.keymap.set({ "x", "o" }, "if", function()
+                require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+            end)
+
+            vim.keymap.set({ "x", "o" }, "as", function()
+                require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
+            end)
         end,
     },
     {
         "Wansmer/treesj",
         keys = { "<leader>ts", "<leader>tj" },
-        dependencies = { "nvim-treesitter/nvim-treesitter" },
+        dependencies = { "nvim-treesitter/nvim-treesitter", branch = "main" },
         config = function()
             require("treesj").setup({
                 use_default_keymaps = false,
