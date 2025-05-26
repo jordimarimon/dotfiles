@@ -24,7 +24,7 @@ set $inactive-bg-color   #0000ff
 set $text-color          #ffffff
 set $inactive-text-color #ffffff
 set $urgent-bg-color     #0000ff
-set $indicator-color     #ffffff
+set $indicator-color     #0000ff
 
 #################
 ### Output configuration

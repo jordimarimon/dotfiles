@@ -29,18 +29,47 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- Enable treesitter highlighting and indentation
 vim.api.nvim_create_autocmd("FileType", {
-  pattern = {
-      "c", "cpp", "dockerfile", "lua", "vim", "vimdoc", "query",
-      "javascript", "javascriptreact", "typescript", "typescriptreact", "php", "html",
-      "css", "htmlangular", "bash", "json", "jsonc", "json5",
-      "sql", "tsx", "yaml", "python", "editorconfig", "make",
-      "markdown", "http", "nginx", "sway",
-      "go", "gomod", "gosum"
-  },
-  callback = function()
-      vim.treesitter.start()
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-  end,
+    pattern = {
+        "bash",
+        "c",
+        "cpp",
+        "css",
+        "dockerfile",
+        "editorconfig",
+        "gitcommit",
+        "gitignore",
+        "gitrebase",
+        "go",
+        "gomod",
+        "gosum",
+        "html",
+        "htmlangular",
+        "http",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "json5",
+        "jsonc",
+        "lua",
+        "make",
+        "markdown",
+        "nginx",
+        "php",
+        "python",
+        "query",
+        "sql",
+        "sway",
+        "toml",
+        "typescript",
+        "typescriptreact",
+        "vim",
+        "vimdoc",
+        "yaml",
+    },
+    callback = function()
+        vim.treesitter.start()
+        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    end,
 })
 
 -- Highlight current line on active window only
