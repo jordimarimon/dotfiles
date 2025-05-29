@@ -94,9 +94,15 @@ vim.opt.foldcolumn = "0"
 vim.opt.fillchars:append({ fold = " " })
 
 -- Spell checking
+-- https://github.com/vim/vim/tree/master/runtime/spell
+-- To make spelling work, use vim instead of neovim because
+-- for some reason neovim doesn't prompt for download
 vim.opt.spelllang = "es,en,ca"
 vim.opt.spell = false
 vim.opt.spelloptions = "camel,noplainbuffer"
+
+-- Message options, remove the "hit-enter"
+-- vim.opt.messagesopt = "wait:0,history:10000"
 
 -- Better diff
 vim.opt.diffopt = "internal,filler,closeoff,indent-heuristic,linematch:60,algorithm:histogram"

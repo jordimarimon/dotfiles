@@ -47,6 +47,7 @@ return {
                 "sql",
                 "sway",
                 "toml",
+                "tsx",
                 "typescript",
                 "vim",
                 "vimdoc",
