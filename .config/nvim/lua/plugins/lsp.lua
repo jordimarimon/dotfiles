@@ -301,12 +301,15 @@ return {
             -- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
             -- So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
             vim.lsp.config("*", {
+                -- reuse_client = function () return true end,
+
                 --- @type lsp.ClientCapabilities
                 capabilities = vim.tbl_extend(
                     "force",
                     vim.lsp.protocol.make_client_capabilities(),
                     require("blink.cmp").get_lsp_capabilities()
                 ),
+
                 on_init = function(client, _)
                     client.server_capabilities.semanticTokensProvider = nil
                 end,

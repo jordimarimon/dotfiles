@@ -18,7 +18,6 @@ require("lazy").setup(
     {import = "plugins.todo-comments"},
     {import = "plugins.git"},
     {import = "plugins.mini"},
-    {import = "plugins.autopairs"},
     {import = "plugins.markdown"},
     {import = "plugins.database"},
     {import = "plugins.oil"},
