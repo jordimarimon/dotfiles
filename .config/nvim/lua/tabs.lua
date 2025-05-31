@@ -14,5 +14,7 @@ function _G.tablabel()
     return table.concat(labels)
 end
 
+-- :h v:lua
+-- :h 'tabline'
 vim.o.tabline = "%!v:lua._G.tablabel()"
 
