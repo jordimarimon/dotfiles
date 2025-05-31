@@ -112,7 +112,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end
 
         -- Enable LSP folding
-        if client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) then
+        -- FIXME: Found out why TypeScript LSP messes up folding when viewing diffs
+        if client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) and client.name ~= "ts_ls" then
             local win = vim.api.nvim_get_current_win()
             vim.wo[win][0].foldmethod = "expr"
             vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
