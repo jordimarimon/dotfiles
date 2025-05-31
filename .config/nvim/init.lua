@@ -10,20 +10,18 @@ require("filetypes")
 require("plugins")
 require("lazy").setup(
   {
-    {import = "plugins.telescope"},
-    {import = "plugins.treesitter"},
-    {import = "plugins.sleuth"},
-    {import = "plugins.lsp"},
+    {import = "plugins.file-picker"},
+    {import = "plugins.syntax"},
     {import = "plugins.completion"},
-    {import = "plugins.todo-comments"},
     {import = "plugins.git"},
     {import = "plugins.mini"},
     {import = "plugins.markdown"},
     {import = "plugins.database"},
-    {import = "plugins.oil"},
-    {import = "plugins.harpoon"},
+    {import = "plugins.file-explorer"},
     {import = "plugins.undotree"},
     {import = "plugins.format"},
+    {import = "plugins.package-manager"},
+    {import = "plugins.progress"},
   },
   {
     ui = {border = "single"},
@@ -35,6 +33,9 @@ require("keymaps")
 
 -- define autocommands
 require("autocmds")
+
+-- enable lsps
+require("lsp")
 
 -- See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et

@@ -84,6 +84,8 @@ return {
             end)
         end,
     },
+
+    -- Adds an easy way to split/join Treesitter nodes
     {
         "Wansmer/treesj",
         keys = { "<leader>ts", "<leader>tj" },
@@ -96,5 +98,26 @@ return {
             vim.keymap.set("n", "<leader>ts", function() require("treesj").split() end, { desc = "[T]reesitter [S]plit" })
             vim.keymap.set("n", "<leader>tj", function() require("treesj").join() end, { desc = "[T]reesitter [J]oin" })
         end,
+    },
+
+    -- Highlight todo, notes, etc in comments
+    {
+        "folke/todo-comments.nvim",
+        event = "VimEnter",
+        dependencies = { "nvim-lua/plenary.nvim" },
+        config = function()
+            local todo_comments = require("todo-comments")
+            todo_comments.setup({
+                signs = false,
+                highlight = {
+                    pattern = [[.*<((KEYWORDS)%(\(.{-1,}\))?):]],
+                },
+                search = {
+                    pattern = [[\b(KEYWORDS)(\([^\)]*\))?:]],
+                },
+            })
+
+            vim.keymap.set("n", "<leader>st", vim.cmd.TodoTelescope, { desc = "[S]earch [T]odos", silent = true })
+        end
     }
 }

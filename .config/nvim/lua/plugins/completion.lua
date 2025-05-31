@@ -3,10 +3,6 @@ return {
     "saghen/blink.cmp",
     version = "*",
     build = "cargo build --release",
-    dependencies = {
-        { "folke/lazydev.nvim", ft = "lua" },
-    },
-    event = { "BufReadPost", "BufNewFile" },
     config = function()
         require("blink.cmp").setup({
             -- "default" for mappings similar to built-in completion
@@ -43,7 +39,7 @@ return {
 
             -- Default list of enabled providers
             sources = {
-                default = { "lazydev", "lsp", "path", "snippets", "buffer" },
+                default = { "lsp", "path", "snippets", "buffer" },
 
                 per_filetype = {
                     sql = { "dadbod" },
@@ -69,11 +65,6 @@ return {
                     dadbod = {
                         name = "dadbod",
                         module = "vim_dadbod_completion.blink"
-                    },
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        score_offset = 100,
                     },
                 },
             },
