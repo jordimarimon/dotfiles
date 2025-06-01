@@ -3,8 +3,11 @@
 return {
     cmd = { "vscode-json-language-server", "--stdio" },
     filetypes = { "json", "jsonc" },
+    root_markers = { ".git" },
     init_options = {
         provideFormatter = true,
     },
-    root_markers = { ".git" },
+    settings = {
+        validate = false,
+    },
 }
