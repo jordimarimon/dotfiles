@@ -30,6 +30,10 @@ set $indicator-color     #0000ff
 ### Output configuration
 #################
 
+# Home outputs
+output eDP-1 pos 0 0 res 1920x1080
+output "ViewSonic Corporation VA2732-FHD W5P205161630" pos 1920 0 res 1920x1080
+
 # Default wallpaper
 output * bg /home/jmarimon/Pictures/minimalism-material-minimal-material-style-2088251-wallhere.com.jpg fill
 
