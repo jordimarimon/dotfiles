@@ -6,13 +6,11 @@
 return {
     {
         "nvim-treesitter/nvim-treesitter",
-        build = ":TSUpdate",
         branch = "main",
         lazy = false,
-        config = function()
-            require("nvim-treesitter").setup()
-            require("nvim-treesitter").install({
-                -- https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers
+        build = function()
+            -- https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers
+            local parsers_installed = {
                 "angular",
                 "bash",
                 "c",
@@ -53,15 +51,37 @@ return {
                 "vimdoc",
                 "yaml",
                 "zsh",
+            }
+
+            require("nvim-treesitter").install(parsers_installed)
+            require("nvim-treesitter").update()
+        end,
+        config = function()
+            require("nvim-treesitter").setup()
+        end,
+        init = function()
+            -- Enable treesitter highlighting and indentation
+            vim.api.nvim_create_autocmd("FileType", {
+                callback = function(args)
+                    local filetype = args.match
+                    local lang = vim.treesitter.language.get_lang(filetype)
+
+                    if lang ~= nil and vim.treesitter.language.add(lang) then
+                        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                        vim.treesitter.start()
+                    end
+                end
             })
         end,
     },
+
+    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
     {
         "nvim-treesitter/nvim-treesitter-textobjects",
         branch = "main",
         lazy = false,
         config = function()
-            -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
             require("nvim-treesitter-textobjects").setup({
                 select = {
                     lookahead = true,
