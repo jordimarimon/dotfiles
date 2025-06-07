@@ -1,1 +1,1 @@
-vim.opt.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
+vim.opt_local.listchars = { tab = "  ", trail = "·", nbsp = "␣" }
