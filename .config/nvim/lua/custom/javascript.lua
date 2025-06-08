@@ -12,7 +12,12 @@ function M.add_async()
     end
 
     local current_node = vim.treesitter.get_node({ ignore_injections = false })
-    local function_types = { "arrow_function", "function_declaration", "function", "method_definition" }
+    local function_types = {
+        "arrow_function",
+        "function_declaration",
+        "function",
+        "method_definition",
+    }
     local function_node = treesitter_utils.find_node_ancestor(function_types, current_node)
 
     if not function_node then

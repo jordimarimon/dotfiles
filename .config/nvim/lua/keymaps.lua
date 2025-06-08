@@ -113,3 +113,7 @@ vim.keymap.set({ "n", "v" }, "<leader>s", function()
 
     print("Search saved!")
 end, { desc = "[S]ave [S]earch" })
+
+vim.keymap.set("n", "[m", function ()
+    require("custom.treesitter").go_to_start_function()
+end, { noremap = true, silent = true, desc = "Go to the start of the function/method" })
