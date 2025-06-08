@@ -111,20 +111,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
             end, "[T]oggle Inlay [H]ints")
         end
 
-        -- Enable LSP folding
-        -- FIXME: Found out why TypeScript LSP messes up folding when viewing diffs
-        if client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) and client.name ~= "ts_ls" then
-            local win = vim.api.nvim_get_current_win()
-            vim.wo[win][0].foldmethod = "expr"
-            vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-        end
-
         -- Enable colors
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentColor) then
             vim.lsp.document_color.enable(true, buf, { style = "virtual" })
         end
 
-        -- Builtin auto-completion
+        -- Enable LSP folding
+        -- if client:supports_method(vim.lsp.protocol.Methods.textDocument_foldingRange) then
+        --     local win = vim.api.nvim_get_current_win()
+        --     vim.wo[win][0].foldmethod = "expr"
+        --     vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+        -- end
+
+        -- Enable builtin auto-completion
         -- if client:supports_method(vim.lsp.protocol.Methods.textDocument_completion) then
         --   vim.lsp.completion.enable(true, client.id, buf, { autotrigger = true })
         -- end

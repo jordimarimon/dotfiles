@@ -62,14 +62,20 @@ return {
         init = function()
             -- Enable treesitter highlighting and indentation
             vim.api.nvim_create_autocmd("FileType", {
+                pattern = { "*" },
                 callback = function(args)
                     local filetype = args.match
                     local lang = vim.treesitter.language.get_lang(filetype)
 
                     if lang ~= nil and vim.treesitter.language.add(lang) then
-                        vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-                        vim.treesitter.start()
+                        vim.treesitter.start(args.buf)
+
+                        vim.api.nvim_buf_call(args.buf, function()
+                            vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                            vim.wo[0][0].foldmethod = "expr"
+                            vim.bo[0].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+                            vim.cmd.normal("zx")
+                        end)
                     end
                 end
             })
