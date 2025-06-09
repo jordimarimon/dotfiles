@@ -36,6 +36,9 @@ function M.go_to_start_function()
         return
     end
 
+    -- So we can add the current cursor position to the jump list
+    vim.cmd("normal! m'")
+
     local start_row, start_col = function_node:start()
     vim.api.nvim_win_set_cursor(0, {start_row + 1, start_col})
 end
