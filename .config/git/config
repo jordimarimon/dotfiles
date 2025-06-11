@@ -40,6 +40,7 @@
 	ce="commit --amend --no-edit"
 	co="checkout"
 	cl="config --list"
+	cle="clean -dxf"
 	users="shortlog --summary --numbered --email"
 	d="diff"
 	ds="diff --staged"
