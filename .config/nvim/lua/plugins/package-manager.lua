@@ -1,6 +1,6 @@
 -- Automatically install LSPs to "data" stdpath for neovim
 return {
-    "williamboman/mason.nvim",
+    "mason-org/mason.nvim",
     config = function()
         local registry = require("mason-registry")
         local packages = {
