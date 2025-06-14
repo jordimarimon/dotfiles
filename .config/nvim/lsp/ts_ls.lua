@@ -56,7 +56,7 @@ return {
             })
 
             -- https://github.com/typescript-language-server/typescript-language-server/blob/master/src/commands.ts
-            vim.api.nvim_buf_create_user_command(bufnr, "OrganizeImports", function()
+            vim.api.nvim_buf_create_user_command(0, "OrganizeImports", function()
                 ---@type lsp.Command
                 local cmd = {
                     command = "_typescript.organizeImports",
@@ -67,7 +67,7 @@ return {
                 client:exec_cmd(cmd)
             end, { nargs = 0 })
 
-            vim.api.nvim_buf_create_user_command(bufnr, "RenameFile", function()
+            vim.api.nvim_buf_create_user_command(0, "RenameFile", function()
                 vim.ui.input({ prompt = "New name: " }, function(input)
                     if input == nil or #input == 0 then
                         return
@@ -91,7 +91,7 @@ return {
                 end)
             end, { nargs = 0 })
 
-            vim.api.nvim_buf_create_user_command(bufnr, "RemoveUnusedImports", function()
+            vim.api.nvim_buf_create_user_command(0, "RemoveUnusedImports", function()
                 vim.lsp.buf.code_action({
                     apply = true,
                     context = {
@@ -102,7 +102,7 @@ return {
                 })
             end, { nargs = 0 })
 
-            vim.api.nvim_buf_create_user_command(bufnr, "AddMissingImports", function()
+            vim.api.nvim_buf_create_user_command(0, "AddMissingImports", function()
                 vim.lsp.buf.code_action({
                     apply = true,
                     context = {
