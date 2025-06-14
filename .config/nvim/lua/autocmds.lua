@@ -150,6 +150,12 @@ vim.api.nvim_create_user_command("GitFile", function(opts)
     git.open_repo_file(opts.line1, opts.line2)
 end, { range = true, bang = true, nargs = 0 })
 
+-- Open buffer from git url
+vim.api.nvim_create_user_command("GitUrl", function(opts)
+    local git = require("custom.git-browse")
+    git.navigate(opts.fargs[1], opts.bang)
+end, { nargs = "*", bang = true })
+
 -- Open `:messages` command in a buffer
 vim.api.nvim_create_user_command("Messages", function()
     require("custom.command-scratch-buffer").redirect("messages")
