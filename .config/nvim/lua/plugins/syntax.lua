@@ -22,6 +22,7 @@ return {
                 "gitcommit",
                 "gitignore",
                 "git_rebase",
+                "glsl",
                 "go",
                 "gomod",
                 "gosum",
