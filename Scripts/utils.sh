@@ -9,6 +9,6 @@ function open_notes() {
     IFS=' ';
 
     if [[ ! -z "$note" && "$note" != "''" ]]; then
-        nvim "$HOME/Notes/$note";
+        nvim "$HOME/Notes/$note" -c "cd $HOME/Notes";
     fi
 }
