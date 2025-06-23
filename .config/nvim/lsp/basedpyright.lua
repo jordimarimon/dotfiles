@@ -5,16 +5,6 @@ return {
 
     filetypes = { "python" },
 
-    root_markers = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        "pyrightconfig.json",
-        ".git",
-    },
-
     workspace_required = true,
 
     settings = {
@@ -27,6 +17,18 @@ return {
             },
         },
     },
+
+    root_dir = function(bufnr, on_dir)
+        require("custom.lsp").root_dir(bufnr, on_dir, {
+            "pyproject.toml",
+            "setup.py",
+            "setup.cfg",
+            "requirements.txt",
+            "Pipfile",
+            "pyrightconfig.json",
+            ".git",
+        })
+    end,
 
     on_attach = function(client, bufnr)
         vim.api.nvim_buf_create_user_command(0, "OrganizeImports", function()

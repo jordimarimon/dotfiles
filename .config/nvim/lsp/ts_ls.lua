@@ -14,8 +14,6 @@ return {
         "typescript.tsx",
     },
 
-    root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-
     workspace_required = true,
 
     handlers = {
@@ -38,6 +36,15 @@ return {
         end,
     },
 
+    root_dir = function(bufnr, on_dir)
+        require("custom.lsp").root_dir(bufnr, on_dir, {
+            "tsconfig.json",
+            "jsconfig.json",
+            "package.json",
+            ".git",
+        })
+    end,
+
     on_attach = function(client, bufnr)
         local file = vim.api.nvim_buf_get_name(bufnr)
 
@@ -54,65 +61,65 @@ return {
                     diagnostics = {},
                 },
             })
+        end, {})
 
-            -- https://github.com/typescript-language-server/typescript-language-server/blob/master/src/commands.ts
-            vim.api.nvim_buf_create_user_command(0, "OrganizeImports", function()
+        -- https://github.com/typescript-language-server/typescript-language-server/blob/master/src/commands.ts
+        vim.api.nvim_buf_create_user_command(0, "OrganizeImports", function()
+            ---@type lsp.Command
+            local cmd = {
+                command = "_typescript.organizeImports",
+                arguments = { file },
+                title = ""
+            }
+
+            client:exec_cmd(cmd)
+        end, { nargs = 0 })
+
+        vim.api.nvim_buf_create_user_command(0, "RenameFile", function()
+            vim.ui.input({ prompt = "New name: " }, function(input)
+                if input == nil or #input == 0 then
+                    return
+                end
+
+                local dir = require("custom.fs").dir()
+
                 ---@type lsp.Command
                 local cmd = {
-                    command = "_typescript.organizeImports",
-                    arguments = { file },
+                    command = "_typescript.applyRenameFile",
+                    arguments = {
+                        {
+                            sourceUri = file,
+                            targetUri = dir .. "/" .. input,
+                        },
+                    },
                     title = ""
                 }
 
                 client:exec_cmd(cmd)
-            end, { nargs = 0 })
+            end)
+        end, { nargs = 0 })
 
-            vim.api.nvim_buf_create_user_command(0, "RenameFile", function()
-                vim.ui.input({ prompt = "New name: " }, function(input)
-                    if input == nil or #input == 0 then
-                        return
-                    end
+        vim.api.nvim_buf_create_user_command(0, "RemoveUnusedImports", function()
+            vim.lsp.buf.code_action({
+                apply = true,
+                context = {
+                    diagnostics = {},
+                    ---@diagnostic disable-next-line: assign-type-mismatch
+                    only = { "source.removeUnusedImports" },
+                },
+            })
+        end, { nargs = 0 })
 
-                    local dir = require("custom.fs").dir()
-
-                    ---@type lsp.Command
-                    local cmd = {
-                        command = "_typescript.applyRenameFile",
-                        arguments = {
-                            {
-                                sourceUri = file,
-                                targetUri = dir .. "/" .. input,
-                            },
-                        },
-                        title = ""
-                    }
-
-                    client:exec_cmd(cmd)
-                end)
-            end, { nargs = 0 })
-
-            vim.api.nvim_buf_create_user_command(0, "RemoveUnusedImports", function()
-                vim.lsp.buf.code_action({
-                    apply = true,
-                    context = {
-                        diagnostics = {},
-                        ---@diagnostic disable-next-line: assign-type-mismatch
-                        only = { "source.removeUnusedImports" },
-                    },
-                })
-            end, { nargs = 0 })
-
-            vim.api.nvim_buf_create_user_command(0, "AddMissingImports", function()
-                vim.lsp.buf.code_action({
-                    apply = true,
-                    context = {
-                        diagnostics = {},
-                        ---@diagnostic disable-next-line: assign-type-mismatch
-                        only = { "source.addMissingImports" },
-                    },
-                })
-            end, { nargs = 0 })
-        end, {})
+        vim.api.nvim_buf_create_user_command(0, "AddMissingImports", function()
+            vim.lsp.buf.code_action({
+                apply = true,
+                context = {
+                    diagnostics = {},
+                    ---@diagnostic disable-next-line: assign-type-mismatch
+                    only = { "source.addMissingImports" },
+                },
+            })
+        end, { nargs = 0 })
     end,
 
     on_init = function(client, _)

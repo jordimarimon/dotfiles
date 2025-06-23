@@ -5,7 +5,9 @@ return {
 
     filetypes = { "css", "scss", "less" },
 
-    root_markers = { "package.json", ".git" },
+    root_dir = function(bufnr, on_dir)
+        require("custom.lsp").root_dir(bufnr, on_dir, { "package.json", ".git" })
+    end,
 
     -- Same as inlined defaults that don"t seem to work without hardcoding them in the lua config
     -- https://github.com/vunguyentuan/vscode-css-variables/blob/763a564df763f17aceb5f3d6070e0b444a2f47ff/packages/css-variables-language-server/src/CSSVariableManager.ts#L31-L50

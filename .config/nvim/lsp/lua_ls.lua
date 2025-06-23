@@ -5,17 +5,6 @@ return {
 
     filetypes = { "lua" },
 
-    root_markers = {
-        ".luarc.json",
-        ".luarc.jsonc",
-        ".luacheckrc",
-        ".stylua.toml",
-        "stylua.toml",
-        "selene.toml",
-        "selene.yml",
-        ".git",
-    },
-
     settings = {
         Lua = {
             runtime = {
@@ -33,4 +22,17 @@ return {
             },
         },
     },
+
+    root_dir = function(bufnr, on_dir)
+        require("custom.lsp").root_dir(bufnr, on_dir, {
+            ".luarc.json",
+            ".luarc.jsonc",
+            ".luacheckrc",
+            ".stylua.toml",
+            "stylua.toml",
+            "selene.toml",
+            "selene.yml",
+            ".git",
+        })
+    end,
 }

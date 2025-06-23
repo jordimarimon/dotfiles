@@ -7,5 +7,7 @@ return {
 
     workspace_required = true,
 
-    root_markers = { "go.work", "go.mod", ".git" },
+    root_dir = function(bufnr, on_dir)
+        require("custom.lsp").root_dir(bufnr, on_dir, { "go.work", "go.mod", ".git" })
+    end,
 }
