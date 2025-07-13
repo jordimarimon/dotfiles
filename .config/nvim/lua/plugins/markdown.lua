@@ -9,8 +9,10 @@ return {
         config = function()
             require("render-markdown").setup({
                 code = {
+                    language_border = "",
                     above = "",
                     below = "",
+                    highlight_border = false,
                 },
             })
         end
