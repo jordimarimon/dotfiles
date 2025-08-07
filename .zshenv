@@ -99,5 +99,9 @@ export SDKMAN_DIR="$HOME/.sdkman"
 # go
 export GOPATH="$HOME/go"
 
+# pnpm
+export PNPM_HOME="/home/jmarimon/.local/share/pnpm"
+export PATH="$PNPM_HOME:$PATH"
+
 # Rust
 . "$HOME/.cargo/env"
