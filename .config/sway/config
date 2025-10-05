@@ -95,6 +95,13 @@ input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_options caps:escape
 }
 
+# gaming keyboard
+input "1133:16419:Logitech_Wireless_Keyboard_PID:4023" {
+    xkb_layout es
+    xkb_model pc105
+    xkb_options caps:escape
+}
+
 # company keyboard
 input "1133:16482:Logitech_K850" {
     xkb_layout es
