@@ -33,6 +33,15 @@ return {
             win_options = {
                 winbar = "%!v:lua.get_oil_winbar()",
             },
+            float = {
+                border = "single"
+            },
+            confirmation = {
+                border = "single"
+            },
+            progress = {
+                border = "single"
+            },
         })
     end
 }
