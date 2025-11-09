@@ -54,7 +54,7 @@
 	mf="merge"
 	pu="push"
 	puf="push --force-with-lease"
-	pl="pull"
+	pl="pull --prune"
 	ruf="!. ~/Scripts/githelpers.sh && remove_untracked_files"
 	rs="restore ."
 	rb="rebase"
