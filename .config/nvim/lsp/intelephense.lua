@@ -12,6 +12,27 @@ return {
 
     filetypes = { "php" },
 
+    settings = {
+        -- https://intelephense.com/docs#configuration
+        -- https://github.com/bmewburn/vscode-intelephense/blob/master/package.json#L149
+        intelephense = {
+            files = {
+                exclude = {
+                    "**/.git/**",
+                    "**/.svn/**",
+                    "**/.hg/**",
+                    "**/CVS/**",
+                    "**/.DS_Store/**",
+                    "**/node_modules/**",
+                    "**/bower_components/**",
+                    "**/vendor/**/{Tests,tests}/**",
+                    "**/.history/**",
+                    -- "**/vendor/**/vendor/**",
+                },
+            },
+        },
+    },
+
     init_options = {
         licenceKey = get_intelephense_license(),
     },
