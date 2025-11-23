@@ -8,6 +8,7 @@ PATHS[1]="$HOME/Interactiu/erp-web"
 PATHS[2]="$HOME/Interactiu/erp-import-app"
 PATHS[3]="$HOME/Interactiu/erp-fixtures"
 PATHS[4]="$HOME/Interactiu/erp-console-api"
+PATHS[5]="$HOME/Interactiu/erp-db-changes"
 
 # Loop through each session and creates it
 for INDEX in "${!PATHS[@]}"; do
