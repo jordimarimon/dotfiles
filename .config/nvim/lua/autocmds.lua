@@ -273,3 +273,14 @@ end, { nargs = 0, desc = "Shout outdated npm dependencies" })
 vim.api.nvim_create_user_command("DeleteComments", function()
     vim.cmd(("'<,'>g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")))
 end, { range = true, desc = "Delete comments in the current buffer" })
+
+-- Review a branch
+vim.api.nvim_create_user_command("Review", function(opts)
+    local query = opts.fargs[1]
+
+    if query == nil or query == "" then
+        return
+    end
+
+    require("custom.git-difftool").review(query)
+end, { nargs = 1, desc = "Review a branch" })

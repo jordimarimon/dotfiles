@@ -2,11 +2,58 @@
 -- Usage: `:G! difftool --name-status {branch1}...{branch2}`
 
 local M = {}
+local String = require("custom.string")
 
 local function git_file_exists(obj)
     local job_id = vim.fn.jobstart({ "git", "cat-file", "-e", obj })
     local result = vim.fn.jobwait({ job_id })
     return #result == 1 and result[1] == 0
+end
+
+function M.review(query)
+    local branches_cmd = vim.system({"git", "branch", "--all", "--remotes", "--no-color"}, {text = true}):wait()
+    local branches = String.split(branches_cmd.stdout, "\n")
+    local review_branch = nil
+    local other_branches = {}
+
+    for index, branch in ipairs(branches) do
+        branch_name, _ = String.trim(branch):gsub("%s%->.+$", "")
+        branches[index] = branch_name;
+
+        if review_branch == nil and branch_name:find(query, 1, true) ~= nil then
+            review_branch = branch_name
+        else
+            table.insert(other_branches, branch_name)
+        end
+    end
+
+    if review_branch == nil then
+        vim.notify("Unable to find branch to review", vim.log.levels.ERROR)
+        return
+    end
+
+    local git_log_cmd = {"git", "log", "--pretty=format:'%h'", review_branch}
+    for _, other_branch in ipairs(other_branches) do
+        table.insert(git_log_cmd, "^" .. other_branch)
+    end
+
+    -- The last one is the oldest commit
+    local commits_cmd = vim.system(git_log_cmd, {text = true}):wait()
+    local commits = String.split(commits_cmd.stdout, "\n")
+    for index, commit in ipairs(commits) do
+        commits[index] = commit:gsub("'", "")
+    end
+
+    local first_commit = commits[#commits]
+
+    -- Show commits in one tab (to be able to review them individually if necessary)
+    vim.cmd("tabedit")
+    vim.cmd("G log " .. table.concat(commits, " ") .. " ^" .. first_commit .. "~1")
+    vim.cmd("only") -- make the current window the only one
+
+    -- Show all changes made between all commits (for a global view)
+    vim.cmd("tabedit")
+    vim.cmd("G! difftool --name-status " .. first_commit .. "~1..." .. review_branch)
 end
 
 function M.diff()
