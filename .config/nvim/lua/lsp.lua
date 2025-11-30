@@ -166,10 +166,16 @@ vim.api.nvim_create_user_command("LspStop", function(info)
     local args = info.args
 
     if #args == 0 then
+        local clients = {}
+
         if info.bang then
-            vim.lsp.stop_client(vim.lsp.get_clients())
+            clients = vim.lsp.get_clients()
         else
-            vim.lsp.stop_client(vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() }))
+            clients = vim.lsp.get_clients({ bufnr = vim.api.nvim_get_current_buf() })
+        end
+
+        for _, client in ipairs(clients) do
+            client:stop(info.bang)
         end
     else
         for _, client in ipairs(vim.lsp.get_clients()) do
