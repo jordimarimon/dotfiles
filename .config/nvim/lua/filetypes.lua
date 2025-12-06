@@ -6,7 +6,7 @@ vim.filetype.add({
 
 vim.filetype.add({
     pattern = {
-        [".*%.component%.html"] = "htmlangular",
+        [".*%.html"] = "htmlangular",
     },
 })
 

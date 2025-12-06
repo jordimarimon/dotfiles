@@ -215,9 +215,22 @@ vim.diagnostic.config({
 })
 
 -- Load all LSP's
+local disabled_lsp = {"ts_ls"}
 local lsp_path = vim.fn.stdpath("config") .. "/lsp"
+
 for _, file in ipairs(vim.fn.readdir(lsp_path)) do
     -- `:t` gets filename, `:r` removes extension
     local name = vim.fn.fnamemodify(file, ":t:r")
-    vim.lsp.enable(name)
+
+    local is_disabled = false
+    for _, v in pairs(disabled_lsp) do
+        if v == name then
+            is_disabled = true
+            break
+        end
+    end
+
+    if not is_disabled then
+        vim.lsp.enable(name)
+    end
 end
