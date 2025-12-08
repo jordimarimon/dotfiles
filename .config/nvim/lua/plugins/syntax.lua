@@ -47,6 +47,7 @@ return {
                 "sway",
                 "toml",
                 "tsx",
+                "twig",
                 "typescript",
                 "vim",
                 "vimdoc",
