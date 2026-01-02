@@ -38,8 +38,12 @@ return {
 
     root_dir = function(bufnr, on_dir)
         require("custom.lsp").root_dir(bufnr, on_dir, {
-            "package.json",
             ".git",
+            "package-lock.json",
+            "yarn.lock",
+            "pnpm-lock.yaml",
+            "bun.lockb",
+            "bun.lock",
         })
     end,
 

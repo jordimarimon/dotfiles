@@ -27,7 +27,6 @@ return {
                     "**/bower_components/**",
                     "**/vendor/**/{Tests,tests}/**",
                     "**/.history/**",
-                    -- "**/vendor/**/vendor/**",
                 },
             },
             stubs = {
@@ -110,6 +109,6 @@ return {
     },
 
     root_dir = function(bufnr, on_dir)
-        require("custom.lsp").root_dir(bufnr, on_dir, { "composer.json", ".git" })
+        require("custom.lsp").root_dir(bufnr, on_dir, { ".git", "composer.json" })
     end,
 }

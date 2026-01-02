@@ -16,12 +16,12 @@ return {
         end
 
         require("custom.lsp").root_dir(bufnr, on_dir, {
+            ".git",
             "package-lock.json",
             "yarn.lock",
             "pnpm-lock.yaml",
             "bun.lockb",
             "bun.lock",
-            ".git",
         })
     end,
 }
