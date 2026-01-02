@@ -43,7 +43,7 @@ return {
             actions = {
                 files = {
                     ["enter"]  = fzf_lua.actions.file_edit_or_qf,
-                    ["ctrl-s"] = fzf_lua.actions.file_split,
+                    ["ctrl-x"] = fzf_lua.actions.file_split,
                     ["ctrl-v"] = fzf_lua.actions.file_vsplit,
                     ["ctrl-t"] = fzf_lua.actions.file_tabedit,
                     ["alt-q"] = fzf_lua.actions.file_sel_to_qf,

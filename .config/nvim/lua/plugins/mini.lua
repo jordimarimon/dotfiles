@@ -15,6 +15,9 @@ return {
         -- Allows moving lines using Alt + hjkl
         require("mini.move").setup()
 
+        -- Allows aligning text horizontally
+        require("mini.align").setup()
+
         -- Simple and easy statusline.
         local statusline = require("mini.statusline")
         statusline.setup({ use_icons = true })
