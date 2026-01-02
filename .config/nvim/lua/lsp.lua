@@ -24,10 +24,11 @@ vim.api.nvim_create_autocmd("LspAttach", {
             vim.keymap.set(mode, keys, func, { buffer = buf, desc = "LSP: " .. desc })
         end
 
+        -- Code actions
+        map("gra", require("fzf-lua").lsp_code_actions, "Code Actions")
 
         -- Find references for the word under your cursor.
-        map("grr", function() require("telescope.builtin").lsp_references({ include_declaration = false }) end,
-            "[G]oto [R]eferences")
+        map("grr", require("fzf-lua").lsp_references, "[G]oto [R]eferences")
 
         --- Displays hover information about the symbol under the cursor in a floating window
         map("K", function() vim.lsp.buf.hover({ border = "single" }) end, "Show symbol info")
@@ -37,16 +38,16 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- Jump to the implementation of the word under your cursor.
         -- Useful when your language has ways of declaring types without an actual implementation.
-        map("gri", require("telescope.builtin").lsp_implementations, "[G]oto [I]mplementation")
+        map("gri", require("fzf-lua").lsp_implementations, "[G]oto [I]mplementation")
 
         -- Fuzzy find all the symbols in your current document.
         -- Symbols are things like variables, functions, types, etc.
-        map("gO", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
+        map("gO", require("fzf-lua").lsp_document_symbols, "[D]ocument [S]ymbols")
 
         -- Jump to the definition of the word under your cursor.
         -- This is where a variable was first declared, or where a function is defined, etc.
         -- To jump back, press <C-t>.
-        map("gd", require("telescope.builtin").lsp_definitions, "[G]oto [D]efinition")
+        map("gd", require("fzf-lua").lsp_definitions, "[G]oto [D]efinition")
 
         -- This is not Goto Definition, this is Goto Declaration.
         map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
@@ -54,7 +55,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- Jump to the type of the word under your cursor.
         -- Useful when you"re not sure what type a variable is and you want to see
         -- the definition of its *type*, not where it was *defined*.
-        map("<leader>D", require("telescope.builtin").lsp_type_definitions, "Type [D]efinition")
+        map("<leader>D", require("fzf-lua").lsp_typedefs, "Type [D]efinition")
 
         -- Format file
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then

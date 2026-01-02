@@ -91,3 +91,8 @@ alias foreignpkgs="yay -Qm"
 alias info='info --vi-keys'
 alias tmuxstart="$HOME/Scripts/tmux-create-sessions.sh"
 alias tmuxcreate="$HOME/Scripts/tmux-create-session.sh"
+
+# OSC 133 shell integration
+precmd() {
+    print -Pn "\e]133;A\e\\"
+}
