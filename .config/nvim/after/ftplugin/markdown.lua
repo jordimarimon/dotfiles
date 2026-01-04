@@ -7,4 +7,3 @@ vim.keymap.set("n", "<leader>mt", "<cmd>MarkdownPreviewToggle<CR>", {
     desc = "[M]arkdown [T]oggle",
     buffer = true,
 })
-

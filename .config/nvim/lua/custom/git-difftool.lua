@@ -11,14 +11,18 @@ local function git_file_exists(obj)
 end
 
 function M.review(query)
-    local branches_cmd = vim.system({"git", "branch", "--all", "--remotes", "--no-color"}, {text = true}):wait()
+    local branches_cmd = vim.system(
+        { "git", "branch", "--all", "--remotes", "--no-color" },
+        { text = true }
+    )
+        :wait()
     local branches = String.split(branches_cmd.stdout, "\n")
     local review_branch = nil
     local other_branches = {}
 
     for index, branch in ipairs(branches) do
         branch_name, _ = String.trim(branch):gsub("%s%->.+$", "")
-        branches[index] = branch_name;
+        branches[index] = branch_name
 
         if review_branch == nil and branch_name:find(query, 1, true) ~= nil then
             review_branch = branch_name
@@ -32,13 +36,13 @@ function M.review(query)
         return
     end
 
-    local git_log_cmd = {"git", "log", "--pretty=format:'%h'", review_branch}
+    local git_log_cmd = { "git", "log", "--pretty=format:'%h'", review_branch }
     for _, other_branch in ipairs(other_branches) do
         table.insert(git_log_cmd, "^" .. other_branch)
     end
 
     -- The last one is the oldest commit
-    local commits_cmd = vim.system(git_log_cmd, {text = true}):wait()
+    local commits_cmd = vim.system(git_log_cmd, { text = true }):wait()
     local commits = String.split(commits_cmd.stdout, "\n")
     for index, commit in ipairs(commits) do
         commits[index] = commit:gsub("'", "")

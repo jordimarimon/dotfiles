@@ -18,7 +18,9 @@ function M.backward()
     local curr_buf_num = vim.fn.bufnr()
     local target_buf_num = curr_buf_num
 
-    while j > 1 and (curr_buf_num == target_buf_num or not vim.api.nvim_buf_is_valid(target_buf_num)) do
+    while
+        j > 1 and (curr_buf_num == target_buf_num or not vim.api.nvim_buf_is_valid(target_buf_num))
+    do
         j = j - 1
         target_buf_num = jumplist[j].bufnr
     end
@@ -43,16 +45,27 @@ function M.foward()
     local target_buf_num = curr_buf_num
 
     -- find the next different buffer
-    while j < #jumplist and (curr_buf_num == target_buf_num or vim.api.nvim_buf_is_valid(target_buf_num) == false) do
+    while
+        j < #jumplist
+        and (curr_buf_num == target_buf_num or vim.api.nvim_buf_is_valid(target_buf_num) == false)
+    do
         j = j + 1
         target_buf_num = jumplist[j].bufnr
     end
 
-    while j + 1 <= #jumplist and jumplist[j + 1].bufnr == target_buf_num and vim.api.nvim_buf_is_valid(target_buf_num) do
+    while
+        j + 1 <= #jumplist
+        and jumplist[j + 1].bufnr == target_buf_num
+        and vim.api.nvim_buf_is_valid(target_buf_num)
+    do
         j = j + 1
     end
 
-    if j <= #jumplist and target_buf_num ~= curr_buf_num and vim.api.nvim_buf_is_valid(target_buf_num) then
+    if
+        j <= #jumplist
+        and target_buf_num ~= curr_buf_num
+        and vim.api.nvim_buf_is_valid(target_buf_num)
+    then
         vim.cmd([[execute "normal! ]] .. tostring(j - i) .. [[\<c-i>"]])
     end
 end

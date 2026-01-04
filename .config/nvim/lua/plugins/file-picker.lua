@@ -2,7 +2,7 @@
 return {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    config = function ()
+    config = function()
         local fzf_lua = require("fzf-lua")
 
         fzf_lua.register_ui_select()
@@ -42,7 +42,7 @@ return {
             },
             actions = {
                 files = {
-                    ["enter"]  = fzf_lua.actions.file_edit_or_qf,
+                    ["enter"] = fzf_lua.actions.file_edit_or_qf,
                     ["ctrl-x"] = fzf_lua.actions.file_split,
                     ["ctrl-v"] = fzf_lua.actions.file_vsplit,
                     ["ctrl-t"] = fzf_lua.actions.file_tabedit,
@@ -51,9 +51,9 @@ return {
                 },
                 buffers = {
                     ["default"] = fzf_lua.actions.buf_edit,
-                    ["ctrl-x"]  = fzf_lua.actions.buf_split,
-                    ["ctrl-v"]  = fzf_lua.actions.buf_vsplit,
-                    ["ctrl-t"]  = fzf_lua.actions.buf_tabedit,
+                    ["ctrl-x"] = fzf_lua.actions.buf_split,
+                    ["ctrl-v"] = fzf_lua.actions.buf_vsplit,
+                    ["ctrl-t"] = fzf_lua.actions.buf_tabedit,
                 },
             },
             grep = {
@@ -64,7 +64,12 @@ return {
         vim.keymap.set("n", "<leader>sf", fzf_lua.files, { desc = "Search files" })
         vim.keymap.set("n", "<leader>sb", fzf_lua.buffers, { desc = "Search buffers" })
         vim.keymap.set("n", "<leader>sr", fzf_lua.resume, { desc = "Resume previous search" })
-        vim.keymap.set("n", "<leader>sd", fzf_lua.diagnostics_workspace, { desc = "Search diagnostics" })
+        vim.keymap.set(
+            "n",
+            "<leader>sd",
+            fzf_lua.diagnostics_workspace,
+            { desc = "Search diagnostics" }
+        )
         vim.keymap.set("n", "<leader>sg", fzf_lua.live_grep, { desc = "Live grep" })
         vim.keymap.set("n", "<leader>sm", fzf_lua.marks, { desc = "Search marks" })
         vim.keymap.set("n", "<leader>sk", fzf_lua.keymaps, { desc = "Search keymaps" })
@@ -72,7 +77,12 @@ return {
         vim.keymap.set("n", "<leader>st", fzf_lua.tags, { desc = "Search tags" })
         vim.keymap.set("n", "<leader>sj", fzf_lua.jumps, { desc = "Search jumps" })
         vim.keymap.set("n", "<leader>sc", fzf_lua.commands, { desc = "Search command" })
-        vim.keymap.set("n", "<leader>sch", fzf_lua.command_history, { desc = "Search command history" })
+        vim.keymap.set(
+            "n",
+            "<leader>sch",
+            fzf_lua.command_history,
+            { desc = "Search command history" }
+        )
         vim.keymap.set("n", "<leader>sgh", fzf_lua.git_hunks, { desc = "Search git hunks" })
-    end
+    end,
 }

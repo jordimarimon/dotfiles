@@ -31,13 +31,17 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {
     desc = "show cursorline",
-    callback = function() vim.wo.cursorline = true end,
-    group = active_line_highligh
+    callback = function()
+        vim.wo.cursorline = true
+    end,
+    group = active_line_highligh,
 })
 vim.api.nvim_create_autocmd("WinLeave", {
     desc = "hide cursorline",
-    callback = function() vim.wo.cursorline = false end,
-    group = active_line_highligh
+    callback = function()
+        vim.wo.cursorline = false
+    end,
+    group = active_line_highligh,
 })
 
 -- Use vertical splits for help windows
@@ -46,7 +50,7 @@ vim.api.nvim_create_autocmd("FileType", {
     desc = "make help split vertical",
     pattern = "help",
     command = "wincmd L",
-    group = vertical_help
+    group = vertical_help,
 })
 
 -- Prevent default ftplugins from overriding some options
@@ -67,7 +71,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
         -- Change how many lines scrolls C-d and C-u
         vim.o.scroll = 5
-    end
+    end,
 })
 
 -- Marks
@@ -184,13 +188,13 @@ vim.api.nvim_create_user_command("Translate", function(o)
 
     local text = ""
     if o.range ~= 0 then
-        local v_start_pos         = vim.fn.getpos("'<")
-        local v_start_line        = v_start_pos[2]
-        local v_start_col         = v_start_pos[3]
+        local v_start_pos = vim.fn.getpos("'<")
+        local v_start_line = v_start_pos[2]
+        local v_start_col = v_start_pos[3]
 
-        local v_end_pos           = vim.fn.getpos("'>")
-        local v_end_line          = v_end_pos[2]
-        local v_end_col           = v_end_pos[3]
+        local v_end_pos = vim.fn.getpos("'>")
+        local v_end_line = v_end_pos[2]
+        local v_end_col = v_end_pos[3]
 
         local is_visual_selection = v_start_line == o.line1 and v_end_line == o.line2
 
@@ -199,10 +203,10 @@ vim.api.nvim_create_user_command("Translate", function(o)
                 local line = vim.api.nvim_buf_get_lines(0, v_start_line - 1, v_start_line, false)[1]
                 text = string.sub(line, v_start_col, v_end_col)
             else
-                local lines   = vim.api.nvim_buf_get_lines(0, v_start_line - 1, v_end_line, false)
-                lines[1]      = string.sub(lines[1], v_start_col)
+                local lines = vim.api.nvim_buf_get_lines(0, v_start_line - 1, v_end_line, false)
+                lines[1] = string.sub(lines[1], v_start_col)
                 lines[#lines] = string.sub(lines[#lines], 1, v_end_col)
-                text          = table.concat(lines, "\n")
+                text = table.concat(lines, "\n")
             end
         else
             local lines = vim.api.nvim_buf_get_lines(0, o.line1 - 1, o.line2, false)
@@ -213,7 +217,11 @@ vim.api.nvim_create_user_command("Translate", function(o)
     end
 
     local escaped = require("custom.url").encode(text)
-    local url = ("https://translate.google.com/?sl=%s&tl=%s&text=%s&op=translate"):format(src_lang, target_lang, escaped)
+    local url = ("https://translate.google.com/?sl=%s&tl=%s&text=%s&op=translate"):format(
+        src_lang,
+        target_lang,
+        escaped
+    )
 
     vim.ui.open(url)
     print("Translation done!")
@@ -247,7 +255,7 @@ end, { nargs = 0, desc = "Clear the saved cookie" })
 
 -- Copy current buffer path to system clipboard
 vim.api.nvim_create_user_command("YankPath", function()
-    vim.fn.setreg("+", vim.fn.expand('%'))
+    vim.fn.setreg("+", vim.fn.expand("%"))
 end, { nargs = 0, desc = "Copy current buffer path to system clipboard" })
 
 -- Delete other buffers
@@ -271,7 +279,11 @@ end, { nargs = 0, desc = "Shout outdated npm dependencies" })
 
 -- Delete all comments in buffer
 vim.api.nvim_create_user_command("DeleteComments", function()
-    vim.cmd(("'<,'>g/%s/d"):format(vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")))
+    vim.cmd(
+        ("'<,'>g/%s/d"):format(
+            vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")
+        )
+    )
 end, { range = true, desc = "Delete comments in the current buffer" })
 
 -- Review a branch

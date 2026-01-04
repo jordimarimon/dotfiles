@@ -6,8 +6,8 @@
 -- More information about the syntax:
 -- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
 
-local fs = require("custom.fs")
 local String = require("custom.string")
+local fs = require("custom.fs")
 
 ---@class Request
 ---@field ok boolean
@@ -72,16 +72,20 @@ local function read_env()
     local READ_ONLY = 00444 -- `:Man 2 open`
     local fd, open_err, open_err_name = vim.uv.fs_open(env_path, "r", READ_ONLY)
     if not fd then
-        vim.notify("Error opening env file " .. " (" .. open_err_name .. "): " .. open_err,
-            vim.log.levels.ERROR)
+        vim.notify(
+            "Error opening env file " .. " (" .. open_err_name .. "): " .. open_err,
+            vim.log.levels.ERROR
+        )
         return
     end
 
     local data, read_err, read_err_name = vim.uv.fs_read(fd, stat.size, 0)
     vim.uv.fs_close(fd)
     if not data then
-        vim.notify("Error reading env file " .. " (" .. read_err_name .. "): " .. read_err,
-            vim.log.levels.ERROR)
+        vim.notify(
+            "Error reading env file " .. " (" .. read_err_name .. "): " .. read_err,
+            vim.log.levels.ERROR
+        )
         return
     end
 
@@ -311,7 +315,9 @@ local function execute_curl(request)
     vim.notify("Making HTTP request...", vim.log.levels.INFO)
 
     vim.system(request.curl_cmd, { text = true }, function(response)
-        vim.schedule(function() process_response(request, response) end)
+        vim.schedule(function()
+            process_response(request, response)
+        end)
     end)
 end
 
@@ -421,7 +427,10 @@ local function parse_request(options)
         request.headers[header_name] = value
 
         if options.shell then
-            table.insert(request.curl_cmd, "-H " .. "\"" .. string.format("%s: %s", header_name, value) .. "\"")
+            table.insert(
+                request.curl_cmd,
+                "-H " .. '"' .. string.format("%s: %s", header_name, value) .. '"'
+            )
         else
             table.insert(request.curl_cmd, "-H")
             table.insert(request.curl_cmd, string.format("%s: %s", header_name, value))
@@ -447,7 +456,10 @@ local function parse_request(options)
         request.body = new_body_lines
 
         if options.shell then
-            table.insert(request.curl_cmd, "--data @- << EOF\n" .. table.concat(new_body_lines, "\n") .. "\nEOF")
+            table.insert(
+                request.curl_cmd,
+                "--data @- << EOF\n" .. table.concat(new_body_lines, "\n") .. "\nEOF"
+            )
         else
             table.insert(request.curl_cmd, "--data")
             table.insert(request.curl_cmd, table.concat(new_body_lines, "\n"))
@@ -477,17 +489,13 @@ function M.change_env()
         table.insert(environments, key)
     end
 
-    vim.ui.select(
-        environments,
-        { prompt = "Choose an environment" },
-        function(choice)
-            if choice == nil then
-                return
-            end
-
-            state.env.selected = choice
+    vim.ui.select(environments, { prompt = "Choose an environment" }, function(choice)
+        if choice == nil then
+            return
         end
-    )
+
+        state.env.selected = choice
+    end)
 end
 
 function M.select_from_cache()
@@ -503,27 +511,23 @@ function M.select_from_cache()
         return
     end
 
-    vim.ui.select(
-        choices,
-        { prompt = "Choose a request" },
-        function(selected_choice)
-            if not selected_choice then
-                return
-            end
+    vim.ui.select(choices, { prompt = "Choose a request" }, function(selected_choice)
+        if not selected_choice then
+            return
+        end
 
-            for url, methods in pairs(state.cache) do
-                for method, cached_request in pairs(methods) do
-                    local choice = method .. " " .. url
+        for url, methods in pairs(state.cache) do
+            for method, cached_request in pairs(methods) do
+                local choice = method .. " " .. url
 
-                    if choice == selected_choice then
-                        toggle_floating_window()
-                        render_markdown(cached_request)
-                        return
-                    end
+                if choice == selected_choice then
+                    toggle_floating_window()
+                    render_markdown(cached_request)
+                    return
                 end
             end
         end
-    )
+    end)
 end
 
 function M.clear_cache()

@@ -101,15 +101,21 @@ local display = function()
                         warning_text = " " .. latest_version
                     end
 
-                    vim.api.nvim_buf_set_extmark(state.buffer.id, state.namespace.id, line_number - 1, 0, {
-                        virt_text = {
-                            { info_text, "DiagnosticInfo" },
-                            { separator_text, "Normal" },
-                            { warning_text, "DiagnosticWarn" },
-                        },
-                        virt_text_pos = "eol",
-                        priority = 200,
-                    })
+                    vim.api.nvim_buf_set_extmark(
+                        state.buffer.id,
+                        state.namespace.id,
+                        line_number - 1,
+                        0,
+                        {
+                            virt_text = {
+                                { info_text, "DiagnosticInfo" },
+                                { separator_text, "Normal" },
+                                { warning_text, "DiagnosticWarn" },
+                            },
+                            virt_text_pos = "eol",
+                            priority = 200,
+                        }
+                    )
                 end
             end
         else
@@ -150,7 +156,7 @@ local on_error = function()
     state.is_pending = false
 end
 
-local on_exit = function (obj)
+local on_exit = function(obj)
     local ok, json_value = pcall(vim.json.decode, obj.stdout)
 
     if not ok then
@@ -178,8 +184,10 @@ local display_outdated_dependencies = function()
 
     -- Don't check the exit code because the command
     -- always returns "1"
-    vim.system({"npm", "outdated", "--json"}, {text = true}, function (obj)
-        vim.schedule(function() on_exit(obj) end)
+    vim.system({ "npm", "outdated", "--json" }, { text = true }, function(obj)
+        vim.schedule(function()
+            on_exit(obj)
+        end)
     end)
 end
 

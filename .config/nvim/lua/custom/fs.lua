@@ -17,7 +17,7 @@ end
 --- @param files table
 --- @return string?
 function M.root_files(files)
-    return vim.fs.root(0, files);
+    return vim.fs.root(0, files)
 end
 
 return M

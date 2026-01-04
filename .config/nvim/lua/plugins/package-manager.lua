@@ -22,7 +22,7 @@ return {
         ---@diagnostic disable-next-line: missing-fields
         require("mason").setup({ ui = { border = "single" } })
 
-        registry.refresh(function (success)
+        registry.refresh(function(success)
             if not success then
                 return
             end

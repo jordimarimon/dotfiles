@@ -71,7 +71,7 @@ return {
             local cmd = {
                 command = "_typescript.organizeImports",
                 arguments = { file },
-                title = ""
+                title = "",
             }
 
             client:exec_cmd(cmd)
@@ -94,7 +94,7 @@ return {
                             targetUri = dir .. "/" .. input,
                         },
                     },
-                    title = ""
+                    title = "",
                 }
 
                 client:exec_cmd(cmd)

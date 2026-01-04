@@ -101,16 +101,36 @@ vim.api.nvim_set_hl(0, "SpellBad", { undercurl = true, underline = true, sp = fg
 vim.api.nvim_set_hl(0, "SpellCap", { undercurl = true, underline = true, sp = fg_error })
 vim.api.nvim_set_hl(0, "SpellLocal", { undercurl = true, underline = true, sp = fg_error })
 vim.api.nvim_set_hl(0, "SpellRare", { undercurl = true, underline = true, sp = fg_error })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", { undercurl = true, underline = true, sp = fg_error })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", { undercurl = true, underline = true, sp = fg_warn })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", { undercurl = true, underline = true, sp = fg_info })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", { undercurl = true, underline = true, sp = fg_info })
-vim.api.nvim_set_hl(0, "DiagnosticUnderlineOk", { undercurl = true, underline = true, sp = fg_success })
+vim.api.nvim_set_hl(
+    0,
+    "DiagnosticUnderlineError",
+    { undercurl = true, underline = true, sp = fg_error }
+)
+vim.api.nvim_set_hl(
+    0,
+    "DiagnosticUnderlineWarn",
+    { undercurl = true, underline = true, sp = fg_warn }
+)
+vim.api.nvim_set_hl(
+    0,
+    "DiagnosticUnderlineInfo",
+    { undercurl = true, underline = true, sp = fg_info }
+)
+vim.api.nvim_set_hl(
+    0,
+    "DiagnosticUnderlineHint",
+    { undercurl = true, underline = true, sp = fg_info }
+)
+vim.api.nvim_set_hl(
+    0,
+    "DiagnosticUnderlineOk",
+    { undercurl = true, underline = true, sp = fg_success }
+)
 vim.api.nvim_set_hl(0, "PmenuThumb", { fg = fg, bg = fg })
 vim.api.nvim_set_hl(0, "ColorColumn", { bg = bg })
-vim.api.nvim_set_hl(0, "qfFilename", {fg = fg})
-vim.api.nvim_set_hl(0, "qfText", {fg = fg})
-vim.api.nvim_set_hl(0, "qfLineNr", {fg = fg_number})
+vim.api.nvim_set_hl(0, "qfFilename", { fg = fg })
+vim.api.nvim_set_hl(0, "qfText", { fg = fg })
+vim.api.nvim_set_hl(0, "qfLineNr", { fg = fg_number })
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", { fg = fg, bg = bg_status_line_mode })

@@ -25,7 +25,13 @@ local function apply_highlights()
         for i, entry in ipairs(state.entries) do
             local col = 0
             for _, text in ipairs(entry) do
-                vim.hl.range(state.bufnr, state.ns, text[2], { i - 1, col }, { i - 1, col + #text[1] })
+                vim.hl.range(
+                    state.bufnr,
+                    state.ns,
+                    text[2],
+                    { i - 1, col },
+                    { i - 1, col + #text[1] }
+                )
                 col = col + #text[1]
             end
         end
@@ -114,7 +120,9 @@ function M.move_to_next()
     local first_command = list_type == "quickfix" and "cfirst" or "lfirst"
     local open_command = list_type == "quickfix" and "copen" or "lopen"
 
-    local success = pcall(function() vim.cmd(next_command) end)
+    local success = pcall(function()
+        vim.cmd(next_command)
+    end)
 
     if not success then
         vim.cmd(first_command)
@@ -129,7 +137,9 @@ function M.move_to_prev()
     local last_command = list_type == "quickfix" and "clast" or "llast"
     local open_command = list_type == "quickfix" and "copen" or "lopen"
 
-    local success = pcall(function() vim.cmd(prev_command) end)
+    local success = pcall(function()
+        vim.cmd(prev_command)
+    end)
 
     if not success then
         vim.cmd(last_command)

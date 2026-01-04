@@ -3,7 +3,7 @@ return {
         "MeanderingProgrammer/render-markdown.nvim",
         ft = { "markdown" },
         dependencies = {
-            {"nvim-treesitter/nvim-treesitter", branch = "main"},
+            { "nvim-treesitter/nvim-treesitter", branch = "main" },
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
@@ -15,6 +15,6 @@ return {
                     highlight_border = false,
                 },
             })
-        end
+        end,
     },
 }

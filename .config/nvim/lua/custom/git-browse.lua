@@ -7,19 +7,19 @@ local Url = require("custom.url")
 local M = {}
 
 local remote_patterns = {
-    { "^(https?://.*)%.git$",               "%1" },
-    { "^git@(.+):(.+)%.git$",               "https://%1/%2" },
-    { "^git@(.+):(.+)$",                    "https://%1/%2" },
-    { "^git@(.+)/(.+)$",                    "https://%1/%2" },
-    { "^org%-%d+@(.+):(.+)%.git$",          "https://%1/%2" },
-    { "^ssh://git@(.*)$",                   "https://%1" },
-    { "^ssh://([^:/]+)(:%d+)/(.*)$",        "https://%1/%3" },
-    { "^ssh://([^/]+)/(.*)$",               "https://%1/%2" },
+    { "^(https?://.*)%.git$", "%1" },
+    { "^git@(.+):(.+)%.git$", "https://%1/%2" },
+    { "^git@(.+):(.+)$", "https://%1/%2" },
+    { "^git@(.+)/(.+)$", "https://%1/%2" },
+    { "^org%-%d+@(.+):(.+)%.git$", "https://%1/%2" },
+    { "^ssh://git@(.*)$", "https://%1" },
+    { "^ssh://([^:/]+)(:%d+)/(.*)$", "https://%1/%3" },
+    { "^ssh://([^/]+)/(.*)$", "https://%1/%2" },
     { "ssh%.dev%.azure%.com/v3/(.*)/(.*)$", "dev.azure.com/%1/_git/%2" },
-    { "^https://%w*@(.*)",                  "https://%1" },
-    { "^git@(.*)",                          "https://%1" },
-    { ":%d+",                               "" },
-    { "%.git$",                             "" },
+    { "^https://%w*@(.*)", "https://%1" },
+    { "^git@(.*)", "https://%1" },
+    { ":%d+", "" },
+    { "%.git$", "" },
 }
 
 local url_patterns = {
@@ -102,7 +102,8 @@ end
 local function get_relative_file_path()
     local absolute_file_path = vim.api.nvim_buf_get_name(0)
     local git_path = vim.fn.system("git rev-parse --show-toplevel")
-    local relative_file_path_components = String.split(string.sub(absolute_file_path, git_path:len() + 1), "/")
+    local relative_file_path_components =
+        String.split(string.sub(absolute_file_path, git_path:len() + 1), "/")
     local encoded_components = {}
 
     for i, path_component in pairs(relative_file_path_components) do
@@ -135,7 +136,8 @@ local function get_repo()
     end
 
     -- Get the remote url
-    local remote_url = String.trim(vim.fn.system("git config --get remote." .. remote_name .. ".url"))
+    local remote_url =
+        String.trim(vim.fn.system("git config --get remote." .. remote_name .. ".url"))
     if not remote_url or remote_url == "" then
         vim.notify("No remote URL was found.", vim.log.levels.ERROR)
         return nil
@@ -179,9 +181,10 @@ local function get_url(repo, fields)
                 pattern = patterns["commit"]
             end
 
-            return repo .. pattern:gsub("(%b{})", function(key)
-                return tostring(fields[key:sub(2, -2)] or key)
-            end)
+            return repo
+                .. pattern:gsub("(%b{})", function(key)
+                    return tostring(fields[key:sub(2, -2)] or key)
+                end)
         end
     end
 

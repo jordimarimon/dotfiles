@@ -33,7 +33,6 @@ function M.hex_to_char(x)
     return string.char(tonumber(x, 16))
 end
 
-
 --- @param value string
 --- @return string
 function M.escape(value)

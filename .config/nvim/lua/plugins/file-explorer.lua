@@ -34,14 +34,14 @@ return {
                 winbar = "%!v:lua.get_oil_winbar()",
             },
             float = {
-                border = "single"
+                border = "single",
             },
             confirmation = {
-                border = "single"
+                border = "single",
             },
             progress = {
-                border = "single"
+                border = "single",
             },
         })
-    end
+    end,
 }

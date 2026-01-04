@@ -40,7 +40,7 @@ function M.go_to_start_function()
     vim.cmd("normal! m'")
 
     local start_row, start_col = function_node:start()
-    vim.api.nvim_win_set_cursor(0, {start_row + 1, start_col})
+    vim.api.nvim_win_set_cursor(0, { start_row + 1, start_col })
 end
 
 return M

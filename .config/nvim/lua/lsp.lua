@@ -2,7 +2,9 @@
 local get_active_clients = function()
     ---@param client vim.lsp.Client
     ---@return string
-    local get_client_name = function(client) return client.name end
+    local get_client_name = function(client)
+        return client.name
+    end
 
     return vim.tbl_map(get_client_name, vim.lsp.get_clients())
 end
@@ -31,10 +33,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         map("grr", require("fzf-lua").lsp_references, "[G]oto [R]eferences")
 
         --- Displays hover information about the symbol under the cursor in a floating window
-        map("K", function() vim.lsp.buf.hover({ border = "single" }) end, "Show symbol info")
+        map("K", function()
+            vim.lsp.buf.hover({ border = "single" })
+        end, "Show symbol info")
 
-        map("<C-s>", function() vim.lsp.buf.signature_help({ border = "single" }) end, "Show signature help",
-            { "n", "i" })
+        map("<C-s>", function()
+            vim.lsp.buf.signature_help({ border = "single" })
+        end, "Show signature help", { "n", "i" })
 
         -- Jump to the implementation of the word under your cursor.
         -- Useful when your language has ways of declaring types without an actual implementation.
@@ -59,8 +64,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- Format file
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_formatting) then
-            map("<leader>ff", function() vim.lsp.buf.format({ buf = buf, id = client.id }) end,
-                "[F]ormat [F]ile", { "n" })
+            map("<leader>ff", function()
+                vim.lsp.buf.format({ buf = buf, id = client.id })
+            end, "[F]ormat [F]ile", { "n" })
         end
 
         -- The following two autocommands are used to highlight references of the
@@ -69,7 +75,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         --
         -- When you move your cursor, the highlights will be cleared (the second autocommand).
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
-            local highlight_augroup = vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
+            local highlight_augroup =
+                vim.api.nvim_create_augroup("lsp-highlight", { clear = false })
 
             vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
                 buffer = buf,
@@ -160,7 +167,11 @@ vim.api.nvim_create_user_command("LspLog", function()
 end, { desc = "Opens the Nvim LSP client log." })
 
 -- LSP info
-vim.api.nvim_create_user_command("LspInfo", ":checkhealth vim.lsp", { desc = "Alias to `:checkhealth vim.lsp`" })
+vim.api.nvim_create_user_command(
+    "LspInfo",
+    ":checkhealth vim.lsp",
+    { desc = "Alias to `:checkhealth vim.lsp`" }
+)
 
 -- To start again the client just use ":e!"
 vim.api.nvim_create_user_command("LspStop", function(info)
@@ -200,23 +211,22 @@ vim.diagnostic.config({
     virtual_lines = false,
     signs = {
         text = {
-            [vim.diagnostic.severity.ERROR] = '',
-            [vim.diagnostic.severity.WARN] = '',
-            [vim.diagnostic.severity.INFO] = '',
-            [vim.diagnostic.severity.HINT] = '',
+            [vim.diagnostic.severity.ERROR] = "",
+            [vim.diagnostic.severity.WARN] = "",
+            [vim.diagnostic.severity.INFO] = "",
+            [vim.diagnostic.severity.HINT] = "",
         },
         numhl = {
-            [vim.diagnostic.severity.WARN] = 'WarningMsg',
-            [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
-            [vim.diagnostic.severity.INFO] = 'DiagnosticInfo',
-            [vim.diagnostic.severity.HINT] = 'DiagnosticHint',
-
+            [vim.diagnostic.severity.WARN] = "WarningMsg",
+            [vim.diagnostic.severity.ERROR] = "ErrorMsg",
+            [vim.diagnostic.severity.INFO] = "DiagnosticInfo",
+            [vim.diagnostic.severity.HINT] = "DiagnosticHint",
         },
     },
 })
 
 -- Load all LSP's
-local disabled_lsp = {"tsgo"}
+local disabled_lsp = { "tsgo" }
 local lsp_path = vim.fn.stdpath("config") .. "/lsp"
 
 for _, file in ipairs(vim.fn.readdir(lsp_path)) do

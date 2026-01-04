@@ -20,6 +20,6 @@ return {
         },
         scss = {
             validate = false,
-        }
+        },
     },
 }

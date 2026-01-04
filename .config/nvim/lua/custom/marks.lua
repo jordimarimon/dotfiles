@@ -51,13 +51,7 @@ local function set_mark(buffer, data)
     local line = data.pos[2]
     local mark_name = data.mark
 
-    vim.fn.sign_place(
-        0,
-        state.group,
-        "MarkSign",
-        buffer,
-        { lnum = line, priority = 10 }
-    )
+    vim.fn.sign_place(0, state.group, "MarkSign", buffer, { lnum = line, priority = 10 })
 
     vim.api.nvim_buf_set_extmark(buffer, state.ns_id, line - 1, 0, {
         virt_text = {

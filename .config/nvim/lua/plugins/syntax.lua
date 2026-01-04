@@ -80,7 +80,7 @@ return {
                             vim.cmd.normal("zx")
                         end)
                     end
-                end
+                end,
             })
         end,
     },
@@ -97,19 +97,28 @@ return {
                 },
                 move = {
                     set_jumps = true,
-                }
+                },
             })
 
             vim.keymap.set({ "x", "o" }, "af", function()
-                require("nvim-treesitter-textobjects.select").select_textobject("@function.outer", "textobjects")
+                require("nvim-treesitter-textobjects.select").select_textobject(
+                    "@function.outer",
+                    "textobjects"
+                )
             end)
 
             vim.keymap.set({ "x", "o" }, "if", function()
-                require("nvim-treesitter-textobjects.select").select_textobject("@function.inner", "textobjects")
+                require("nvim-treesitter-textobjects.select").select_textobject(
+                    "@function.inner",
+                    "textobjects"
+                )
             end)
 
             vim.keymap.set({ "x", "o" }, "as", function()
-                require("nvim-treesitter-textobjects.select").select_textobject("@local.scope", "locals")
+                require("nvim-treesitter-textobjects.select").select_textobject(
+                    "@local.scope",
+                    "locals"
+                )
             end)
         end,
     },
@@ -124,8 +133,12 @@ return {
                 use_default_keymaps = false,
             })
 
-            vim.keymap.set("n", "<leader>ts", function() require("treesj").split() end, { desc = "[T]reesitter [S]plit" })
-            vim.keymap.set("n", "<leader>tj", function() require("treesj").join() end, { desc = "[T]reesitter [J]oin" })
+            vim.keymap.set("n", "<leader>ts", function()
+                require("treesj").split()
+            end, { desc = "[T]reesitter [S]plit" })
+            vim.keymap.set("n", "<leader>tj", function()
+                require("treesj").join()
+            end, { desc = "[T]reesitter [J]oin" })
         end,
     },
 }

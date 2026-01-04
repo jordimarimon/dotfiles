@@ -43,7 +43,7 @@ function M.redirect(cmd)
         once = true,
         callback = function()
             vim.api.nvim_buf_delete(scratch_buffer, { force = true })
-        end
+        end,
     })
 end
 
