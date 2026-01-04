@@ -12,12 +12,12 @@ vim.filetype.add({
 
 vim.filetype.add({
     extension = {
-        env = "dotenv",
+        env = "bash",
     },
     filename = {
-        [".env"] = "dotenv",
+        [".env"] = "bash",
     },
     pattern = {
-        ["%.env%.[%w_.-]+"] = "dotenv",
+        ["%.env%.[%w_.-]+"] = "bash",
     },
 })

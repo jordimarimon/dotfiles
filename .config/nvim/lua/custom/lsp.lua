@@ -4,8 +4,6 @@ local M = {}
 ---@param on_dir fun(root_dir?:string)
 ---@param root_markers string[]
 function M.root_dir(bufnr, on_dir, root_markers)
-    local bufname = vim.fn.bufname(bufnr)
-
     if not vim.api.nvim_buf_is_valid(bufnr) then
         return
     end
@@ -16,6 +14,7 @@ function M.root_dir(bufnr, on_dir, root_markers)
         return
     end
 
+    local bufname = vim.fn.bufname(bufnr)
     if bufname:find("fugitive://", 1, true) == 1 then
         return
     end
