@@ -10,6 +10,7 @@ return {
         lazy = false,
         build = function()
             -- https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers
+            -- https://github.com/nvim-treesitter/nvim-treesitter/blob/main/SUPPORTED_LANGUAGES.md
             local parsers_installed = {
                 "angular",
                 "bash",
@@ -32,7 +33,6 @@ return {
                 "javascript",
                 "json",
                 "json5",
-                "jsonc",
                 "lua",
                 "make",
                 "markdown",
