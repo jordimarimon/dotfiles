@@ -11,6 +11,12 @@ vim.filetype.add({
 })
 
 vim.filetype.add({
+    pattern = {
+        [".*%.neon"] = "yaml",
+    },
+})
+
+vim.filetype.add({
     extension = {
         env = "bash",
     },
