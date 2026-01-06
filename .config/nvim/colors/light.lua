@@ -34,6 +34,7 @@ local fg_type = "#690363"
 local fg_error = "#dd0808"
 local fg_tag = "#78716c"
 local fg_member = "#000000"
+local fg_light = "#FFFFFF"
 
 vim.g.colors_name = "light"
 vim.o.background = "light"
@@ -131,6 +132,10 @@ vim.api.nvim_set_hl(0, "ColorColumn", { bg = bg })
 vim.api.nvim_set_hl(0, "qfFilename", { fg = fg })
 vim.api.nvim_set_hl(0, "qfText", { fg = fg })
 vim.api.nvim_set_hl(0, "qfLineNr", { fg = fg_number })
+
+-- MiniHighlight
+vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = fg_light, bg = fg_error })
+vim.api.nvim_set_hl(0, "MiniHipatternsTodo", { fg = fg_light, bg = fg_info })
 
 -- MiniStatusLine
 vim.api.nvim_set_hl(0, "MiniStatusLineModeNormal", { fg = fg, bg = bg_status_line_mode })

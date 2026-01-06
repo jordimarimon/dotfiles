@@ -38,7 +38,6 @@
 	c="commit"
 	ca="commit --amend"
 	ce="commit --amend --no-edit"
-	co="checkout"
 	cl="config --list"
 	cle="clean -dxf"
 	users="shortlog --summary --numbered --email"
@@ -56,9 +55,9 @@
 	puf="push --force-with-lease"
 	pl="pull --prune"
 	ruf="!. ~/Scripts/githelpers.sh && remove_untracked_files"
-	rs="restore ."
+	rs="restore"
 	rb="rebase"
-	rss="restore --staged ."
+	rss="restore --staged"
 	st="status"
 	sh="show"
 	sl="stash list"
@@ -66,6 +65,8 @@
 	spu="stash push"
 	sspu="stash push --staged"
 	spo="stash pop"
+	sw="switch"
+	swc="switch -c"
 	first="!git rev-list --max-parents=0 HEAD | xargs git show -s --format=%ai"
 [push]
 	default = current
