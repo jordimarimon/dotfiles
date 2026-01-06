@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+# Source p10k configuration
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 # Set the directory we want to store zinit and plugins
@@ -59,6 +59,7 @@ setopt hist_find_no_dups
 # Completion styling
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+zstyle ':completion:*' format $'\e[2;37mCompleting %d\e[m'
 zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
@@ -66,6 +67,10 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+# Carapace
+export CARAPACE_BRIDGES="zsh"
+source <(carapace _carapace)
 
 # ssh-add and ssh require an environment variable to know how
 # to talk to the ssh agent
@@ -92,7 +97,3 @@ alias info='info --vi-keys'
 alias tmuxstart="$HOME/Scripts/tmux-create-sessions.sh"
 alias tmuxcreate="$HOME/Scripts/tmux-create-session.sh"
 
-# OSC 133 shell integration
-precmd() {
-    print -Pn "\e]133;A\e\\"
-}

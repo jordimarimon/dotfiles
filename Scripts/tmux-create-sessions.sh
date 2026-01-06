@@ -3,12 +3,12 @@
 
 # Path of each session
 declare -A PATHS
-PATHS[0]="$HOME/Interactiu/erp-frontend"
-PATHS[1]="$HOME/Interactiu/erp-web"
-PATHS[2]="$HOME/Interactiu/erp-import-app"
-PATHS[3]="$HOME/Interactiu/erp-fixtures"
-PATHS[4]="$HOME/Interactiu/erp-console-api"
-PATHS[5]="$HOME/Interactiu/erp-db-changes"
+PATHS[0]="$HOME/Hooba/erp-frontend"
+PATHS[1]="$HOME/Hooba/erp-web"
+PATHS[2]="$HOME/Hooba/erp-import-app"
+PATHS[3]="$HOME/Hooba/erp-fixtures"
+PATHS[4]="$HOME/Hooba/erp-console-api"
+PATHS[5]="$HOME/Hooba/erp-db-changes"
 
 # Loop through each session and creates it
 for INDEX in "${!PATHS[@]}"; do
