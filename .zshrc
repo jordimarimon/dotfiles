@@ -96,4 +96,5 @@ alias foreignpkgs="yay -Qm"
 alias info='info --vi-keys'
 alias tmuxstart="$HOME/Scripts/tmux-create-sessions.sh"
 alias tmuxcreate="$HOME/Scripts/tmux-create-session.sh"
+alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 
