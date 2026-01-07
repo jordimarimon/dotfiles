@@ -9,6 +9,7 @@ PATHS[2]="$HOME/Hooba/erp-import-app"
 PATHS[3]="$HOME/Hooba/erp-fixtures"
 PATHS[4]="$HOME/Hooba/erp-console-api"
 PATHS[5]="$HOME/Hooba/erp-db-changes"
+PATHS[6]="$HOME/Hooba/erp-infrastructure"
 
 # Loop through each session and creates it
 for INDEX in "${!PATHS[@]}"; do

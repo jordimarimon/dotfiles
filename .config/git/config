@@ -67,6 +67,8 @@
 	spo="stash pop"
 	sw="switch"
 	swc="switch -c"
+	smu="submodule update --remote"
+	smi="submodule update --init --recursive"
 	first="!git rev-list --max-parents=0 HEAD | xargs git show -s --format=%ai"
 [push]
 	default = current
