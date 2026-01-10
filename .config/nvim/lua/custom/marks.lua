@@ -9,25 +9,6 @@ local state = {
     timer = nil,
 }
 
--- local builtin_marks = {
---     ["."] = true,
---     ["^"] = true,
---     ["`"] = true,
---     ["'"] = true,
---     ['"'] = true,
---     ["<"] = true,
---     [">"] = true,
---     ["["] = true,
---     ["]"] = true
--- }
--- for i = 0, 9 do
---     builtin_marks[tostring(i)] = true
--- end
---
--- local function is_builtin(char)
---     return builtin_marks[char] ~= nil
--- end
-
 vim.fn.sign_define("MarkSign", {
     text = "",
     texthl = "MarkSignHighlight",

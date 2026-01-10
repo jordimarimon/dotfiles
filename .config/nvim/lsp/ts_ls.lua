@@ -8,10 +8,8 @@ return {
     filetypes = {
         "javascript",
         "javascriptreact",
-        "javascript.jsx",
         "typescript",
         "typescriptreact",
-        "typescript.tsx",
     },
 
     workspace_required = true,

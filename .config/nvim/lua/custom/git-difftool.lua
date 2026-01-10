@@ -21,7 +21,7 @@ function M.review(query)
     local other_branches = {}
 
     for index, branch in ipairs(branches) do
-        branch_name, _ = String.trim(branch):gsub("%s%->.+$", "")
+        local branch_name, _ = String.trim(branch):gsub("%s%->.+$", "")
         branches[index] = branch_name
 
         if review_branch == nil and branch_name:find(query, 1, true) ~= nil then
