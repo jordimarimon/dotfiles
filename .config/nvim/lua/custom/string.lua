@@ -39,4 +39,20 @@ function M.escape(value)
     return value:gsub("([%^%$%(%)%%%.%[%]%*%+%-%?])", "%%%1")
 end
 
+-- Generates a random string of "n" symbols
+---@param n integer
+---@return string
+function M.random_word(n)
+    local pool = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" .. "abcdefghijklmnopqrstuvwxyz" .. "0123456789"
+    local pool_len = pool:len()
+    local word = {}
+
+    for i = 1, n do
+        local index = math.random(1, pool_len)
+        word[i] = pool:sub(index, index)
+    end
+
+    return table.concat(word)
+end
+
 return M

@@ -16,10 +16,12 @@ local fs = require("custom.fs")
 ---@field headers table
 ---@field body string[]
 ---@field curl_cmd string[]
+---@filed http_version string|nil
 
 ---@class Response
 ---@field status integer
 ---@field headers table
+---@field filename string|nil
 ---@field body string[]
 
 ---@class CachedRequest
@@ -149,16 +151,55 @@ local function format_json(value)
 end
 
 ---@param mime_type string
----@param value string
----@return string[]
-local function format_value(mime_type, value)
-    if mime_type == "application/json" then
-        return format_json(value)
+---@return string|nil
+local function get_file_extension(mime_type)
+    if mime_type == "application/pdf" then
+        return "pdf"
     end
 
-    vim.notify("Format not supported " .. mime_type, vim.log.levels.WARN)
+    if mime_type == "application/zip" then
+        return "zip"
+    end
 
-    return String.split(value, "\n")
+    if mime_type == "application/xml" then
+        return "xml"
+    end
+
+    if mime_type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" then
+        return "xlsx"
+    end
+
+    if mime_type == "text/csv" then
+        return "csv"
+    end
+
+    if mime_type == "image/svg+xml" then
+        return "svg"
+    end
+
+    return nil
+end
+
+---@param mime_type string
+---@param lines string[]
+---@param filename string|nil
+---@return string[]
+local function format_value(mime_type, lines, filename)
+    if mime_type == "application/json" then
+        return format_json(table.concat(lines, "\n"))
+    end
+
+    local extension = get_file_extension(mime_type)
+
+    if extension ~= nil then
+        local tmpdir = vim.uv.os_tmpdir()
+        local name = filename or ("curl_response_" .. String.random_word(5) .. "." .. extension)
+        local filepath = fs.join_paths(tmpdir, name)
+        fs.write_file(filepath, table.concat(lines, "\n"), false, false)
+        return { filepath }
+    end
+
+    return { "Format not supported " .. mime_type }
 end
 
 ---@param mime_type string
@@ -215,7 +256,7 @@ local function render_markdown(cached_request)
         table.insert(output, "## REQUEST BODY")
         table.insert(output, "")
         table.insert(output, "```" .. get_code_block_type(req_body_mime_type))
-        vim.list_extend(output, format_value(req_body_mime_type, table.concat(request.body, "\n")))
+        vim.list_extend(output, format_value(req_body_mime_type, request.body, nil))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -236,7 +277,7 @@ local function render_markdown(cached_request)
     table.insert(output, "## RESPONSE BODY")
     table.insert(output, "")
     table.insert(output, "```" .. get_code_block_type(res_body_mime_type))
-    vim.list_extend(output, format_value(res_body_mime_type, table.concat(response.body, "\n")))
+    vim.list_extend(output, format_value(res_body_mime_type, response.body, response.filename))
     table.insert(output, "```")
 
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
@@ -285,12 +326,18 @@ local function process_response(request, response)
         state.cookie = String.split(headers["Set-Cookie"], ";")[1]
     end
 
+    local filename = nil
+    if headers["Content-Disposition"] then
+        filename = headers["Content-Disposition"]:match('^.*filename="([^"]+)".*$')
+    end
+
     ---@type CachedRequest
     local cached_request = {
         request = request,
         response = {
             status = status,
             headers = headers,
+            filename = filename,
             body = String.split(tostring(body_str), "\n"),
         },
     }
@@ -329,6 +376,7 @@ local function parse_request(options)
         ok = false,
         method = nil,
         url = nil,
+        http_version = nil,
         headers = {},
         body = {},
         curl_cmd = {},
@@ -339,6 +387,8 @@ local function parse_request(options)
         vim.notify("Expected the HTTP request to be in an http filetype", vim.log.levels.ERROR)
         return request
     end
+
+    -- TODO: Support to have the cursor in any place of the request
 
     -- Cursor is expected to be at the first line of the HTTP request
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -361,6 +411,11 @@ local function parse_request(options)
             break
         end
 
+        -- ignore comment lines
+        if vim.startswith(line, "#") or vim.startswith(line, "//") then
+            goto continue
+        end
+
         local is_blank_line = line:match("^%s*$")
 
         if is_blank_line then
@@ -372,14 +427,20 @@ local function parse_request(options)
         end
 
         if parse_stage == parse_stages.METHOD_URL then
-            local method, url = line:match("^%s*(%u+)%s*(.+)$")
-            request.method = method
-            request.url = url
+            -- Lua doesn't support optional capturing groups :(
+            local method, url, http_version = line:match("^%s*(%u+)%s*([^%s]+)%s*(HTTP/%d%.?%d?)$")
+            if method == nil or url == nil then
+                method, url = line:match("^%s*(%u+)%s*([^%s]+)$")
+            end
 
             if method == nil or url == nil then
-                request.method = "GET"
-                request.url = line
+                method = "GET"
+                url = line
             end
+
+            request.method = method
+            request.url = url
+            request.http_version = http_version
 
             parse_stage = parse_stages.HEADERS
         elseif parse_stage == parse_stages.HEADERS then
@@ -408,7 +469,24 @@ local function parse_request(options)
         return ""
     end)
 
-    request.curl_cmd = { "curl", "-i", "-X", request.method, request.url }
+    request.url = request.url
+
+    -- "-i" => Show HTTP response headers in the output
+    request.curl_cmd = { "curl", "-i" }
+
+    if request.http_version == "HTTP/1.0" then
+        table.insert(request.curl_cmd, "--http1.0")
+    elseif request.http_version == "HTTP/1.1" then
+        table.insert(request.curl_cmd, "--http1.1")
+    elseif request.http_version == "HTTP/2" then
+        table.insert(request.curl_cmd, "--http2")
+    elseif request.http_version == "HTTP/3" then
+        table.insert(request.curl_cmd, "--http3")
+    end
+
+    table.insert(request.curl_cmd, "-X")
+    table.insert(request.curl_cmd, request.method)
+    table.insert(request.curl_cmd, request.url)
 
     if state.cookie ~= nil then
         request.headers["Cookie"] = state.cookie
@@ -427,10 +505,8 @@ local function parse_request(options)
         request.headers[header_name] = value
 
         if options.shell then
-            table.insert(
-                request.curl_cmd,
-                "-H " .. '"' .. string.format("%s: %s", header_name, value) .. '"'
-            )
+            local arg = string.format("%s: %s", header_name, value)
+            table.insert(request.curl_cmd, "-H " .. '"' .. arg .. '"')
         else
             table.insert(request.curl_cmd, "-H")
             table.insert(request.curl_cmd, string.format("%s: %s", header_name, value))

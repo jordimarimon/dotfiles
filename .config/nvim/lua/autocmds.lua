@@ -279,11 +279,8 @@ end, { nargs = 0, desc = "Shout outdated npm dependencies" })
 
 -- Delete all comments in buffer
 vim.api.nvim_create_user_command("DeleteComments", function()
-    vim.cmd(
-        ("'<,'>g/%s/d"):format(
-            vim.fn.escape(vim.fn.substitute(vim.o.commentstring, "%s", "", "g"), "/.*[]~")
-        )
-    )
+    local commentstring = vim.fn.substitute(vim.o.commentstring, "%s", "", "g")
+    vim.cmd(("'<,'>g/%s/d"):format(vim.fn.escape(commentstring, "/.*[]~")))
 end, { range = true, desc = "Delete comments in the current buffer" })
 
 -- Review a branch

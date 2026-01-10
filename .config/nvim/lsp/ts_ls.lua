@@ -81,7 +81,7 @@ return {
                     return
                 end
 
-                local dir = require("custom.fs").dir()
+                local dir = require("custom.fs").get_current_buffer_dir()
 
                 ---@type lsp.Command
                 local cmd = {
