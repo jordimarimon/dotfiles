@@ -49,15 +49,18 @@ return {
                     ["alt-q"] = fzf_lua.actions.file_sel_to_qf,
                     ["alt-l"] = fzf_lua.actions.file_sel_to_ll,
                 },
-                buffers = {
-                    ["default"] = fzf_lua.actions.buf_edit,
-                    ["ctrl-x"] = fzf_lua.actions.buf_split,
-                    ["ctrl-v"] = fzf_lua.actions.buf_vsplit,
-                    ["ctrl-t"] = fzf_lua.actions.buf_tabedit,
-                },
             },
             grep = {
                 rg_opts = "--column --line-number --no-heading --color=never --smart-case --max-columns=4096 -e",
+            },
+            buffers = {
+                actions = {
+                    ["ctrl-x"] = fzf_lua.actions.buf_split,
+                    ["alt-d"] = {
+                        fn = fzf_lua.actions.buf_del,
+                        reload = true,
+                    },
+                },
             },
         })
 
