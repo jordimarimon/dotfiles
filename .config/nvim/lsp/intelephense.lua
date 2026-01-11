@@ -61,6 +61,8 @@ return {
                 "libxml",
                 "mbstring",
                 "meta",
+                "mongo",
+                "mongodb",
                 "mysqli",
                 "oci8",
                 "odbc",

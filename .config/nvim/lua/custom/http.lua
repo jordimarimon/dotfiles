@@ -184,10 +184,12 @@ end
 ---@param lines string[]
 ---@param filename string|nil
 ---@return string[]
-local function format_value(mime_type, lines, filename)
+local function format_lines(mime_type, lines, filename)
     if mime_type == "application/json" then
         return format_json(table.concat(lines, "\n"))
     end
+
+    -- TODO: Handle "text/html" responses
 
     local extension = get_file_extension(mime_type)
 
@@ -256,7 +258,7 @@ local function render_markdown(cached_request)
         table.insert(output, "## REQUEST BODY")
         table.insert(output, "")
         table.insert(output, "```" .. get_code_block_type(req_body_mime_type))
-        vim.list_extend(output, format_value(req_body_mime_type, request.body, nil))
+        vim.list_extend(output, format_lines(req_body_mime_type, request.body, nil))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -277,7 +279,7 @@ local function render_markdown(cached_request)
     table.insert(output, "## RESPONSE BODY")
     table.insert(output, "")
     table.insert(output, "```" .. get_code_block_type(res_body_mime_type))
-    vim.list_extend(output, format_value(res_body_mime_type, response.body, response.filename))
+    vim.list_extend(output, format_lines(res_body_mime_type, response.body, response.filename))
     table.insert(output, "```")
 
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
@@ -388,7 +390,10 @@ local function parse_request(options)
         return request
     end
 
-    -- TODO: Support to have the cursor in any place of the request
+    -- TODO: Support to be able to have the cursor in any place of the request
+
+    -- TODO: Support uploading files using "multipart/form-data":
+    --       https://www.jetbrains.com/help/idea/exploring-http-syntax.html#use-multipart-form-data
 
     -- Cursor is expected to be at the first line of the HTTP request
     local cursor = vim.api.nvim_win_get_cursor(0)
@@ -427,6 +432,8 @@ local function parse_request(options)
         end
 
         if parse_stage == parse_stages.METHOD_URL then
+            -- TODO: Support parsing multiline URLs
+
             -- Lua doesn't support optional capturing groups :(
             local method, url, http_version = line:match("^%s*(%u+)%s*([^%s]+)%s*(HTTP/%d%.?%d?)$")
             if method == nil or url == nil then
