@@ -201,7 +201,7 @@ local function format_lines(mime_type, lines, filename)
         return { filepath }
     end
 
-    return { "Format not supported " .. mime_type }
+    return lines
 end
 
 ---@param mime_type string
