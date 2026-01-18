@@ -51,7 +51,7 @@ return {
                 },
             },
             grep = {
-                rg_opts = "--column --line-number --no-heading --color=never --smart-case --max-columns=4096 -e",
+                rg_opts = "--column --line-number --multiline --no-heading --color=never --smart-case --max-columns=4096 -e",
             },
             buffers = {
                 actions = {
