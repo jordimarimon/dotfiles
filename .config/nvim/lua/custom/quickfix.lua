@@ -41,7 +41,8 @@ end
 -- Quickfix list delete item
 function M.rm_qf_item()
     local curqfidx = vim.fn.line(".")
-    local qfall = vim.fn.getqflist()
+    local list_type = M.get_list_type()
+    local qfall = list_type == "quickfix" and vim.fn.getqflist() or vim.fn.getloclist(0)
 
     -- Return if there are no items to remove
     if #qfall == 0 then
@@ -51,10 +52,18 @@ function M.rm_qf_item()
     -- Remove the item from the quickfix list
     table.remove(qfall, curqfidx)
     table.remove(state.entries, curqfidx)
-    vim.fn.setqflist(qfall, "r")
 
-    -- Reopen quickfix window to refresh the list
-    vim.cmd("copen")
+    if list_type == "quickfix" then
+        vim.fn.setqflist(qfall, "r")
+
+        -- Reopen quickfix window to refresh the list
+        vim.cmd("copen")
+    else
+        vim.fn.setloclist(0, qfall, "r")
+
+        -- Reopen loclist window to refresh the list
+        vim.cmd("lopen")
+    end
 
     -- If not at the end of the list, stay at the same index, otherwise, go one up.
     local new_idx = curqfidx < #qfall and curqfidx or math.max(curqfidx - 1, 1)
@@ -70,7 +79,8 @@ end
 function M.rm_qf_items()
     local startidx = vim.fn.line("v")
     local endidx = vim.fn.line(".")
-    local qfall = vim.fn.getqflist()
+    local list_type = M.get_list_type()
+    local qfall = list_type == "quickfix" and vim.fn.getqflist() or vim.fn.getloclist(0)
 
     -- Return if there are no items to remove
     if #qfall == 0 then
@@ -88,10 +98,17 @@ function M.rm_qf_items()
         table.remove(state.entries, i)
     end
 
-    vim.fn.setqflist(qfall, "r")
+    if list_type == "quickfix" then
+        vim.fn.setqflist(qfall, "r")
 
-    -- Reopen quickfix window to refresh the list
-    vim.cmd("copen")
+        -- Reopen quickfix window to refresh the list
+        vim.cmd("copen")
+    else
+        vim.fn.setloclist(0, qfall, "r")
+
+        -- Reopen loclist window to refresh the list
+        vim.cmd("lopen")
+    end
 
     -- Set the cursor position directly in the quickfix window
     local winid = vim.fn.win_getid() -- Get the window ID of the quickfix window
@@ -112,6 +129,20 @@ function M.get_list_type()
     end
 
     return is_qf and "quickfix" or "location"
+end
+
+---@return integer
+function M.get_win_of_loclist()
+    local loclist = vim.fn.getloclist(0)
+
+    -- Location list is not open
+    if #loclist == 0 then
+        return 0
+    end
+
+    local filewinid = vim.fn.get(vim.fn.getloclist(0, { filewinid = 0 }), "filewinid", 0)
+
+    return filewinid
 end
 
 function M.move_to_next()
