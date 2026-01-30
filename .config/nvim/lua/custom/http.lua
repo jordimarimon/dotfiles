@@ -180,6 +180,12 @@ local function get_file_extension(mime_type)
     return nil
 end
 
+---@param cookie string
+---@return string
+local function get_cookie_value(cookie)
+    return String.split(cookie, ";")[1]
+end
+
 ---@param mime_type string
 ---@param lines string[]
 ---@param filename string|nil
@@ -231,8 +237,20 @@ end
 local function render_markdown(cached_request)
     local output = {}
     local request, response = cached_request.request, cached_request.response
-    local req_body_mime_type = request.headers["Content-Type"] or ""
-    local res_body_mime_type = response.headers["Content-Type"] or ""
+
+    local req_body_mime_type = request.headers["Content-Type"]
+    if req_body_mime_type ~= nil then
+        req_body_mime_type = req_body_mime_type[1]
+    else
+        req_body_mime_type = ""
+    end
+
+    local res_body_mime_type = response.headers["Content-Type"]
+    if res_body_mime_type ~= nil then
+        res_body_mime_type = res_body_mime_type[1]
+    else
+        res_body_mime_type = ""
+    end
 
     table.insert(output, "# HTTP RESULT")
     table.insert(output, "")
@@ -318,19 +336,26 @@ local function process_response(request, response)
 
         local key, value = line:match("^(.-):%s*(.*)$")
         if key and value then
-            headers[key] = value
+            if headers[key] ~= nil then
+                table.insert(headers[key], value)
+            else
+                headers[key] = { value }
+            end
         end
 
         ::continue::
     end
 
     if headers["Set-Cookie"] then
-        state.cookie = String.split(headers["Set-Cookie"], ";")[1]
+        state.cookie = {}
+        for _, cookie in ipairs(headers["Set-Cookie"]) do
+            table.insert(state.cookie, get_cookie_value(cookie))
+        end
     end
 
     local filename = nil
     if headers["Content-Disposition"] then
-        filename = headers["Content-Disposition"]:match('^.*filename="([^"]+)".*$')
+        filename = headers["Content-Disposition"][1]:match('^.*filename="([^"]+)".*$')
     end
 
     ---@type CachedRequest
@@ -452,7 +477,11 @@ local function parse_request(options)
             parse_stage = parse_stages.HEADERS
         elseif parse_stage == parse_stages.HEADERS then
             local name, value = line:match("^%s*([%w-]+)%s*:%s*(.+)$")
-            request.headers[name] = value
+            if request.headers[name] ~= nil then
+                table.insert(request.headers[name], value)
+            else
+                request.headers[name] = { value }
+            end
         elseif parse_stage == parse_stages.BODY then
             table.insert(request.body, line)
         end
@@ -496,27 +525,32 @@ local function parse_request(options)
     table.insert(request.curl_cmd, request.url)
 
     if state.cookie ~= nil then
-        request.headers["Cookie"] = state.cookie
+        request.headers["Cookie"] = {}
+        for _, cookie in ipairs(state.cookie) do
+            table.insert(request.headers["Cookie"], cookie)
+        end
     end
 
-    for header_name, header_value in pairs(request.headers) do
-        local value = header_value:gsub("{{(.-)}}", function(key)
-            if state.env.available ~= nil and state.env.selected ~= nil then
-                return state.env.available[state.env.selected][key]
+    for header_name, header_values in pairs(request.headers) do
+        for index, value in ipairs(header_values) do
+            local new_value = value:gsub("{{(.-)}}", function(key)
+                if state.env.available ~= nil and state.env.selected ~= nil then
+                    return state.env.available[state.env.selected][key]
+                end
+
+                missing_env = true
+                return ""
+            end)
+
+            request.headers[header_name][index] = new_value
+
+            if options.shell then
+                local arg = string.format("%s: %s", header_name, new_value)
+                table.insert(request.curl_cmd, "-H " .. '"' .. arg .. '"')
+            else
+                table.insert(request.curl_cmd, "-H")
+                table.insert(request.curl_cmd, string.format("%s: %s", header_name, new_value))
             end
-
-            missing_env = true
-            return ""
-        end)
-
-        request.headers[header_name] = value
-
-        if options.shell then
-            local arg = string.format("%s: %s", header_name, value)
-            table.insert(request.curl_cmd, "-H " .. '"' .. arg .. '"')
-        else
-            table.insert(request.curl_cmd, "-H")
-            table.insert(request.curl_cmd, string.format("%s: %s", header_name, value))
         end
     end
 
