@@ -83,6 +83,7 @@ local function read_env()
 
     local data, read_err, read_err_name = vim.uv.fs_read(fd, stat.size, 0)
     vim.uv.fs_close(fd)
+
     if not data then
         vim.notify(
             "Error reading env file " .. " (" .. read_err_name .. "): " .. read_err,
@@ -215,6 +216,10 @@ end
 local function get_code_block_type(mime_type)
     if mime_type == "application/json" then
         return "json"
+    end
+
+    if mime_type == "text/html" then
+        return "html"
     end
 
     return ""

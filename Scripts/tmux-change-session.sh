@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-
-switch_to() {
+function switch_to() {
     if [[ -z $TMUX ]]; then
         tmux attach-session -t "$1"
     else
@@ -9,31 +8,31 @@ switch_to() {
     fi
 }
 
-has_session() {
+function has_session() {
     tmux list-sessions | grep -q "^$1:"
 }
 
-tmux_session_manager() {
+function tmux_session_manager() {
     tmux_running=$(pgrep tmux)
 
     if [[ -z $tmux_running ]]; then
-        echo "No tmux sessions are running."
+        notify-send "No tmux sessions are running.";
         return
     fi
 
     if [[ $# -eq 1 ]]; then
         selected=$1
     else
-        selected=$(tmux list-sessions -F "#{session_name}" | fzf --height 40% --reverse --border --prompt "Select a session: ")
+        selected=$(tmux list-sessions -F "#{session_name}" | fuzzel --dmenu -i)
     fi
 
     if [[ -z $selected ]]; then
-        echo "No session selected."
+        notify-send "No session selected.";
         return
     fi
 
     if ! has_session "$selected"; then
-        echo "Session '$selected' does not exist."
+        notify-send "Session '$selected' does not exist.";
         return
     fi
 
