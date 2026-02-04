@@ -55,8 +55,19 @@ local function read_env()
         return
     end
 
-    local env_file_name = "http-client.env.json"
-    local env_dir = fs.root_files({ env_file_name })
+    local env_file_names = { "http-client.private.env.json", "http-client.env.json" }
+    local env_file_name = nil
+    local env_dir = nil
+
+    for _, file in ipairs(env_file_names) do
+        local dir = fs.root_files({ file })
+
+        if dir ~= nil then
+            env_file_name = file
+            env_dir = dir
+            break
+        end
+    end
 
     if env_dir == nil then
         vim.notify("Unable to find environment file.", vim.log.levels.ERROR)
@@ -335,7 +346,8 @@ local function process_response(request, response)
     local header_lines = header_str:gmatch("[^\n]+")
     for line in header_lines do
         if vim.startswith(line, "HTTP") then
-            status = math.floor(line:match("HTTP/%d+%.%d+ (%d+)"))
+            status = line:match("HTTP/%d+%.?%d*%s*(%d+)%s*")
+            status = status ~= nil and math.floor(status) or -1
             goto continue
         end
 
