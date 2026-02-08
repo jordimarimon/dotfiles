@@ -364,9 +364,11 @@ local function process_response(request, response)
     end
 
     if headers["Set-Cookie"] then
-        state.cookie = {}
+        state.cookie = state.cookie ~= nil and state.cookie or {}
+
         for _, cookie in ipairs(headers["Set-Cookie"]) do
-            table.insert(state.cookie, get_cookie_value(cookie))
+            local cookie_pair = String.split(get_cookie_value(cookie), "=")
+            state.cookie[cookie_pair[1]] = cookie_pair[2]
         end
     end
 
@@ -543,8 +545,8 @@ local function parse_request(options)
 
     if state.cookie ~= nil then
         request.headers["Cookie"] = {}
-        for _, cookie in ipairs(state.cookie) do
-            table.insert(request.headers["Cookie"], cookie)
+        for cookie_name, cookie_value in pairs(state.cookie) do
+            table.insert(request.headers["Cookie"], cookie_name .. "=" .. cookie_value)
         end
     end
 
