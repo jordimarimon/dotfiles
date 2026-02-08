@@ -6,6 +6,9 @@ require("options")
 require("tabs")
 require("filetypes")
 
+-- :help vim._core.ui2
+require("vim._core.ui2").enable({ enable = true })
+
 -- define plugins
 require("plugins")
 require("lazy").setup({
