@@ -17,6 +17,8 @@ return {
             "json-lsp",
             "lua-language-server",
             "typescript-language-server",
+            "tsgo",
+            "yaml-language-server",
         }
 
         ---@diagnostic disable-next-line: missing-fields
