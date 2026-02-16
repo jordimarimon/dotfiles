@@ -17,6 +17,12 @@ vim.filetype.add({
 })
 
 vim.filetype.add({
+    filename = {
+        ["my.cnf"] = "toml",
+    },
+})
+
+vim.filetype.add({
     extension = {
         env = "bash",
     },
