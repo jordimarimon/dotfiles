@@ -121,7 +121,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
         -- Enable colors
         if client:supports_method(vim.lsp.protocol.Methods.textDocument_documentColor) then
-            vim.lsp.document_color.enable(true, buf, { style = "virtual" })
+            vim.lsp.document_color.enable(true, { bufnr = buf }, { style = "virtual" })
         end
 
         -- Enable LSP folding

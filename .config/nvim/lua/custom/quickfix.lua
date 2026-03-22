@@ -79,6 +79,13 @@ end
 function M.rm_qf_items()
     local startidx = vim.fn.line("v")
     local endidx = vim.fn.line(".")
+
+    if startidx > endidx then
+        local tmp = startidx
+        startidx = endidx
+        endidx = tmp
+    end
+
     local list_type = M.get_list_type()
     local qfall = list_type == "quickfix" and vim.fn.getqflist() or vim.fn.getloclist(0)
 
