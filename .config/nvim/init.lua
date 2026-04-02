@@ -6,10 +6,10 @@ require("options")
 require("tabs")
 require("filetypes")
 
--- :help vim._core.ui2
--- require("vim._core.ui2").enable({ enable = true })
+-- nvim plugins
+require("plugins.ui2")
 
--- define plugins
+-- user plugins
 require("plugins")
 require("lazy").setup({
     { import = "plugins.file-picker" },
@@ -20,7 +20,6 @@ require("lazy").setup({
     { import = "plugins.markdown" },
     { import = "plugins.database" },
     { import = "plugins.file-explorer" },
-    { import = "plugins.undotree" },
     { import = "plugins.format" },
     { import = "plugins.package-manager" },
     { import = "plugins.progress" },

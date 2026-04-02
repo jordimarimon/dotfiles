@@ -171,3 +171,28 @@ end, { desc = "[S]ave [S]earch" })
 vim.keymap.set("n", "[m", function()
     require("custom.treesitter").go_to_start_function()
 end, { noremap = true, silent = true, desc = "Go to the start of the function/method" })
+
+-- incremental selection treesitter/lsp
+vim.keymap.set({ "n", "x", "o" }, "<A-o>", function()
+    if vim.treesitter.get_parser(nil, nil, { error = false }) then
+        require("vim.treesitter._select").select_parent(vim.v.count1)
+    else
+        vim.lsp.buf.selection_range(vim.v.count1)
+    end
+end, { desc = "Select parent treesitter node or outer incremental lsp selections" })
+
+vim.keymap.set({ "n", "x", "o" }, "<A-i>", function()
+    if vim.treesitter.get_parser(nil, nil, { error = false }) then
+        require("vim.treesitter._select").select_child(vim.v.count1)
+    else
+        vim.lsp.buf.selection_range(-vim.v.count1)
+    end
+end, { desc = "Select child treesitter node or inner incremental lsp selections" })
+
+-- undotree
+vim.cmd("packadd! nvim.undotree")
+vim.keymap.set("n", "<leader>u", function()
+    require("undotree").open({
+        command = math.floor(vim.api.nvim_win_get_width(0) / 3) .. "vnew",
+    })
+end, { desc = "[U]ndotree toggle" })
