@@ -173,7 +173,7 @@ vim.keymap.set("n", "[m", function()
 end, { noremap = true, silent = true, desc = "Go to the start of the function/method" })
 
 -- incremental selection treesitter/lsp
-vim.keymap.set({ "n", "x", "o" }, "<A-o>", function()
+vim.keymap.set({ "x", "o" }, ";", function()
     if vim.treesitter.get_parser(nil, nil, { error = false }) then
         require("vim.treesitter._select").select_parent(vim.v.count1)
     else
@@ -181,7 +181,7 @@ vim.keymap.set({ "n", "x", "o" }, "<A-o>", function()
     end
 end, { desc = "Select parent treesitter node or outer incremental lsp selections" })
 
-vim.keymap.set({ "n", "x", "o" }, "<A-i>", function()
+vim.keymap.set({ "x", "o" }, ",", function()
     if vim.treesitter.get_parser(nil, nil, { error = false }) then
         require("vim.treesitter._select").select_child(vim.v.count1)
     else
