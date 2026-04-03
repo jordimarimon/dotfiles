@@ -196,3 +196,26 @@ vim.keymap.set("n", "<leader>u", function()
         command = math.floor(vim.api.nvim_win_get_width(0) / 3) .. "vnew",
     })
 end, { desc = "[U]ndotree toggle" })
+
+-- toggel location and quickfix list
+vim.keymap.set("n", "<leader>q", function()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win.quickfix == 1 then
+            vim.cmd("cclose")
+            return
+        end
+    end
+    vim.cmd("copen")
+end, { desc = "Quickfix list toggle" })
+
+vim.keymap.set("n", "<leader>l", function()
+    local windows = vim.fn.getwininfo()
+    for _, win in pairs(windows) do
+        if win.loclist == 1 then
+            vim.cmd("lclose")
+            return
+        end
+    end
+    vim.cmd("lopen")
+end, { desc = "Location list toggle" })
