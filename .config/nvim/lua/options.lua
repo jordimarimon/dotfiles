@@ -99,6 +99,9 @@ vim.opt.spelllang = "es,en,ca"
 vim.opt.spell = false
 vim.opt.spelloptions = "camel,noplainbuffer"
 
+-- Command height
+vim.o.cmdheight = 1
+
 -- Message options, remove the "hit-enter"
 -- vim.opt.messagesopt = "wait:0,history:10000"
 

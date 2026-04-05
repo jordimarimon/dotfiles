@@ -225,7 +225,7 @@ vim.diagnostic.config({
     },
 })
 
--- Load all LSP's
+-- Load LSP's
 local disabled_lsp = { "tsgo" }
 local lsp_path = vim.fn.stdpath("config") .. "/lsp"
 

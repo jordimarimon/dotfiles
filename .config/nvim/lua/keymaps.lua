@@ -190,14 +190,14 @@ vim.keymap.set({ "x", "o" }, ",", function()
 end, { desc = "Select child treesitter node or inner incremental lsp selections" })
 
 -- undotree
-vim.cmd("packadd! nvim.undotree")
+vim.cmd("packadd nvim.undotree")
 vim.keymap.set("n", "<leader>u", function()
     require("undotree").open({
         command = math.floor(vim.api.nvim_win_get_width(0) / 3) .. "vnew",
     })
 end, { desc = "[U]ndotree toggle" })
 
--- toggel location and quickfix list
+-- toggle location and quickfix list
 vim.keymap.set("n", "<leader>q", function()
     local windows = vim.fn.getwininfo()
     for _, win in pairs(windows) do

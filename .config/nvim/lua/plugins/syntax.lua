@@ -5,9 +5,7 @@
 -- Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 return {
     {
-        "nvim-treesitter/nvim-treesitter",
-        branch = "main",
-        lazy = false,
+        src = "https://github.com/nvim-treesitter/nvim-treesitter",
         build = function()
             -- https://github.com/tree-sitter/tree-sitter/wiki/List-of-parsers
             -- https://github.com/nvim-treesitter/nvim-treesitter/blob/main/SUPPORTED_LANGUAGES.md
@@ -32,6 +30,7 @@ return {
                 "http",
                 "javascript",
                 "json",
+                "jsonc",
                 "json5",
                 "lua",
                 "make",
@@ -59,10 +58,7 @@ return {
             require("nvim-treesitter").install(parsers_installed)
             require("nvim-treesitter").update()
         end,
-        config = function()
-            require("nvim-treesitter").setup()
-        end,
-        init = function()
+        setup = function()
             -- Enable treesitter highlighting and indentation
             vim.api.nvim_create_autocmd("FileType", {
                 pattern = { "*" },
@@ -85,12 +81,10 @@ return {
         end,
     },
 
-    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects/tree/main
+    -- https://github.com/nvim-treesitter/nvim-treesitter-textobjects
     {
-        "nvim-treesitter/nvim-treesitter-textobjects",
-        branch = "main",
-        lazy = false,
-        config = function()
+        src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
+        setup = function()
             require("nvim-treesitter-textobjects").setup({
                 select = {
                     lookahead = true,
@@ -125,10 +119,8 @@ return {
 
     -- Adds an easy way to split/join Treesitter nodes
     {
-        "Wansmer/treesj",
-        keys = { "<leader>ts", "<leader>tj" },
-        dependencies = { "nvim-treesitter/nvim-treesitter", branch = "main" },
-        config = function()
+        src = "https://github.com/Wansmer/treesj",
+        setup = function()
             require("treesj").setup({
                 use_default_keymaps = false,
             })
@@ -136,6 +128,7 @@ return {
             vim.keymap.set("n", "<leader>ts", function()
                 require("treesj").split()
             end, { desc = "[T]reesitter [S]plit" })
+
             vim.keymap.set("n", "<leader>tj", function()
                 require("treesj").join()
             end, { desc = "[T]reesitter [J]oin" })

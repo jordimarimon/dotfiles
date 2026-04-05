@@ -1,8 +1,7 @@
 return {
     {
-        "stevearc/conform.nvim",
-        opts = {},
-        config = function()
+        src = "https://github.com/stevearc/conform.nvim",
+        setup = function()
             require("conform").setup({
                 format_on_save = function(bufnr)
                     -- Disable with a global or buffer-local variable
@@ -49,6 +48,6 @@ return {
 
     -- Detect tabstop and shiftwidth automatically
     {
-        "tpope/vim-sleuth",
+        src = "https://github.com/tpope/vim-sleuth",
     },
 }

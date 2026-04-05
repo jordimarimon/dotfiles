@@ -27,6 +27,13 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     end,
 })
 
+-- Make sure Makefile uses tabs
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("Makefile", { clear = true }),
+    pattern = "make",
+    command = "setlocal noexpandtab tabstop=4 shiftwidth=4",
+})
+
 -- Highlight current line on active window only
 local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {

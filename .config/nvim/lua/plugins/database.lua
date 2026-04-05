@@ -3,25 +3,14 @@
 -- https://github.com/kristijanhusak/vim-dadbod-completion
 return {
     {
-        "kristijanhusak/vim-dadbod-ui",
-        dependencies = {
-            {
-                "tpope/vim-dadbod",
-                lazy = true,
-            },
-            {
-                "kristijanhusak/vim-dadbod-completion",
-                ft = { "sql", "mysql", "plsql" },
-                lazy = true,
-            },
-        },
-        cmd = {
-            "DBUI",
-            "DBUIToggle",
-            "DBUIAddConnection",
-            "DBUIFindBuffer",
-        },
-        init = function()
+        src = "https://github.com/tpope/vim-dadbod",
+    },
+    {
+        src = "https://github.com/kristijanhusak/vim-dadbod-completion",
+    },
+    {
+        src = "https://github.com/kristijanhusak/vim-dadbod-ui",
+        setup = function()
             vim.g.db_ui_use_nerd_fonts = 1
         end,
     },
