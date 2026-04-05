@@ -161,6 +161,22 @@ vim.api.nvim_create_autocmd({ "LspDetach" }, {
     end,
 })
 
+-- LSP Progress
+vim.api.nvim_create_autocmd("LspProgress", {
+    callback = function(ev)
+        local value = ev.data.params.value
+
+        vim.api.nvim_echo({ { value.message or "done" } }, false, {
+            id = "lsp." .. ev.data.client_id,
+            kind = "progress",
+            source = "vim.lsp",
+            title = value.title,
+            status = value.kind ~= "end" and "running" or "success",
+            percent = value.percentage,
+        })
+    end,
+})
+
 -- LSP logs
 vim.api.nvim_create_user_command("LspLog", function()
     vim.cmd(string.format("tabnew %s", vim.lsp.log.get_filename()))
@@ -200,6 +216,10 @@ vim.api.nvim_create_user_command("LspStop", function(info)
         end
     end
 end, { nargs = "*", bang = true, desc = "Stops LSP clients", complete = get_active_clients })
+
+vim.api.nvim_create_user_command("LspRestart", "lsp restart", {
+    desc = "Restart LSP",
+})
 
 -- Add border when showing diagnostics in a floting popup,
 -- and also color the linenumber instead of addding a sign

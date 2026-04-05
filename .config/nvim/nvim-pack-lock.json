@@ -9,10 +9,6 @@
       "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
       "src": "https://github.com/stevearc/conform.nvim"
     },
-    "fidget.nvim": {
-      "rev": "889e2e96edef4e144965571d46f7a77bcc4d0ddf",
-      "src": "https://github.com/j-hui/fidget.nvim"
-    },
     "fzf-lua": {
       "rev": "8f5a5ae708451adc3e2ac4d965ac3452dc3ce5a6",
       "src": "https://github.com/ibhagwan/fzf-lua"
@@ -46,7 +42,7 @@
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "e9d7409c2d604dc12589c00ef922e08e3998e000",
+      "rev": "2247dcd1ff0c223cfa7e317783f89b8d00457ce6",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "treesj": {

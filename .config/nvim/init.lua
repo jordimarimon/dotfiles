@@ -13,6 +13,9 @@ require("plugins")
 -- :help vim._core.ui2
 require("vim._core.ui2").enable({ enable = true })
 
+-- `help :DiffTool`
+vim.cmd("packadd nvim.difftool")
+
 -- define keymaps
 require("keymaps")
 

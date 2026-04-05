@@ -1,7 +1,6 @@
 -- Order is important as some plugins have dependencies on others
 local plugins = {
     "icons",
-    "progress",
     "syntax",
     "mason",
     "file-explorer",
