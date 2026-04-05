@@ -14,12 +14,14 @@ local plugins = {
 }
 
 local specs = {}
+local pack_specs = {}
 
 for _, name in ipairs(plugins) do
-    local plugin_specs = require("plugins." .. name)
+    local plugin = require("plugins." .. name)
 
-    for _, spec in ipairs(plugin_specs) do
+    for _, spec in ipairs(plugin) do
         table.insert(specs, spec)
+        table.insert(pack_specs, { src = spec.src, version = spec.version or nil })
     end
 end
 
@@ -50,11 +52,9 @@ vim.api.nvim_create_autocmd("PackChanged", {
     end,
 })
 
-for _, spec in ipairs(specs) do
-    vim.pack.add({
-        { src = spec.src, version = spec.version or nil },
-    })
+vim.pack.add(pack_specs)
 
+for _, spec in ipairs(specs) do
     if spec.setup then
         spec.setup()
     end

@@ -300,3 +300,37 @@ vim.api.nvim_create_user_command("Review", function(opts)
 
     require("custom.git-difftool").review(query)
 end, { nargs = 1, desc = "Review a branch" })
+
+-- pack commands
+vim.api.nvim_create_user_command("PackUpdate", function()
+    vim.pack.update()
+end, { nargs = 0, desc = "Update plugins" })
+
+vim.api.nvim_create_user_command("PackLog", function()
+    local logpath = vim.fn.stdpath("log") .. "/nvim-pack.log"
+    vim.cmd("tabe " .. logpath)
+end, { nargs = 0, desc = "Package manager logs" })
+
+vim.api.nvim_create_user_command("PackDelete", function(opts)
+    local name = opts.fargs[1]
+
+    if name == nil or name == "" then
+        return
+    end
+
+    local plugins = vim.pack.get()
+    local exists = false
+
+    for _, plugin in ipairs(plugins) do
+        if plugin.active and plugin.spec.name == name then
+            exists = true
+            break
+        end
+    end
+
+    if not exists then
+        return
+    end
+
+    vim.pack.del({ name })
+end, { nargs = 1, desc = "Delete plugin" })
