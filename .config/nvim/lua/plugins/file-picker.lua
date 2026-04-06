@@ -80,6 +80,7 @@ return {
             vim.keymap.set("n", "<leader>st", fzf_lua.tags, { desc = "Search tags" })
             vim.keymap.set("n", "<leader>sj", fzf_lua.jumps, { desc = "Search jumps" })
             vim.keymap.set("n", "<leader>sc", fzf_lua.commands, { desc = "Search command" })
+            vim.keymap.set("n", "<leader>su", fzf_lua.undotree, { desc = "Search undotree" })
             vim.keymap.set(
                 "n",
                 "<leader>sch",
@@ -87,6 +88,7 @@ return {
                 { desc = "Search command history" }
             )
             vim.keymap.set("n", "<leader>sgh", fzf_lua.git_hunks, { desc = "Search git hunks" })
+            vim.keymap.set("n", "z=", fzf_lua.spell_suggest, { desc = "Spelling suggestions" })
         end,
-    }
+    },
 }
