@@ -114,3 +114,6 @@ vim.o.winborder = "single"
 
 -- More intuitive adding and subtracting
 vim.o.nrformats = "unsigned"
+
+-- Disable modeline
+vim.o.modeline = false

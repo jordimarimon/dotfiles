@@ -30,6 +30,9 @@ set wildmenu
 " Make wildmenu behave like similar to Bash completion.
 set wildmode=list:longest
 
+" Disable modeline
+set nomodeline
+
 " Use the system clipboard
 set clipboard^=unnamed,unnamedplus
 
