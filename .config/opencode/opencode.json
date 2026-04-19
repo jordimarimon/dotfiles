@@ -1,6 +1,17 @@
 {
     "$schema": "https://opencode.ai/config.json",
     "plugin": ["superpowers@git+https://github.com/obra/superpowers.git"],
+    "mcp": {
+        "youtrack": {
+            "enabled": false,
+            "type": "remote",
+            "url": "https://interactiu.youtrack.cloud/mcp",
+            "oauth": false,
+            "headers": {
+                "Authorization": "Bearer {env:YOUTRACK_TOKEN}"
+            }
+        }
+    },
     "lsp": {
         "intelephense": {
             "disabled": false,
