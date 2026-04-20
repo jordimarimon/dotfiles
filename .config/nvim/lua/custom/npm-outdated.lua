@@ -1,7 +1,5 @@
 -- Based on: https://github.com/vuki656/package-info.nvim
 
-local fidget = require("fidget.notification")
-
 local M = {}
 local state = {
     is_visible = false,
@@ -42,20 +40,12 @@ vim.api.nvim_create_autocmd("BufDelete", {
 
 --- @param msg string
 local log_error = function(msg)
-    fidget.notify(msg, vim.log.levels.ERROR, {
-        group = state.notification.group,
-        key = state.notification.key,
-        ttl = 10,
-    })
+    vim.notify(msg, vim.log.levels.ERROR)
 end
 
 --- @param msg string
-local log_info = function(msg, ttl)
-    fidget.notify(msg, vim.log.levels.INFO, {
-        group = state.notification.group,
-        key = state.notification.key,
-        ttl = ttl,
-    })
+local log_info = function(msg)
+    vim.notify(msg, vim.log.levels.INFO)
 end
 
 local reload_buffer = function()
@@ -149,7 +139,7 @@ local on_success = function()
     state.is_visible = true
     state.is_pending = false
 
-    log_info("Updated package.json!", 5)
+    log_info("Updated package.json!")
 end
 
 local on_error = function()
@@ -212,7 +202,7 @@ local hide = function()
     state.is_visible = false
     state.is_pending = false
 
-    log_info("Updated package.json!", 5)
+    log_info("Updated package.json!")
 end
 
 function M.toggle()
@@ -229,7 +219,7 @@ function M.toggle()
         return
     end
 
-    log_info("Updating package.json...", 120)
+    log_info("Updating package.json...")
 
     state.is_pending = true
     state.buffer.id = vim.fn.bufnr()
