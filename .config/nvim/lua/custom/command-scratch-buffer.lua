@@ -30,11 +30,12 @@ function M.redirect(cmd)
 
     local window = vim.api.nvim_get_current_win()
 
-    vim.opt_local.wrap = true
-    vim.opt_local.buftype = "nofile"
-    vim.opt_local.bufhidden = "wipe"
-    vim.opt_local.swapfile = false
-    vim.opt_local.modifiable = false
+    vim.wo[window].wrap = true
+
+    vim.bo[scratch_buffer].buftype = "nofile"
+    vim.bo[scratch_buffer].bufhidden = "wipe"
+    vim.bo[scratch_buffer].swapfile = false
+    vim.bo[scratch_buffer].modifiable = false
 
     vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = scratch_buffer })
 

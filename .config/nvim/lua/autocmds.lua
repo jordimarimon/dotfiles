@@ -341,3 +341,12 @@ vim.api.nvim_create_user_command("Restart", function()
     vim.cmd("mksession! " .. vim.fn.fnameescape(session))
     vim.cmd("restart source " .. vim.fn.fnameescape(session))
 end, { nargs = 0, desc = "Restart Neovim" })
+
+-- convert to scratch buffer
+vim.api.nvim_create_user_command("ScratchBuffer", function()
+    local active_buff = vim.api.nvim_get_current_buf()
+
+    vim.bo[active_buff].buftype = "nofile"
+    vim.bo[active_buff].bufhidden = "wipe"
+    vim.bo[active_buff].swapfile = false
+end, { nargs = 0, desc = "Create scratch buffer" })
