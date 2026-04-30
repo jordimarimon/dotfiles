@@ -6,27 +6,34 @@
 	filemode = false
 	pager = delta
 	whitespace = error
+
 [interactive]
 	diffFilter = delta --color-only
+
 [status]
 	branch = true
 	short = true
 	showStash = true
 	showUntrackedFiles = all
+
 [delta]
 	navigate = true
 	light = true
 	line-numbers = true
 	side-by-side = false
 	inspect-raw-lines = false
+
 [ssh]
 	postBuffer = 1048576000
+
 [http]
 	postBuffer = 500M
 	maxRequestBuffer = 100M
+
 [user]
 	email = jordimarimon7@gmail.com
 	name = Jordi Marimon
+
 [alias]
 	alias="!git config --get-regexp ^alias\\. | sed -e s/^alias\\.// -e s/\\ /\\ =\\ / | grep -v ^'alias ' | sort"
 	a="add"
@@ -45,18 +52,21 @@
 	ds="diff --staged"
 	dc="diff --check"
 	dt="diff-tree --no-commit-id --name-only -r"
+	dto="difftool"
 	f="fetch"
 	fp="fetch --prune"
 	l="!. ~/Scripts/githelpers.sh && pretty_git_log"
 	la="log --all --format=fuller"
 	m="merge --no-ff"
 	mf="merge"
+	mt="mergetool"
 	pu="push"
 	puf="push --force-with-lease"
 	pl="pull --prune"
 	ruf="!. ~/Scripts/githelpers.sh && remove_untracked_files"
 	rs="restore"
 	rb="rebase"
+	ri="rebase -i --rebase-merges"
 	rss="restore --staged"
 	st="status"
 	sh="show"
@@ -71,19 +81,38 @@
 	smi="submodule update --init --recursive"
 	first="!git rev-list --max-parents=0 HEAD | xargs git show -s --format=%ai"
 	wta="worktree add"
+
 [push]
 	default = current
 	followTags = true
 	autoSetupRemote = true
+
 [init]
 	defaultBranch = main
+
 [pull]
 	default = current
 	rebase = true
+
 [rebase]
 	autoStash = true
 	missingCommitsCheck = warn
+
 [merge]
 	conflictstyle = diff3
+	tool = nvimdiff
+
+[mergetool "nvimdiff"]
+	path = nvim
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+
 [diff]
 	colorMoved = default
+	tool = nvim_difftool
+
+[difftool]
+	prompt = true
+	trustExitCode = true
+
+[difftool "nvim_difftool"]
+	cmd = nvim -c \"packadd nvim.difftool\" -d \"$LOCAL\" \"$REMOTE\"
