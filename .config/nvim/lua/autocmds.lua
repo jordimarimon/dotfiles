@@ -299,7 +299,13 @@ vim.api.nvim_create_user_command("Review", function(opts)
     end
 
     require("custom.git-difftool").review(query)
-end, { nargs = 1, desc = "Review a branch" })
+end, {
+    nargs = 1,
+    desc = "Review a branch",
+    complete = function()
+        return require("custom.git-difftool").get_branches()
+    end,
+})
 
 -- pack commands
 vim.api.nvim_create_user_command("PackUpdate", function()

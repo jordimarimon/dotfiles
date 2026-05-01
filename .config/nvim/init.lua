@@ -13,9 +13,6 @@ require("plugins")
 -- :help vim._core.ui2
 require("vim._core.ui2").enable({ enable = true })
 
--- `help :DiffTool`
-vim.cmd("packadd nvim.difftool")
-
 -- define keymaps
 require("keymaps")
 
@@ -24,6 +21,3 @@ require("autocmds")
 
 -- enable lsps
 require("lsp")
-
--- See `:help modeline`
--- vim: ts=4 sts=4 sw=4 et

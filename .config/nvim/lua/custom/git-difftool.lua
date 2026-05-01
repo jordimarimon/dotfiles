@@ -3,6 +3,9 @@
 
 local M = {}
 local String = require("custom.string")
+local state = {
+    branches = nil,
+}
 
 local function git_file_exists(obj)
     local job_id = vim.fn.jobstart({ "git", "cat-file", "-e", obj })
@@ -10,20 +13,35 @@ local function git_file_exists(obj)
     return #result == 1 and result[1] == 0
 end
 
-function M.review(query)
+---@return string[]
+function M.get_branches()
+    if state.branches then
+        return state.branches
+    end
+
     local branches_cmd = vim.system(
         { "git", "branch", "--all", "--remotes", "--no-color" },
         { text = true }
     )
-        :wait()
-    local branches = String.split(branches_cmd.stdout, "\n")
-    local review_branch = nil
-    local other_branches = {}
+
+    local branches = String.split(branches_cmd:wait().stdout, "\n")
 
     for index, branch in ipairs(branches) do
         local branch_name, _ = String.trim(branch):gsub("%s%->.+$", "")
         branches[index] = branch_name
+    end
 
+    state.branches = branches
+
+    return branches
+end
+
+function M.review(query)
+    local branches = M.get_branches()
+    local review_branch = nil
+    local other_branches = {}
+
+    for _, branch_name in ipairs(branches) do
         if review_branch == nil and branch_name:find(query, 1, true) ~= nil then
             review_branch = branch_name
         else
