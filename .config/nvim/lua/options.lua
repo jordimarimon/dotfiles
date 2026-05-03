@@ -117,3 +117,7 @@ vim.o.nrformats = "unsigned"
 
 -- Disable modeline
 vim.o.modeline = false
+
+-- Keep cursor centered at the top and bottom of the buffer
+-- vim.o.scrolloff = 99
+-- vim.o.scrolloffpad = 1
