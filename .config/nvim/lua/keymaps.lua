@@ -150,7 +150,7 @@ vim.keymap.set(
 )
 
 -- Save current word for later substitute command
-vim.keymap.set({ "n", "v" }, "<leader>s", function()
+vim.keymap.set({ "n", "v" }, "<leader>ss", function()
     local mode = vim.fn.mode()
     -- Check if in visual mode
     if mode == "v" then
