@@ -72,6 +72,7 @@ return {
                         vim.api.nvim_buf_call(args.buf, function()
                             vim.wo[0][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
                             vim.wo[0][0].foldmethod = "expr"
+                            vim.wo[0].foldenable = true
                             vim.bo[0].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                             vim.cmd.normal("zx")
                         end)

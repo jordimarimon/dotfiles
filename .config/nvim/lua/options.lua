@@ -44,7 +44,7 @@ vim.o.splitright = true
 -- Signcolumn of 5 columnwidth with signs
 vim.o.numberwidth = 3
 vim.o.signcolumn = "yes:1"
-vim.o.statuscolumn = "%l%s" -- number sign
+vim.o.statuscolumn = "%C%l%s" -- fold number sign
 
 -- Don't have `o` add a comment
 vim.opt.formatoptions:remove({ "o", "r" })
@@ -87,9 +87,11 @@ vim.o.virtualedit = "block"
 
 -- Make sure fold is disabled by default
 vim.o.foldenable = false
-vim.o.foldlevel = 99
-vim.o.foldcolumn = "0"
-vim.opt.fillchars:append({ fold = " " })
+vim.o.foldlevelstart = 99
+vim.o.foldtext = ""
+vim.o.foldcolumn = "1"
+vim.o.foldnestmax = 15
+vim.o.fillchars = "fold: ,foldopen:󰅀,foldclose:󰅂,foldinner:│,foldsep:│"
 
 -- Spell checking
 -- https://github.com/vim/vim/tree/master/runtime/spell
