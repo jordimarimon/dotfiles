@@ -190,6 +190,8 @@ vim.api.nvim_create_user_command(
 )
 
 -- To start again the client just use ":e!"
+-- Similar to `:lsp stop`
+-- To restart => `:lsp restart`
 vim.api.nvim_create_user_command("LspStop", function(info)
     local args = info.args
 
@@ -216,10 +218,6 @@ vim.api.nvim_create_user_command("LspStop", function(info)
         end
     end
 end, { nargs = "*", bang = true, desc = "Stops LSP clients", complete = get_active_clients })
-
-vim.api.nvim_create_user_command("LspRestart", "lsp restart", {
-    desc = "Restart LSP",
-})
 
 -- Add border when showing diagnostics in a floting popup,
 -- and also color the linenumber instead of addding a sign
