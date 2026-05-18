@@ -17,6 +17,7 @@ return {
         -- https://github.com/bmewburn/vscode-intelephense/blob/master/package.json#L149
         intelephense = {
             files = {
+                maxSize = 5000000,
                 exclude = {
                     "**/.git/**",
                     "**/.svn/**",
