@@ -35,7 +35,7 @@ output eDP-1 pos 0 0 res 1920x1080
 output "ViewSonic Corporation VA2732-FHD W5P205161630" pos 1920 0 res 1920x1080
 
 # Default wallpaper
-output * bg /home/jmarimon/Pictures/minimalism-material-minimal-material-style-2088251-wallhere.com.jpg fill
+output * bg /home/jmarimon/Pictures/rose_theme.jpg fill
 
 # Scale company 4K display
 output "Dell Inc. DELL U2718Q FN84K88R0VHL" scale 1.5
