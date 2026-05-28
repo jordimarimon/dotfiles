@@ -27,6 +27,7 @@ return {
                     c = { "clang-format" },
                     php = { "php_cs_fixer" },
                     lua = { "stylua" },
+                    python = { "ruff_fix", "ruff_organize_imports", "ruff_format" },
                 },
             })
 
