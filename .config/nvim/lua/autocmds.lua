@@ -237,27 +237,24 @@ end, { nargs = "+", range = true, desc = "" })
 -- Does HTTP requests that follow JetBrains http syntax
 -- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
 vim.api.nvim_create_user_command("HttpRequest", function()
-    require("custom.http").request()
+    require("kulala").run()
 end, { nargs = 0, desc = "Do Http request" })
 
 vim.api.nvim_create_user_command("HttpCopy", function()
-    require("custom.http").copy()
+    require("kulala").copy()
 end, { nargs = 0, desc = "Copy curl command to clipboard" })
 
 vim.api.nvim_create_user_command("HttpChange", function()
-    require("custom.http").change_env()
+    require("kulala").set_selected_env()
 end, { nargs = 0, desc = "Change HTTP environment" })
 
 vim.api.nvim_create_user_command("HttpView", function()
-    require("custom.http").select_from_cache()
+    require("kulala").open()
 end, { nargs = 0, desc = "View a previously done HTTP response" })
 
-vim.api.nvim_create_user_command("HttpCacheClear", function()
-    require("custom.http").clear_cache()
-end, { nargs = 0, desc = "Clear the cache of HTTP responses" })
-
-vim.api.nvim_create_user_command("HttpCookieClear", function()
-    require("custom.http").clear_cookie()
+vim.api.nvim_create_user_command("HttpClear", function()
+    require("kulala").scripts_clear_global()
+    require("kulala").clear_cached_files()
 end, { nargs = 0, desc = "Clear the saved cookie" })
 
 -- Copy current buffer path to system clipboard

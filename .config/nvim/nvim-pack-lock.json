@@ -17,6 +17,10 @@
       "rev": "dd3f588bacbeb041be6facf1742e42097f62165d",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
+    "kulala.nvim": {
+      "rev": "77e5e949276e0b247f8f67575c42446750d164fa",
+      "src": "https://github.com/mistweaverco/kulala.nvim"
+    },
     "mason.nvim": {
       "rev": "bb639d4bf385a4d89f478b83af4d770be05ab7eb",
       "src": "https://github.com/mason-org/mason.nvim"
