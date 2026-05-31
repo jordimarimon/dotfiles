@@ -11,6 +11,7 @@ PATHS[4]="$HOME/Hooba/erp-console-api"
 PATHS[5]="$HOME/Hooba/erp-db-changes"
 PATHS[6]="$HOME/Hooba/erp-infrastructure"
 PATHS[7]="$HOME/Hooba/erp-editor-api"
+PATHS[8]="$HOME/Hooba/hooba-web-fonts"
 
 # Loop through each session and creates it
 for INDEX in "${!PATHS[@]}"; do

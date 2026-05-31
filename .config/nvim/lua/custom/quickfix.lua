@@ -117,6 +117,11 @@ function M.rm_qf_items()
         vim.cmd("lopen")
     end
 
+    -- Make sure the index is within bounds
+    if startidx > #qfall then
+        startidx = #qfall
+    end
+
     -- Set the cursor position directly in the quickfix window
     local winid = vim.fn.win_getid() -- Get the window ID of the quickfix window
     vim.api.nvim_win_set_cursor(winid, { startidx, 0 })
