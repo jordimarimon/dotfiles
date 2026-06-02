@@ -73,10 +73,6 @@ autoload -Uz edit-command-line
 zle -N edit-command-line
 bindkey '^x^e' edit-command-line
 
-# Carapace
-export CARAPACE_BRIDGES="zsh"
-source <(carapace _carapace)
-
 # ssh-add and ssh require an environment variable to know how
 # to talk to the ssh agent
 SSHAGENT=/usr/bin/ssh-agent

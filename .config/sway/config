@@ -35,7 +35,7 @@ output eDP-1 pos 0 0 res 1920x1080
 output "ViewSonic Corporation VA2732-FHD W5P205161630" pos 1920 0 res 1920x1080
 
 # Default wallpaper
-output * bg /home/jmarimon/Pictures/rose_theme.jpg fill
+output * bg /home/jmarimon/Pictures/infinity-purple.jpg fill
 
 # Scale company 4K display
 output "Dell Inc. DELL U2718Q FN84K88R0VHL" scale 1.5
@@ -109,6 +109,7 @@ input "1133:16482:Logitech_K850" {
     xkb_options caps:escape
 }
 
+# Set cursor size and hide it after 5s of not moving
 seat seat0 xcursor_theme "Bibata" 24
 seat seat0 hide_cursor 5000
 
@@ -122,7 +123,7 @@ font pango:JetBrainsMono Nerd Font, Solid 12
 default_border pixel 2
 
 # Window colors
-#                       border             background         text                 indicator		child_border
+#                       border             background         text                 indicator            child_border
 client.focused          $bg-color          $bg-color          $text-color          $indicator-color	$bg-color
 client.unfocused        $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color	$bg-color
 client.focused_inactive $inactive-bg-color $inactive-bg-color $inactive-text-color $indicator-color	$bg-color
