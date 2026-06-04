@@ -109,6 +109,10 @@ vim.api.nvim_create_autocmd({ "BufDelete" }, {
     end,
 })
 
+vim.api.nvim_create_user_command("DiffThis", function(opts)
+    require("gitsigns").diffthis(opts.fargs[1])
+end, { nargs = 1, desc = "Show diff of the current buffer with another revision" })
+
 -- https://neovim.io/doc/user/diff.html#%3ADiffOrig
 vim.api.nvim_create_user_command("DiffOrig", function()
     -- Get the current buffer's name
