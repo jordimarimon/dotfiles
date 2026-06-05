@@ -15,6 +15,7 @@
 	short = true
 	showStash = true
 	showUntrackedFiles = all
+	submoduleSummary = true
 
 [delta]
 	navigate = true
@@ -99,16 +100,18 @@
 	missingCommitsCheck = warn
 
 [merge]
-	conflictstyle = diff3
+	conflictstyle = zdiff3
 	tool = nvimdiff
 
 [mergetool "nvimdiff"]
 	path = nvim
-	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+	cmd = nvim -d $LOCAL $MERGED $REMOTE -c '$wincmd w' -c 'wincmd J'
 
 [diff]
 	colorMoved = default
 	tool = nvim_difftool
+	algorithm = histogram
+	submodule = log
 
 [difftool]
 	prompt = true
@@ -116,3 +119,6 @@
 
 [difftool "nvim_difftool"]
 	cmd = nvim -c \"packadd nvim.difftool\" -d \"$LOCAL\" \"$REMOTE\"
+
+[submodule]
+	recurse = true
