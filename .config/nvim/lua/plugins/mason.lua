@@ -7,8 +7,8 @@ return {
             local packages = {
                 "basedpyright",
                 "bash-language-server",
-                "clang-format",
                 "clangd",
+                "clang-format",
                 "css-lsp",
                 "css-variables-language-server",
                 "goimports",
@@ -17,8 +17,10 @@ return {
                 "intelephense",
                 "json-lsp",
                 "lua-language-server",
-                "typescript-language-server",
+                "ruff",
+                "rust-analyzer",
                 "tsgo",
+                "typescript-language-server",
                 "yaml-language-server",
             }
 
