@@ -1,10 +1,21 @@
 -- See `:help gitsigns` to understand what the configuration keys do
 -- Adds git related signs to the gutter, as well as utilities for managing changes
 -- https://github.com/tpope/vim-fugitive
--- Another alternative: https://github.com/jesseduffield/lazygit
+-- https://github.com/barrettruth/diffs.nvim
 return {
     {
         src = "https://github.com/tpope/vim-fugitive",
+    },
+    {
+        src = "https://github.com/barrettruth/diffs.nvim",
+        setup = function()
+            vim.g.diffs = {
+                integrations = {
+                    fugitive = true,
+                    gitsigns = true,
+                },
+            }
+        end,
     },
     {
         src = "https://github.com/lewis6991/gitsigns.nvim",

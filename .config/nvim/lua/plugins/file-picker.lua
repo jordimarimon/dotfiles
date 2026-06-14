@@ -67,12 +67,6 @@ return {
             vim.keymap.set("n", "<leader>sf", fzf_lua.files, { desc = "Search files" })
             vim.keymap.set("n", "<leader>sb", fzf_lua.buffers, { desc = "Search buffers" })
             vim.keymap.set("n", "<leader>sr", fzf_lua.resume, { desc = "Resume previous search" })
-            vim.keymap.set(
-                "n",
-                "<leader>sd",
-                fzf_lua.diagnostics_workspace,
-                { desc = "Search diagnostics" }
-            )
             vim.keymap.set("n", "<leader>sg", fzf_lua.live_grep, { desc = "Live grep" })
             vim.keymap.set("n", "<leader>sm", fzf_lua.marks, { desc = "Search marks" })
             vim.keymap.set("n", "<leader>sk", fzf_lua.keymaps, { desc = "Search keymaps" })
@@ -89,6 +83,25 @@ return {
             )
             vim.keymap.set("n", "<leader>sgh", fzf_lua.git_hunks, { desc = "Search git hunks" })
             vim.keymap.set("n", "z=", fzf_lua.spell_suggest, { desc = "Spelling suggestions" })
+
+            vim.keymap.set(
+                "n",
+                "<leader>sd",
+                fzf_lua.diagnostics_workspace,
+                { desc = "Search diagnostics" }
+            )
+            vim.keymap.set(
+                "n",
+                "<leader>ic",
+                fzf_lua.lsp_incoming_calls,
+                { desc = "Incoming calls" }
+            )
+            vim.keymap.set(
+                "n",
+                "<leader>oc",
+                fzf_lua.lsp_outgoing_calls,
+                { desc = "Outgoing calls" }
+            )
         end,
     },
 }
