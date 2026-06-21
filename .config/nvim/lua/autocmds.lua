@@ -361,3 +361,9 @@ vim.api.nvim_create_user_command("ScratchBuffer", function()
     vim.bo[active_buff].bufhidden = "wipe"
     vim.bo[active_buff].swapfile = false
 end, { nargs = 0, desc = "Create scratch buffer" })
+
+-- show current buffer id
+vim.api.nvim_create_user_command("BufferId", function()
+    -- can be done also with ":echo bufnr('%')"
+    print(vim.api.nvim_get_current_buf())
+end, { nargs = 0, desc = "Create scratch buffer" })

@@ -10,19 +10,19 @@
       "src": "https://github.com/stevearc/conform.nvim"
     },
     "diffs.nvim": {
-      "rev": "c59ec408c08216a9c2b3c2ee4a1e980d9bd6f34d",
+      "rev": "7ab445c39224160203ae692d3c883e2f51f2d442",
       "src": "https://github.com/barrettruth/diffs.nvim"
     },
     "fzf-lua": {
-      "rev": "988416cc782dfe28bff3f0da9b8c943b236cd86a",
+      "rev": "267f5db2aa2202b9f6cc7a50783f0ccd2121766c",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "gitsigns.nvim": {
-      "rev": "25050e4ed39e628282831d4cbecb1850454ce915",
+      "rev": "2038c666bd9d8a0b7349a0b6ee00dc83104b9ecf",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "kulala.nvim": {
-      "rev": "2fc8ab5dd15b55b38ed3421689d63cce9fa8a897",
+      "rev": "bed6150762d4a5ab5c0a336ebb01626f7ad0ab26",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "mason.nvim": {
@@ -30,7 +30,7 @@
       "src": "https://github.com/mason-org/mason.nvim"
     },
     "mini.nvim": {
-      "rev": "a59a9b7fb0a42cbcf022938ee5f0724320b66f63",
+      "rev": "64e77a77173a23daa218ebfa2f7d59456b30326b",
       "src": "https://github.com/nvim-mini/mini.nvim"
     },
     "nvim-treesitter": {
@@ -50,7 +50,7 @@
       "src": "https://github.com/stevearc/oil.nvim"
     },
     "render-markdown.nvim": {
-      "rev": "5adf0895310c1904e5abfaad40a2baad7fe44a07",
+      "rev": "f422cb5c6855f150e2ddcfaf44e7157b98b34f6a",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
     },
     "treesj": {
@@ -66,7 +66,7 @@
       "src": "https://github.com/kristijanhusak/vim-dadbod-completion"
     },
     "vim-dadbod-ui": {
-      "rev": "07e92e22114cc5b1ba4938d99897d85b58e20475",
+      "rev": "afd07819d8efcefc3317205b855ad4e3513b0011",
       "src": "https://github.com/kristijanhusak/vim-dadbod-ui"
     },
     "vim-fugitive": {
