@@ -90,6 +90,7 @@ alias gc='/usr/bin/git --git-dir=$HOME/dotfiles/ --work-tree=$HOME'
 alias g="git"
 alias cat="bat"
 alias ls="lsd"
+alias vim="nvim"
 alias logout="loginctl terminate-user $(whoami)"
 alias trash="gio trash"
 alias browsepkgs="pacman -Qq | fzf --preview 'pacman -Qil {}' --layout=reverse --bind 'enter:execute(pacman -Qil {} | less)'"

@@ -166,6 +166,9 @@ bindsym --locked XF86MonBrightnessDown exec brightnessctl set 10%-
 bindsym Print exec grim -g "$(slurp -d)" - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png | dunstify "Screenshot of the region taken" -t 1000
 bindsym Shift+Print exec grim - | wl-copy && wl-paste > ~/Pictures/Screenshots/Screenshot-$(date +%F_%T).png | dunstify "Screenshot of whole screen taken" -t 1000
 
+# Zoom in
+bindsym $mod+z exec ~/Projects/wooz/build/wooz --invert-scroll --map-close q
+
 # Drag floating windows by holding down $mod and left mouse button.
 # Resize them with right mouse button + $mod.
 # Despite the name, also works for non-floating windows.
