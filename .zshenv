@@ -1,6 +1,6 @@
 # Useful environment variables
 export TERMINAL="foot"
-export BROWSER="firefox"
+export BROWSER="chromium"
 export EDITOR="nvim"
 export VISUAL="nvim"
 export HISTORY_IGNORE="(ls|cd|pwd|exit|sudo reboot|history|cd -|cd ..)"
