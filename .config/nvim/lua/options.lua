@@ -21,6 +21,9 @@ vim.o.conceallevel = 2
 -- Enable mouse mode
 vim.o.mouse = "a"
 
+-- Enable colored column
+-- vim.o.colorcolumn = "100"
+
 -- Sync clipboard between OS and Neovim.
 --  See `:help 'clipboard'`
 vim.schedule(function()

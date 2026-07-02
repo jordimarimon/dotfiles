@@ -22,7 +22,7 @@
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "kulala.nvim": {
-      "rev": "b78b1aab31844bdba8a94041ff22a61d1563ba35",
+      "rev": "f3934f22387cb62e62ff4ced16c42b66f7906a15",
       "src": "https://github.com/mistweaverco/kulala.nvim"
     },
     "mason.nvim": {

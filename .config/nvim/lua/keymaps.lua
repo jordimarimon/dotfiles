@@ -16,8 +16,8 @@ vim.keymap.set("n", "j", function()
     return vim.v.count > 0 and "m'" .. vim.v.count .. "j" or "gj"
 end, { noremap = true, expr = true, silent = true })
 
-vim.keymap.set("n", "0", "g0", { noremap = true, silent = true })
-vim.keymap.set("n", "$", "g$", { noremap = true, silent = true })
+-- vim.keymap.set("n", "0", "g0", { noremap = true, silent = true })
+-- vim.keymap.set("n", "$", "g$", { noremap = true, silent = true })
 
 -- Move up and down only 5 lines. Sadly the "scroll" option
 -- gets overriden in a lot of places

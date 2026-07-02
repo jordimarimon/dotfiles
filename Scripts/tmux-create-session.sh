@@ -15,9 +15,9 @@ if [[ $2 == "-a" ]]; then
 fi
 
 # Check if the session already exists
-if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+if tmux has-session -t "=$SESSION_NAME" 2>/dev/null; then
     if [[ $SESSION_ATTACH -eq 1 ]]; then
-        tmux attach-session -t "$SESSION_NAME"
+        tmux attach-session -t "=$SESSION_NAME"
     else
         echo "Session '$SESSION_NAME' already exists. Use '-a' to attach."
     fi
@@ -38,5 +38,5 @@ tmux select-window -t "$SESSION_NAME:2"
 
 # Attach to the session created
 if [[ $SESSION_ATTACH -eq 1 ]]; then
-    tmux attach-session -t "$SESSION_NAME"
+    tmux attach-session -t "=$SESSION_NAME"
 fi

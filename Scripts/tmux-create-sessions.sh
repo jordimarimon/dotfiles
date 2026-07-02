@@ -2,24 +2,24 @@
 
 
 # Path of each session
-declare -A PATHS
-PATHS[0]="$HOME/Hooba/erp-frontend"
-PATHS[1]="$HOME/Hooba/erp-web"
-PATHS[2]="$HOME/Hooba/erp-import-app"
-PATHS[3]="$HOME/Hooba/erp-fixtures"
-PATHS[4]="$HOME/Hooba/erp-console-api"
-PATHS[5]="$HOME/Hooba/erp-db-changes"
-PATHS[6]="$HOME/Hooba/erp-infrastructure"
-PATHS[7]="$HOME/Hooba/erp-editor-api"
-PATHS[8]="$HOME/Hooba/hooba-web-fonts"
+PATHS=(
+    "$HOME/Hooba/apps"
+    "$HOME/Hooba/web-components"
+    "$HOME/Hooba/console-import-app"
+    "$HOME/Hooba/apps-fixtures"
+    "$HOME/Hooba/erp-console-api"
+    "$HOME/Hooba/erp-db-changes"
+    "$HOME/Hooba/erp-infrastructure"
+    "$HOME/Hooba/web-api"
+    "$HOME/Hooba/web-fonts"
+)
 
 # Loop through each session and creates it
-for INDEX in "${!PATHS[@]}"; do
-    SESSION_PATH="${PATHS[$INDEX]}"
+for SESSION_PATH in "${PATHS[@]}"; do
     SESSION_NAME=$(basename "$SESSION_PATH" | tr . _)
 
     # Check if the session already exists
-    if tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
+    if tmux has-session -t "=$SESSION_NAME" 2>/dev/null; then
 	continue
     fi
 
