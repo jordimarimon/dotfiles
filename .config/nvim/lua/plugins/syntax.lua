@@ -86,6 +86,8 @@ return {
     {
         src = "https://github.com/nvim-treesitter/nvim-treesitter-textobjects",
         setup = function()
+            vim.g.no_plugin_maps = true
+
             require("nvim-treesitter-textobjects").setup({
                 select = {
                     lookahead = true,

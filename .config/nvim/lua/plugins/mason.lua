@@ -17,6 +17,7 @@ return {
                 "intelephense",
                 "json-lsp",
                 "lua-language-server",
+                "phpantom_lsp",
                 "ruff",
                 "rust-analyzer",
                 "tsgo",
