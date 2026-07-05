@@ -101,4 +101,5 @@ alias tmuxstart="$HOME/Scripts/tmux-create-sessions.sh"
 alias tmuxcreate="$HOME/Scripts/tmux-create-session.sh"
 alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip2="curl ifconfig.me"
+alias pi="~/Projects/pi/packages/coding-agent/dist/cli.js"
 

@@ -244,7 +244,7 @@ vim.diagnostic.config({
 })
 
 -- Load langauge servers
-local disabled_lsp = { "tsgo", "phpantom" }
+local disabled_lsp = { "ts_ls", "phpantom" }
 local lsp_path = vim.fn.stdpath("config") .. "/lsp"
 
 for _, file in ipairs(vim.fn.readdir(lsp_path)) do

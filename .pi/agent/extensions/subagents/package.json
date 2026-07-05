@@ -1,0 +1,15 @@
+{
+    "$schema": "https://json.schemastore.org/package.json",
+    "name": "subagents",
+    "packageManager": "pnpm@11.8.0",
+    "type": "module",
+    "devDependencies": {
+        "@earendil-works/pi-coding-agent": "^0.80.3",
+        "prettier": "^3.9.4"
+    },
+    "pi": {
+        "extensions": [
+            "./src/index.ts"
+        ]
+    }
+}
