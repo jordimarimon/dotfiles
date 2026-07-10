@@ -34,6 +34,14 @@ vim.api.nvim_create_autocmd("FileType", {
     command = "setlocal noexpandtab tabstop=4 shiftwidth=4",
 })
 
+-- Make sure fugitivie buffers are deleted automatically
+vim.api.nvim_create_autocmd("BufReadPost", {
+    pattern = "fugitive://*",
+    callback = function()
+        vim.bo.bufhidden = "delete"
+    end,
+})
+
 -- Highlight current line on active window only
 local active_line_highligh = vim.api.nvim_create_augroup("HighlightActiveLine", { clear = true })
 vim.api.nvim_create_autocmd("WinEnter", {
@@ -74,7 +82,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
         end
 
         -- Don't insert comments when using "o" or "O"
-        vim.opt.formatoptions:remove({ "o", "r" })
+        vim.o.formatoptions = vim.o.formatoptions:gsub("[or]", "")
 
         -- Change how many lines scrolls C-d and C-u
         vim.o.scroll = 5

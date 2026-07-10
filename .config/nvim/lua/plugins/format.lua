@@ -20,6 +20,7 @@ return {
                     typescript = { "prettier" },
                     typescriptreact = { "prettier" },
                     html = { "prettier" },
+                    svg = { "prettier" },
                     htmlangular = { "prettier" },
                     json = { "prettier" },
                     markdown = { "prettier" },
