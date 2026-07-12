@@ -1,6 +1,6 @@
 [core]
 	editor = nvim
-	excludesfile = ~/.gitignore
+	excludesfile = ~/.config/git/ignore
 	autocrlf = input
 	compression = 0
 	filemode = false
