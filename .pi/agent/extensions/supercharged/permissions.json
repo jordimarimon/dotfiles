@@ -1,0 +1,68 @@
+{
+    "rules": [
+        {
+            "type": "path",
+            "pattern": "**/.env.example",
+            "action": "allow"
+        },
+        {
+            "type": "path",
+            "pattern": "**/.env*",
+            "action": "deny",
+            "reason": "Access to environment files is prohibited."
+        },
+        {
+            "type": "path",
+            "pattern": "**/.ssh/**/*",
+            "action": "deny",
+            "reason": "Access to private keys is prohibited."
+        },
+        {
+            "type": "path",
+            "pattern": "**/@(aws|gcloud|azure|kube|config)/!(config.example)",
+            "action": "deny",
+            "reason": "Access to cloud provider credentials is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "ch@(mod|own) *{,/**/*}",
+            "action": "ask",
+            "reason": "Modifying permissions/ownership can affect system stability."
+        },
+        {
+            "type": "path",
+            "pattern": "/@(etc|var|root|boot)/**/*",
+            "action": "deny",
+            "reason": "Access to system directories is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "@(curl|wget|nmap|telnet|ssh|nc) *{,/**/*}",
+            "action": "ask",
+            "reason": "Confirm network-reaching commands."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "rm -r?(f) *{,/**/*}",
+            "action": "ask",
+            "reason": "Dangerous command detected."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "git push*{,/**/*}",
+            "action": "deny",
+            "reason": "Pushing to remote is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "git commit*{,/**/*}",
+            "action": "deny",
+            "reason": "Creating commits is prohibited."
+        }
+    ]
+}
