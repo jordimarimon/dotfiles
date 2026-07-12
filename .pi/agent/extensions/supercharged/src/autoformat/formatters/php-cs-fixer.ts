@@ -27,12 +27,8 @@ export class PhpCodeStandardFixerFormatter extends BaseFormatter {
         try {
             await execFileAsync(binaryPath, ['fix', ...filePaths], {cwd});
             return {success: true};
-        } catch (_error: unknown) {
-            return {
-                success: false,
-                error: '',
-                stderr: '',
-            };
+        } catch (error: unknown) {
+            return {success: false, error};
         }
     }
 }

@@ -9,6 +9,7 @@ const execFileAsync = promisify(execFile);
 export class PrettierFormatter extends BaseFormatter {
     readonly #configFiles: string[] = [
         '.prettierrc',
+        '.prettierrc.js',
         'prettier.config.js',
         'prettier.config.cjs',
         'prettier.config.mjs',
@@ -33,13 +34,8 @@ export class PrettierFormatter extends BaseFormatter {
         try {
             await execFileAsync(binaryPath, ['--write', ...filePaths], {cwd});
             return {success: true};
-        } catch (_error: unknown) {
-            return {
-                success: false,
-                error: '',
-                stderr: '',
-                stdout: '',
-            };
+        } catch (error: unknown) {
+            return {success: false, error};
         }
     }
 }

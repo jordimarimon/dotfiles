@@ -1,12 +1,13 @@
 import {EXTENSION_TO_FILETYPE, FORMATTERS, FORMATTERS_BY_FILETYPE} from './registry.ts';
+import {logger, LogGroup} from '../utils/logger.ts';
 import {readFile} from 'node:fs/promises';
-import {createHash} from 'node:crypto';
 import type {
     ExtensionAPI,
     ExtensionContext,
     ToolResultEvent,
     TurnEndEvent,
 } from '@earendil-works/pi-coding-agent';
+import {createHash} from 'node:crypto';
 import {extname} from 'node:path';
 
 export class AutoFormat {
@@ -32,11 +33,15 @@ export class AutoFormat {
                 return;
             }
 
+            logger.debug(LogGroup.AutoFormat, 'Checking files: ', {files});
+
             const result = await autoFormat.#format(ctx.cwd, files);
 
             if (!result.length) {
                 return;
             }
+
+            logger.info(LogGroup.AutoFormat, `Successfully formatted ${result.length} files`);
 
             ctx.ui.notify(`Autoformatted ${result.length} file(s)`, 'info');
 
@@ -58,7 +63,7 @@ export class AutoFormat {
         // TODO: Detect also edits made through bash commands like "sed", "mv", "cp", "tee" or a "pipe"
 
         if (event.toolName === 'write' || event.toolName === 'edit') {
-            const path = event.input['path'] || event.input['filepath'];
+            const path = event.input['path'];
 
             if (path && typeof path === 'string') {
                 this.#files.add(path);
@@ -103,18 +108,28 @@ export class AutoFormat {
 
                 const binary = formatter.getBinary(cwd);
                 if (!binary) {
+                    logger.debug(
+                        LogGroup.AutoFormat,
+                        `Formatter ${formatterName} not available for cwd: ${cwd}`,
+                    );
                     continue;
                 }
 
+                logger.info(LogGroup.AutoFormat, `Running ${formatterName}`, {files: batch});
+
                 const result = await formatter.format(batch, binary, cwd);
+
                 if (result.success) {
                     successfulTools.push(formatterName);
+                } else {
+                    logger.error(LogGroup.AutoFormat, `Formatter ${formatterName} failed`, result);
                 }
             }
 
             if (successfulTools.length > 0) {
                 for (const file of batch) {
                     const postHash = await this.#getHash(file);
+
                     if (postHash !== initialHashes[file]) {
                         results.push(`${file} (${successfulTools.join(', ')})`);
                     }

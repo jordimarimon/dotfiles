@@ -1,3 +1,4 @@
+import {logger, LogGroup} from '../utils/logger.ts';
 import {readFileSync, existsSync} from 'node:fs';
 import type {PermissionConfig} from './types.ts';
 import {join} from 'node:path';
@@ -22,7 +23,7 @@ export function loadConfig(cwd: string): PermissionConfig {
 
         return config;
     } catch (error: unknown) {
-        console.error(`Failed to load permissions.json: ${error}`);
+        logger.error(LogGroup.Permission, `Failed to load permissions.json: ${error}`);
         return {rules: []};
     }
 }

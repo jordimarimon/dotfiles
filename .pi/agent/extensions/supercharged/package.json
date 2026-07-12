@@ -8,6 +8,10 @@
             "./src/index.ts"
         ]
     },
+    "scripts": {
+        "format": "prettier \"**/*.{js,json,md,ts}\" --write",
+        "typecheck": "tsc --noEmit"
+    },
     "dependencies": {
         "picomatch": "^4.0.5",
         "tslib": "^2.8.1"
@@ -16,6 +20,7 @@
         "@earendil-works/pi-coding-agent": "^0.80.3",
         "@types/node": "^26.1.1",
         "@types/picomatch": "^4.0.3",
-        "prettier": "^3.9.4"
+        "prettier": "^3.9.4",
+        "typescript": "^7.0.2"
     }
 }

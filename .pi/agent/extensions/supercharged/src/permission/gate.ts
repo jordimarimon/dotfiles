@@ -1,3 +1,4 @@
+import {logger, LogGroup} from '../utils/logger.ts';
 import {PermissionEngine} from './engine.ts';
 import {IntentFactory} from './intent.ts';
 import {loadConfig} from './config.ts';
@@ -9,22 +10,14 @@ import type {
 } from '@earendil-works/pi-coding-agent';
 
 export class PermissionGate {
+    readonly #intentFactory = new IntentFactory();
+
     #engine: PermissionEngine | undefined;
-
-    readonly #intentFactory: IntentFactory;
-
-    constructor() {
-        this.#intentFactory = new IntentFactory();
-    }
 
     static register(pi: ExtensionAPI): PermissionGate {
         const gate = new PermissionGate();
 
         pi.on('tool_call', async (event, ctx) => {
-            if (!gate.#engine) {
-                gate.#engine = new PermissionEngine(loadConfig(ctx.cwd).rules);
-            }
-
             return await gate.#handle(event, ctx);
         });
 
@@ -32,8 +25,12 @@ export class PermissionGate {
     }
 
     async #handle(ev: ToolCallEvent, ctx: ExtensionContext): Promise<ToolCallEventResult | void> {
+        this.#engine ??= new PermissionEngine(loadConfig(ctx.cwd).rules);
+
         const intent = this.#intentFactory.create(ev, ctx.cwd);
         const result = this.#engine!.check(intent);
+
+        logger.warn(LogGroup.Permission, 'Action result: ', {intent, result});
 
         if (result.action === 'deny') {
             const defaultReason = `Action blocked by permission policy: ${result.rule?.pattern ?? '-'}`;
@@ -47,6 +44,7 @@ export class PermissionGate {
         if (result.action === 'ask') {
             const bashCommand = intent.bashCommand ? `: ${intent.bashCommand}` : '';
             const reason = result.reason ? `\nReason: ${result.reason}` : '';
+
             const ok = await ctx.ui.confirm(
                 'Permission Request',
                 `Allow ${ev.toolName}${bashCommand}?${reason}`,
@@ -58,7 +56,5 @@ export class PermissionGate {
                 return {block: true, reason: 'Blocked by user'};
             }
         }
-
-        // result.action === 'confirm' or there is no matching rule (we allow it)
     }
 }

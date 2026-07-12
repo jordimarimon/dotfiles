@@ -3,9 +3,7 @@ import {join} from 'node:path';
 
 export interface FormatterResult {
     success: boolean;
-    error?: string;
-    stdout?: string;
-    stderr?: string;
+    error?: unknown;
 }
 
 export abstract class BaseFormatter {
