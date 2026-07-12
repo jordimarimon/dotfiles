@@ -2,8 +2,10 @@
 import {type ExtensionAPI} from '@earendil-works/pi-coding-agent';
 
 // EXTENSIONS
+import {AutoFormat} from './autoformat/autoformat.ts';
 import {PermissionGate} from './permission/gate.ts';
 
 export default function (pi: ExtensionAPI): void {
     PermissionGate.register(pi);
+    AutoFormat.register(pi);
 }
