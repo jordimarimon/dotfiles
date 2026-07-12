@@ -9,6 +9,8 @@ import type {
     ToolCallEventResult,
 } from '@earendil-works/pi-coding-agent';
 
+// TODO: Look at "https://github.com/Dicklesworthstone/destructive_command_guard/tree/main" for inspiration
+
 export class PermissionGate {
     readonly #intentFactory = new IntentFactory();
 

@@ -14,12 +14,21 @@ export function loadConfig(cwd: string): PermissionConfig {
         const content = readFileSync(configPath, 'utf-8');
         const config = JSON.parse(content) as PermissionConfig;
 
-        config.rules.push({
-            type: 'path',
-            pattern: `!(${cwd}{,/**/*})`,
-            action: 'ask',
-            reason: 'Accessing a path outside the workspace is prohibited.',
-        });
+        config.rules.push(
+            {
+                type: 'path',
+                pattern: `!(${cwd}{,/**/*})`,
+                action: 'ask',
+                reason: 'Accessing a path outside the workspace is prohibited.',
+            },
+            {
+                type: 'tool',
+                name: 'bash',
+                action: 'ask',
+                pattern: `cat !(${cwd}{,/**/*})`,
+                reason: 'Accessing a path outside the workspace is prohibited.',
+            },
+        );
 
         return config;
     } catch (error: unknown) {

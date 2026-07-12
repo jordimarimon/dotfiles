@@ -5,6 +5,7 @@ local bg_tab_sel = "#FFFFFF"
 local bg_visual = "#f7f6c8"
 local bg_status_line = "#040299"
 local bg_search = "#fcfc6a"
+local bg_jump = "#ffcd05"
 local bg_match_paren = "#f4cca1"
 local bg_diff_line = "none"
 local bg_diff_text = "#d4d4fc"
@@ -211,3 +212,6 @@ vim.api.nvim_set_hl(0, "RenderMarkdownCode", { bg = bg })
 -- Marks
 vim.api.nvim_set_hl(0, "MarkHighlight", { bg = bg_mark, fg = fg_mark })
 vim.api.nvim_set_hl(0, "MarkSignHighlight", { fg = bg_mark })
+
+-- Jump
+vim.api.nvim_set_hl(0, "JumpLabel", { bg = bg_jump, bold = true })

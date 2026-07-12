@@ -67,6 +67,13 @@
         {
             "type": "tool",
             "name": "bash",
+            "pattern": "git reset*{,/**/*}",
+            "action": "deny",
+            "reason": "Git reset is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
             "agent": "Scout",
             "pattern": "*",
             "action": "deny",

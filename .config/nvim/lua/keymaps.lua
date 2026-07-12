@@ -227,3 +227,6 @@ vim.keymap.set("n", "<leader>l", function()
     end
     vim.cmd("lopen")
 end, { desc = "Location list toggle" })
+
+-- jump
+vim.keymap.set({ "n", "x", "o" }, "<leader>/", require("custom.jump").start, {})
