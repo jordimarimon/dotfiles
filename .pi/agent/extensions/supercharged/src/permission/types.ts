@@ -1,11 +1,12 @@
 // Action that should be done when the rule matches
 export type PermissionAction = 'allow' | 'deny' | 'ask';
 
-export type RuleType = 'tool' | 'path' | 'bash';
+export type RuleType = 'tool' | 'path';
 
 export interface PermissionRuleConfig {
     type: RuleType;
     name?: string; // tool name
+    agent?: string; // agent name
     pattern: string;
     action: PermissionAction;
     reason?: string;
@@ -22,6 +23,7 @@ export interface PermissionCheckResult {
 }
 
 export interface AccessIntent {
+    agentName?: string | undefined;
     toolName?: string | undefined;
     input: unknown;
     path: string;

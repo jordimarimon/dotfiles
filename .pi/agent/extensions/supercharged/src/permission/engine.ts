@@ -50,14 +50,16 @@ export class PermissionEngine {
     }
 
     #getKey(intent: AccessIntent): string {
+        const agentPrefix = intent.agentName ? `[${intent.agentName}]` : '';
+
         if (intent.toolName === 'bash' && intent.bashCommand) {
-            return `bash:${intent.bashCommand}`;
+            return `${agentPrefix}bash:${intent.bashCommand}`;
         }
 
         if (intent.path) {
-            return `paths:${intent.path}`;
+            return `${agentPrefix}paths:${intent.path}`;
         }
 
-        return `tool:${intent.toolName}`;
+        return `${agentPrefix}tool:${intent.toolName}`;
     }
 }

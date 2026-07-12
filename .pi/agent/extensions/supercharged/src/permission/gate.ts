@@ -27,7 +27,7 @@ export class PermissionGate {
     async #handle(ev: ToolCallEvent, ctx: ExtensionContext): Promise<ToolCallEventResult | void> {
         this.#engine ??= new PermissionEngine(loadConfig(ctx.cwd).rules);
 
-        const intent = this.#intentFactory.create(ev, ctx.cwd);
+        const intent = this.#intentFactory.create(ev, ctx);
         const result = this.#engine!.check(intent);
 
         logger.warn(LogGroup.Permission, 'Action result: ', {intent, result});

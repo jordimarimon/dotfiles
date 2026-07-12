@@ -8,7 +8,10 @@ export class PermissionRule {
 
     constructor(config: PermissionRuleConfig) {
         this.#config = config;
-        this.#isMatch = picomatch(config.pattern, {dot: true});
+        this.#isMatch =
+            config.pattern === '*' || config.pattern === '**'
+                ? (_: string) => true
+                : picomatch(config.pattern, {dot: true});
     }
 
     getConfiguration(): PermissionRuleConfig {
@@ -16,18 +19,26 @@ export class PermissionRule {
     }
 
     matches(intent: AccessIntent): boolean {
-        if (this.#config.type === 'path' && intent.path) {
-            return this.#isMatch(intent.path);
+        // If rule specifies an agent, it must match
+        if (this.#config.agent && this.#config.agent !== intent.agentName) {
+            return false;
         }
 
-        if (
-            this.#config.type === 'tool' &&
-            this.#config.name === intent.toolName &&
-            intent.bashCommand
-        ) {
-            return this.#isMatch(intent.bashCommand);
+        // If it's a path
+        if (this.#config.type === 'path') {
+            return intent.path ? this.#isMatch(intent.path) : false;
         }
 
-        return false;
+        // It's tool
+        if (intent.toolName !== this.#config.name) {
+            return false;
+        }
+
+        // If it's bash, match against the command.
+        if (intent.toolName === 'bash') {
+            return intent.bashCommand ? this.#isMatch(intent.bashCommand) : false;
+        }
+
+        return intent.path ? this.#isMatch(intent.path) : false;
     }
 }

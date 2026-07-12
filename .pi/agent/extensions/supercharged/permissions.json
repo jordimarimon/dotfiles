@@ -24,17 +24,17 @@
             "reason": "Access to cloud provider credentials is prohibited."
         },
         {
+            "type": "path",
+            "pattern": "/@(etc|var|root|boot)/**/*",
+            "action": "deny",
+            "reason": "Access to system directories is prohibited."
+        },
+        {
             "type": "tool",
             "name": "bash",
             "pattern": "ch@(mod|own) *{,/**/*}",
             "action": "ask",
             "reason": "Modifying permissions/ownership can affect system stability."
-        },
-        {
-            "type": "path",
-            "pattern": "/@(etc|var|root|boot)/**/*",
-            "action": "deny",
-            "reason": "Access to system directories is prohibited."
         },
         {
             "type": "tool",
@@ -63,6 +63,22 @@
             "pattern": "git commit*{,/**/*}",
             "action": "deny",
             "reason": "Creating commits is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "agent": "Scout",
+            "pattern": "*",
+            "action": "deny",
+            "reason": "Scouts are not allowed to execute shell commands."
+        },
+        {
+            "type": "tool",
+            "name": "edit",
+            "agent": "Scout",
+            "pattern": "*",
+            "action": "deny",
+            "reason": "Scouts are not allowed to edit files."
         }
     ]
 }
