@@ -13,8 +13,6 @@ import {extname} from 'node:path';
 export class AutoFormat {
     readonly #files = new Set<string>();
 
-    readonly #hash = createHash('sha256');
-
     static register(pi: ExtensionAPI): void {
         const autoFormat = new AutoFormat();
 
@@ -122,7 +120,11 @@ export class AutoFormat {
                 if (result.success) {
                     successfulTools.push(formatterName);
                 } else {
-                    logger.error(LogGroup.AutoFormat, `Formatter ${formatterName} failed`, result);
+                    logger.error(
+                        LogGroup.AutoFormat,
+                        `Formatter ${formatterName} failed in directory ${cwd}`,
+                        result,
+                    );
                 }
             }
 
@@ -143,7 +145,7 @@ export class AutoFormat {
     async #getHash(filePath: string): Promise<string | null> {
         try {
             const content = await readFile(filePath);
-            return this.#hash.update(content).digest('hex');
+            return createHash('sha256').update(content).digest('hex');
         } catch {
             return null;
         }

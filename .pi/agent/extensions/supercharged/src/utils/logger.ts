@@ -3,7 +3,11 @@ import {join} from 'node:path';
 
 export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
-export const LogGroup = {AutoFormat: 'AutoFormat', Permission: 'Permission'} as const;
+export const LogGroup = {
+    AutoFormat: 'AutoFormat',
+    Permission: 'Permission',
+    ScopedContext: 'ScopedContext',
+} as const;
 
 export class Logger {
     readonly #dir: string = join(import.meta.dirname, '..', '..', '.logs');
@@ -16,12 +20,13 @@ export class Logger {
         }
 
         const today = new Date().toISOString().split('T')[0];
-        this.#file = join(this.#dir, `${today}.log`);
+        const filename = `${today}.log`;
+        this.#file = join(this.#dir, filename);
 
         const files = readdirSync(this.#dir);
 
         for (const file of files) {
-            if (file !== this.#file) {
+            if (file !== filename) {
                 try {
                     unlinkSync(join(this.#dir, file));
                 } catch (_err: unknown) {

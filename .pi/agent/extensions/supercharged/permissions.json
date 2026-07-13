@@ -30,6 +30,12 @@
             "reason": "Access to system directories is prohibited."
         },
         {
+            "type": "path",
+            "pattern": "**/.git/**/*",
+            "action": "deny",
+            "reason": "Access to git directories is prohibited."
+        },
+        {
             "type": "tool",
             "name": "bash",
             "pattern": "ch@(mod|own) *{,/**/*}",
