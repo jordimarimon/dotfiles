@@ -8,6 +8,8 @@ export class IntentFactory {
         let bashCommand: string | undefined;
         let path = '';
 
+        // TODO: Parse shell commands with https://github.com/ljharb/shell-quote
+
         const systemPrompt = ctx.getSystemPrompt();
         const agentMatch = systemPrompt.match(/<active_agent>([^<]+)<\/active_agent>/);
         const agentName = agentMatch ? agentMatch[1] : undefined;
