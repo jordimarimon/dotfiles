@@ -1,5 +1,8 @@
 import {appendFileSync, existsSync, mkdirSync, readdirSync, unlinkSync} from 'node:fs';
+import {getExtensionsDir} from './fs.ts';
 import {join} from 'node:path';
+
+// TODO: Use "console.(log|warn|error|debug)" if "ExtensionContext.hasUI" is false
 
 export type LogLevel = 'DEBUG' | 'INFO' | 'WARN' | 'ERROR';
 
@@ -10,7 +13,7 @@ export const LogGroup = {
 } as const;
 
 export class Logger {
-    readonly #dir: string = join(import.meta.dirname, '..', '..', '.logs');
+    readonly #dir: string = join(getExtensionsDir(), '.logs');
 
     #file: string;
 

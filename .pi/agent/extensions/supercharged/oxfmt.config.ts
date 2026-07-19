@@ -1,13 +1,12 @@
-/**
- * @type {import('prettier').Config}
- */
-const config = {
+import {defineConfig} from 'oxfmt';
+
+export default defineConfig({
     tabWidth: 4,
     printWidth: 100,
     singleQuote: true,
     quoteProps: 'consistent',
     arrowParens: 'avoid',
     bracketSpacing: false,
-};
-
-export default config;
+    sortPackageJson: false,
+    ignorePatterns: [],
+});

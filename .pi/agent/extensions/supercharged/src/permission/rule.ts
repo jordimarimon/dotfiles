@@ -1,5 +1,6 @@
-import type {AccessIntent, PermissionRuleConfig} from './types.ts';
-import picomatch from 'picomatch';
+import type {AccessIntent} from '#src/utils/intent.ts';
+import type {PermissionRuleConfig} from './types.ts';
+import {matchesGlob} from 'node:path';
 
 export class PermissionRule {
     readonly #isMatch: (str: string) => boolean;
@@ -11,7 +12,7 @@ export class PermissionRule {
         this.#isMatch =
             config.pattern === '*' || config.pattern === '**'
                 ? (_: string) => true
-                : picomatch(config.pattern, {dot: true});
+                : (value: string): boolean => matchesGlob(value, config.pattern);
     }
 
     getConfiguration(): PermissionRuleConfig {
@@ -26,7 +27,7 @@ export class PermissionRule {
 
         // If it's a path
         if (this.#config.type === 'path') {
-            return intent.path ? this.#isMatch(intent.path) : false;
+            return intent.paths.some(path => this.#isMatch(path));
         }
 
         // It's tool
@@ -39,6 +40,6 @@ export class PermissionRule {
             return intent.bashCommand ? this.#isMatch(intent.bashCommand) : false;
         }
 
-        return intent.path ? this.#isMatch(intent.path) : false;
+        return intent.paths.some(path => this.#isMatch(path));
     }
 }

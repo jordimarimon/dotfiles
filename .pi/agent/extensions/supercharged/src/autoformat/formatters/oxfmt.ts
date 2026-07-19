@@ -5,27 +5,32 @@ import {join} from 'node:path';
 
 const execFileAsync = promisify(execFile);
 
-export class PhpCodeStandardFixerFormatter extends BaseFormatter {
-    readonly #configFiles = ['.php-cs-fixer.php', '.php-cs-fixer.dist.php'];
+export class OxfmtFormatter extends BaseFormatter {
+    readonly #configFiles: string[] = [
+        '.oxfmtrc.json',
+        '.oxfmtrc.jsonc',
+        'oxfmt.config.ts',
+        'oxfmt.config.mts',
+    ];
 
     getBinary(cwd: string): string | null {
         if (!this.hasConfig(cwd, this.#configFiles)) {
             return null;
         }
 
-        let localPath: string | null = join(cwd, 'vendor', 'bin', 'php-cs-fixer');
+        let localPath: string | null = join(cwd, 'node_modules', '.bin', 'oxfmt');
         localPath = this.check(localPath);
 
         if (localPath) {
             return localPath;
         }
 
-        return this.which('php-cs-fixer');
+        return this.which('oxfmt');
     }
 
     async format(filePaths: string[], binaryPath: string, cwd: string): Promise<FormatterResult> {
         try {
-            await execFileAsync(binaryPath, ['fix', ...filePaths], {cwd, timeout: FORMAT_TIMEOUT});
+            await execFileAsync(binaryPath, filePaths, {cwd, timeout: FORMAT_TIMEOUT});
             return {success: true};
         } catch (error: unknown) {
             return {success: false, error};

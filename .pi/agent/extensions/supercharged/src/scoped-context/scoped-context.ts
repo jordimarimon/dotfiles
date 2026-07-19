@@ -1,6 +1,7 @@
-import {dirname, join, relative, resolve} from 'node:path';
 import {logger, LogGroup} from '../utils/logger.ts';
+import {dirname, join, relative} from 'node:path';
 import {existsSync, readFileSync} from 'node:fs';
+import {ToolIntent} from '#src/utils/intent.ts';
 import type {
     ExtensionAPI,
     ExtensionContext,
@@ -20,44 +21,43 @@ export class ScopedContext {
     }
 
     #handle(event: ToolResultEvent, ctx: ExtensionContext): AgentToolResult<unknown> {
-        if (
-            event.isError ||
-            (event.toolName !== 'read' && event.toolName !== 'write' && event.toolName !== 'edit')
-        ) {
+        if (event.isError) {
             return event;
         }
 
-        const filePath = event.input['path'];
+        const intent = ToolIntent.get(event.toolCallId);
 
-        if (typeof filePath !== 'string') {
+        if (!intent?.paths.length) {
             return event;
         }
 
-        const absoluteFilePath = resolve(ctx.cwd, filePath);
-        const newContextFiles = this.#search(absoluteFilePath, ctx.cwd);
+        const newContent: ToolResultEvent['content'] = [];
 
-        if (!newContextFiles.length) {
-            return event;
-        }
+        for (const path of intent.paths) {
+            const newContextFiles = this.#search(path, ctx.cwd);
 
-        logger.info(
-            LogGroup.ScopedContext,
-            `Found ${newContextFiles.length} new AGENTS.md files for ${filePath}`,
-        );
+            if (!newContextFiles.length) {
+                return event;
+            }
 
-        const contextBlocks = newContextFiles.map(f => {
-            const content = readFileSync(f, 'utf8');
-            const relativePath = relative(ctx.cwd, f);
-            return `[Context from ${relativePath}]\n${content}`;
-        });
+            logger.info(
+                LogGroup.ScopedContext,
+                `Found ${newContextFiles.length} new AGENTS.md files for ${path}`,
+            );
 
-        const newContent = [
-            {
+            const contextBlocks = newContextFiles.map(f => {
+                const content = readFileSync(f, 'utf8');
+                const relativePath = relative(ctx.cwd, f);
+                return `[Context from ${relativePath}]\n${content}`;
+            });
+
+            newContent.push({
                 type: 'text' as const,
                 text: `### Hierarchical Context Discovery\n\nNew context rules found for this path:\n\n${contextBlocks.join('\n\n')}`,
-            },
-            ...event.content,
-        ];
+            });
+        }
+
+        newContent.push(...event.content);
 
         return {content: newContent, details: event.details};
     }
@@ -72,7 +72,7 @@ export class ScopedContext {
             const agentsPath = join(currentDir, 'AGENTS.md');
             const isRoot = currentDir === root;
 
-            if (!isRoot && existsSync(agentsPath) && !this.#files.has(agentsPath)) {
+            if (!isRoot && !this.#files.has(agentsPath) && existsSync(agentsPath)) {
                 found.push(agentsPath);
                 this.#files.add(agentsPath);
             }

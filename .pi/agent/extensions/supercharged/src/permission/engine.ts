@@ -1,5 +1,12 @@
-import type {PermissionCheckResult, PermissionRuleConfig, AccessIntent} from './types.ts';
+import type {PermissionAction, PermissionRuleConfig} from './types.ts';
+import type {AccessIntent} from '#src/utils/intent.ts';
 import {PermissionRule} from './rule.ts';
+
+export interface PermissionCheckResult {
+    action: PermissionAction;
+    rule?: PermissionRuleConfig;
+    reason?: string;
+}
 
 export class PermissionEngine {
     #rules: PermissionRule[];
@@ -50,16 +57,16 @@ export class PermissionEngine {
     }
 
     #getKey(intent: AccessIntent): string {
-        const agentPrefix = intent.agentName ? `[${intent.agentName}]` : '';
+        const agentPrefix = intent.agentName ? `[${intent.agentName}]` : '[*]';
 
         if (intent.toolName === 'bash' && intent.bashCommand) {
-            return `${agentPrefix}bash:${intent.bashCommand}`;
+            return `${agentPrefix}:bash:${intent.bashCommand}`;
         }
 
-        if (intent.path) {
-            return `${agentPrefix}paths:${intent.path}`;
+        if (intent.paths.length > 0) {
+            return `${agentPrefix}:paths:${intent.paths.join(',')}`;
         }
 
-        return `${agentPrefix}tool:${intent.toolName}`;
+        return `${agentPrefix}:tool:${intent.toolName}`;
     }
 }

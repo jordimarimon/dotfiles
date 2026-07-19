@@ -1,7 +1,6 @@
-import {BaseFormatter, type FormatterResult} from '../formatter.ts';
+import {BaseFormatter, type FormatterResult, FORMAT_TIMEOUT} from '../formatter.ts';
 import {execFile} from 'node:child_process';
 import {promisify} from 'node:util';
-import {existsSync} from 'node:fs';
 import {join} from 'node:path';
 
 const execFileAsync = promisify(execFile);
@@ -20,19 +19,22 @@ export class PrettierFormatter extends BaseFormatter {
             return null;
         }
 
-        const localPath = join(cwd, 'node_modules', '.bin', 'prettier');
+        let localPath: string | null = join(cwd, 'node_modules', '.bin', 'prettier');
+        localPath = this.check(localPath);
 
-        if (existsSync(localPath)) {
+        if (localPath) {
             return localPath;
         }
 
-        // Fallback to global
-        return 'prettier';
+        return this.which('prettier');
     }
 
     async format(filePaths: string[], binaryPath: string, cwd: string): Promise<FormatterResult> {
         try {
-            await execFileAsync(binaryPath, ['--write', ...filePaths], {cwd});
+            await execFileAsync(binaryPath, ['--write', ...filePaths], {
+                cwd,
+                timeout: FORMAT_TIMEOUT,
+            });
             return {success: true};
         } catch (error: unknown) {
             return {success: false, error};

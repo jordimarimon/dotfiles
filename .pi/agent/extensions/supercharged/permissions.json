@@ -76,22 +76,6 @@
             "pattern": "git reset*{,/**/*}",
             "action": "deny",
             "reason": "Git reset is prohibited."
-        },
-        {
-            "type": "tool",
-            "name": "bash",
-            "agent": "Scout",
-            "pattern": "*",
-            "action": "deny",
-            "reason": "Scouts are not allowed to execute shell commands."
-        },
-        {
-            "type": "tool",
-            "name": "edit",
-            "agent": "Scout",
-            "pattern": "*",
-            "action": "deny",
-            "reason": "Scouts are not allowed to edit files."
         }
     ]
 }

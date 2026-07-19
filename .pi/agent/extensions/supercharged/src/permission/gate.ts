@@ -1,6 +1,6 @@
 import {logger, LogGroup} from '../utils/logger.ts';
+import {ToolIntent} from '#src/utils/intent.ts';
 import {PermissionEngine} from './engine.ts';
-import {IntentFactory} from './intent.ts';
 import {loadConfig} from './config.ts';
 import type {
     ExtensionAPI,
@@ -9,30 +9,29 @@ import type {
     ToolCallEventResult,
 } from '@earendil-works/pi-coding-agent';
 
-// TODO: Look at "https://github.com/Dicklesworthstone/destructive_command_guard/tree/main" for inspiration
-
 export class PermissionGate {
-    readonly #intentFactory = new IntentFactory();
-
     #engine: PermissionEngine | undefined;
 
-    static register(pi: ExtensionAPI): PermissionGate {
+    static register(pi: ExtensionAPI): void {
         const gate = new PermissionGate();
 
         pi.on('tool_call', async (event, ctx) => {
             return await gate.#handle(event, ctx);
         });
-
-        return gate;
     }
 
     async #handle(ev: ToolCallEvent, ctx: ExtensionContext): Promise<ToolCallEventResult | void> {
         this.#engine ??= new PermissionEngine(loadConfig(ctx.cwd).rules);
 
-        const intent = this.#intentFactory.create(ev, ctx);
+        const intent = ToolIntent.get(ev.toolCallId);
+
+        if (!intent) {
+            return;
+        }
+
         const result = this.#engine!.check(intent);
 
-        logger.warn(LogGroup.Permission, 'Action result: ', {intent, result});
+        logger.info(LogGroup.Permission, 'Action result: ', {intent, result});
 
         if (result.action === 'deny') {
             const defaultReason = `Action blocked by permission policy: ${result.rule?.pattern ?? '-'}`;

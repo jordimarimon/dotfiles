@@ -11,7 +11,7 @@
         "resolveJsonModule": true,
         "removeComments": true,
         "isolatedModules": true,
-        "isolatedDeclarations": true,
+        "isolatedDeclarations": false,
         "importHelpers": true,
         "verbatimModuleSyntax": true,
         "allowSyntheticDefaultImports": true,

@@ -1,31 +1,44 @@
-// Action that should be done when the rule matches
-export type PermissionAction = 'allow' | 'deny' | 'ask';
+import Schema from 'typebox/schema';
+import Type from 'typebox';
 
-export type RuleType = 'tool' | 'path';
+export const PermissionActionSchema = Type.Union([
+    Type.Literal('allow'),
+    Type.Literal('deny'),
+    Type.Literal('ask'),
+]);
 
-export interface PermissionRuleConfig {
-    type: RuleType;
-    name?: string; // tool name
-    agent?: string; // agent name
-    pattern: string;
-    action: PermissionAction;
-    reason?: string;
-}
+export type PermissionAction = Type.Static<typeof PermissionActionSchema>;
 
-export interface PermissionConfig {
-    rules: PermissionRuleConfig[];
-}
+export const RuleTypeSchema = Type.Union([Type.Literal('tool'), Type.Literal('path')]);
+export type RuleType = Type.Static<typeof RuleTypeSchema>;
 
-export interface PermissionCheckResult {
-    action: PermissionAction;
-    rule?: PermissionRuleConfig;
-    reason?: string;
-}
+export const ToolNameSchema = Type.Union([
+    Type.Literal('read'),
+    Type.Literal('bash'),
+    Type.Literal('edit'),
+    Type.Literal('write'),
+    Type.Literal('grep'),
+    Type.Literal('find'),
+    Type.Literal('ls'),
+]);
 
-export interface AccessIntent {
-    agentName?: string | undefined;
-    toolName?: string | undefined;
-    input: unknown;
-    path: string;
-    bashCommand?: string | undefined;
-}
+export type ToolName = Type.Static<typeof ToolNameSchema>;
+
+export const PermissionRuleConfigSchema = Type.Object({
+    type: RuleTypeSchema,
+    name: Type.Optional(ToolNameSchema),
+    agent: Type.Optional(Type.String()),
+    pattern: Type.String(),
+    action: PermissionActionSchema,
+    reason: Type.Optional(Type.String()),
+});
+
+export type PermissionRuleConfig = Type.Static<typeof PermissionRuleConfigSchema>;
+
+export const PermissionConfigSchema = Type.Object({
+    rules: Type.Array(PermissionRuleConfigSchema),
+});
+
+export const PermissionConfigValidator = Schema.Compile(PermissionConfigSchema);
+
+export type PermissionConfig = Type.Static<typeof PermissionConfigSchema>;

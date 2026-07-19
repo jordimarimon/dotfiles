@@ -1,10 +1,11 @@
+import {PermissionConfigValidator, type PermissionConfig} from './types.ts';
 import {logger, LogGroup} from '../utils/logger.ts';
+import {getExtensionsDir} from '#src/utils/fs.ts';
 import {readFileSync, existsSync} from 'node:fs';
-import type {PermissionConfig} from './types.ts';
 import {join} from 'node:path';
 
 export function loadConfig(cwd: string): PermissionConfig {
-    const configPath = join(import.meta.dirname, '..', '..', 'permissions.json');
+    const configPath = join(getExtensionsDir(), 'permissions.json');
 
     if (!existsSync(configPath)) {
         return {rules: []};
@@ -12,23 +13,21 @@ export function loadConfig(cwd: string): PermissionConfig {
 
     try {
         const content = readFileSync(configPath, 'utf-8');
-        const config = JSON.parse(content) as PermissionConfig;
+        const config = JSON.parse(content);
 
-        config.rules.push(
-            {
-                type: 'path',
-                pattern: `!(${cwd}{,/**/*})`,
-                action: 'ask',
-                reason: 'Accessing a path outside the workspace is prohibited.',
-            },
-            {
-                type: 'tool',
-                name: 'bash',
-                action: 'ask',
-                pattern: `cat !(${cwd}{,/**/*})`,
-                reason: 'Accessing a path outside the workspace is prohibited.',
-            },
-        );
+        if (!PermissionConfigValidator.Check(config)) {
+            logger.error(LogGroup.Permission, 'Invalid permissions configuration file format');
+            return {rules: []};
+        }
+
+        // This rule needs to be added dynamically because the
+        // workspace/session directory is only known at runtime
+        config.rules.push({
+            type: 'path',
+            pattern: `!(${cwd}{,/**/*})`,
+            action: 'ask',
+            reason: 'Accessing a path outside the workspace is prohibited.',
+        });
 
         return config;
     } catch (error: unknown) {

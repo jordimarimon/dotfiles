@@ -1,5 +1,6 @@
 import {EXTENSION_TO_FILETYPE, FORMATTERS, FORMATTERS_BY_FILETYPE} from './registry.ts';
 import {logger, LogGroup} from '../utils/logger.ts';
+import {ToolIntent} from '#src/utils/intent.ts';
 import {readFile} from 'node:fs/promises';
 import type {
     ExtensionAPI,
@@ -8,6 +9,7 @@ import type {
     TurnEndEvent,
 } from '@earendil-works/pi-coding-agent';
 import {createHash} from 'node:crypto';
+import {existsSync} from 'node:fs';
 import {extname} from 'node:path';
 
 export class AutoFormat {
@@ -43,7 +45,6 @@ export class AutoFormat {
 
             ctx.ui.notify(`Autoformatted ${result.length} file(s)`, 'info');
 
-            // Notify the LLM about the changes so it stays synchronized
             pi.sendMessage({
                 display: true,
                 customType: 'format',
@@ -58,12 +59,14 @@ export class AutoFormat {
             return;
         }
 
-        // TODO: Detect also edits made through bash commands like "sed", "mv", "cp", "tee" or a "pipe"
+        const intent = ToolIntent.get(event.toolCallId);
 
-        if (event.toolName === 'write' || event.toolName === 'edit') {
-            const path = event.input['path'];
+        if (!intent) {
+            return;
+        }
 
-            if (path && typeof path === 'string') {
+        for (const path of intent.paths) {
+            if (existsSync(path)) {
                 this.#files.add(path);
             }
         }
@@ -120,11 +123,10 @@ export class AutoFormat {
                 if (result.success) {
                     successfulTools.push(formatterName);
                 } else {
-                    logger.error(
-                        LogGroup.AutoFormat,
-                        `Formatter ${formatterName} failed in directory ${cwd}`,
+                    logger.error(LogGroup.AutoFormat, `Formatter ${formatterName} failed`, {
                         result,
-                    );
+                        cwd,
+                    });
                 }
             }
 
@@ -144,6 +146,8 @@ export class AutoFormat {
 
     async #getHash(filePath: string): Promise<string | null> {
         try {
+            // After "digest(...)", we can't reuse the Hash object,
+            // we need to create a new hash object every time.
             const content = await readFile(filePath);
             return createHash('sha256').update(content).digest('hex');
         } catch {
