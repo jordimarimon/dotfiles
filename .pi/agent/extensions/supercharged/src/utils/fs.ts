@@ -22,11 +22,7 @@ export function getPathType(path: string): 'file' | 'directory' | null {
 }
 
 export function normalizePath(path: string, cwd: string): string {
-    let normalized = path;
-
-    if (path.startsWith('~')) {
-        normalized = path.replace('~', homedir());
-    }
+    let normalized = expandHomePath(path);
 
     if (!isAbsolute(normalized)) {
         normalized = resolve(cwd, normalized);
@@ -40,4 +36,33 @@ export function isInDirectory(path: string, dir: string): boolean {
     const relPath = relative(dir, absPath);
 
     return !relPath.startsWith('..' + sep) && relPath !== '..' && !isAbsolute(relPath);
+}
+
+/**
+ * Expand `~` and `$HOME` prefixes in a pattern to the OS home directory.
+ *
+ * Supported forms:
+ * - `~`          → `homedir()`
+ * - `~/path`     → `homedir()/path`
+ * - `~\path`     → `homedir()\path` (Windows)
+ * - `$HOME`      → `homedir()`
+ * - `$HOME/path` → `homedir()/path`
+ * - `$HOME\path` → `homedir()\path` (Windows)
+ *
+ * All other patterns are returned unchanged.
+ */
+export function expandHomePath(pattern: string): string {
+    if (pattern === '~' || pattern === '$HOME') {
+        return homedir();
+    }
+
+    if (pattern.startsWith('~/') || pattern.startsWith('~\\')) {
+        return join(homedir(), pattern.slice(2));
+    }
+
+    if (pattern.startsWith('$HOME/') || pattern.startsWith('$HOME\\')) {
+        return join(homedir(), pattern.slice(6));
+    }
+
+    return pattern;
 }

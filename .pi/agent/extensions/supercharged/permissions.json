@@ -76,6 +76,13 @@
             "pattern": "git reset*{,/**/*}",
             "action": "deny",
             "reason": "Git reset is prohibited."
+        },
+        {
+            "type": "tool",
+            "name": "bash",
+            "pattern": "npm *{,/**/*}",
+            "action": "deny",
+            "reason": "Use PNPM instead"
         }
     ]
 }

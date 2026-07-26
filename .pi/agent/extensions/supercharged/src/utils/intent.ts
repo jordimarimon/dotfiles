@@ -1,4 +1,5 @@
 import {BashParser, type BashCommand} from './bash-parser.ts';
+import {PATH_BEARING_TOOLS} from './path-surfaces.ts';
 import type {
     ExtensionAPI,
     ExtensionContext,
@@ -43,16 +44,11 @@ export class ToolIntent {
         }
 
         const paths: string[] = [];
-        const hasPath =
-            event.toolName === 'read' ||
-            event.toolName === 'edit' ||
-            event.toolName === 'grep' ||
-            event.toolName === 'find' ||
-            event.toolName === 'write' ||
-            event.toolName === 'ls';
-
-        if (hasPath && typeof event.input.path === 'string') {
-            paths.push(normalizePath(event.input.path, ctx.cwd));
+        if (
+            PATH_BEARING_TOOLS.has(event.toolName) &&
+            typeof (event.input as Record<string, string>)['path'] === 'string'
+        ) {
+            paths.push(normalizePath((event.input as Record<string, string>)['path']!, ctx.cwd));
         }
 
         return {

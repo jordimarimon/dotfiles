@@ -1,6 +1,6 @@
 import type {AccessIntent} from '#src/utils/intent.ts';
 import type {PermissionRuleConfig} from './types.ts';
-import {matchesGlob} from 'node:path';
+import picomatch from 'picomatch';
 
 export class PermissionRule {
     readonly #isMatch: (str: string) => boolean;
@@ -12,7 +12,7 @@ export class PermissionRule {
         this.#isMatch =
             config.pattern === '*' || config.pattern === '**'
                 ? (_: string) => true
-                : (value: string): boolean => matchesGlob(value, config.pattern);
+                : picomatch(config.pattern, {dot: true});
     }
 
     getConfiguration(): PermissionRuleConfig {
