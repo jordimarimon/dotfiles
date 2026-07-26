@@ -60,7 +60,7 @@ export class PermissionEngine {
         const agentPrefix = intent.agentName ? `[${intent.agentName}]` : '[*]';
 
         if (intent.toolName === 'bash' && intent.bashCommand) {
-            return `${agentPrefix}:bash:${intent.bashCommand}`;
+            return `${agentPrefix}:bash:${intent.bashCommand.raw}`;
         }
 
         if (intent.paths.length > 0) {

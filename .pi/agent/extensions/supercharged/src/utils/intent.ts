@@ -1,63 +1,26 @@
-import {resolve, isAbsolute, sep} from 'node:path';
+import {BashParser, type BashCommand} from './bash-parser.ts';
 import type {
     ExtensionAPI,
     ExtensionContext,
     ToolCallEvent,
     ToolResultEvent,
 } from '@earendil-works/pi-coding-agent';
-import {parse} from 'shell-quote';
-import {homedir} from 'node:os';
-
-// TODO: Implement agent name extraction
-
-// TODO: Use "web-tree-sitter" + "tree-sitter-bash" grammar to parse bash commands
-
-// TODO: When parsing bash commands, add information about if the command only reads or it also edits files
+import {normalizePath} from './fs.ts';
 
 export interface AccessIntent {
     agentName?: string | undefined;
     toolName?: string | undefined;
     input: unknown;
     paths: string[];
-    bashCommand?: string | undefined;
+    bashCommand?: BashCommand | undefined;
 }
-
-const KNOWN_COMMANDS: string[] = [
-    'cat',
-    'ls',
-    'find',
-    'bat',
-    'touch',
-    'echo',
-    'grep',
-    'rg',
-    'which',
-    'mkdir',
-    'rm',
-    'cp',
-    'mv',
-    'git',
-    'pnpm',
-    'npm',
-    'node',
-    'yarn',
-    'docker',
-    'sudo',
-    'xargs',
-    'sed',
-    'awk',
-    'tail',
-    'head',
-    'wc',
-    'sort',
-    'uniq',
-    'jq',
-];
 
 export class ToolIntent {
     static #intents = new Map<string, AccessIntent>();
 
-    static get(toolCallId: string): AccessIntent | undefined {
+    static #parser = new BashParser();
+
+    static async get(toolCallId: string): Promise<AccessIntent | undefined> {
         return this.#intents.get(toolCallId);
     }
 
@@ -65,48 +28,21 @@ export class ToolIntent {
         const intent = new ToolIntent();
 
         pi.on('tool_call', async (event, ctx) => {
-            this.#intents.set(event.toolCallId, intent.create(event, ctx));
+            this.#intents.set(event.toolCallId, await intent.create(event, ctx));
         });
     }
 
-    create(event: ToolCallEvent | ToolResultEvent, ctx: ExtensionContext): AccessIntent {
-        let bashCommand: string | undefined;
-
-        const paths: string[] = [];
+    async create(
+        event: ToolCallEvent | ToolResultEvent,
+        ctx: ExtensionContext,
+    ): Promise<AccessIntent> {
+        let bashCommand: BashCommand | undefined;
 
         if (event.toolName === 'bash' && typeof event.input.command === 'string') {
-            bashCommand = event.input.command;
-
-            for (const segment of parse(bashCommand, process.env)) {
-                let text: string | undefined;
-
-                if (typeof segment === 'string') {
-                    text = segment;
-                } else if (segment && typeof segment === 'object' && 'pattern' in segment) {
-                    text = String(segment.pattern); // glob
-                }
-
-                // Ignore command options
-                if (
-                    !text ||
-                    text.startsWith('-') ||
-                    text.startsWith('+') ||
-                    KNOWN_COMMANDS.includes(text)
-                ) {
-                    continue;
-                }
-
-                text = this.#normalizePath(text, ctx.cwd);
-
-                // After normalizing it should include the path separator
-                if (!text.includes(sep)) {
-                    continue;
-                }
-
-                paths.push(text);
-            }
+            bashCommand = await ToolIntent.#parser.parse(event.input.command, ctx.cwd);
         }
 
+        const paths: string[] = [];
         const hasPath =
             event.toolName === 'read' ||
             event.toolName === 'edit' ||
@@ -116,29 +52,15 @@ export class ToolIntent {
             event.toolName === 'ls';
 
         if (hasPath && typeof event.input.path === 'string') {
-            paths.push(this.#normalizePath(event.input.path, ctx.cwd));
+            paths.push(normalizePath(event.input.path, ctx.cwd));
         }
 
         return {
-            agentName: '',
+            agentName: '', // TODO: implement agent name extraction
             toolName: event.toolName,
             input: event.input,
             paths,
             bashCommand,
         };
-    }
-
-    #normalizePath(path: string, cwd: string): string {
-        let normalized = path;
-
-        if (path.startsWith('~')) {
-            normalized = path.replace('~', homedir());
-        }
-
-        if (!isAbsolute(normalized)) {
-            normalized = resolve(cwd, normalized);
-        }
-
-        return normalized;
     }
 }

@@ -1,6 +1,7 @@
 import {EXTENSION_TO_FILETYPE, FORMATTERS, FORMATTERS_BY_FILETYPE} from './registry.ts';
-import {logger, LogGroup} from '../utils/logger.ts';
+import {logger, LogGroup} from '#src/utils/logger.ts';
 import {ToolIntent} from '#src/utils/intent.ts';
+import {isInDirectory} from '#src/utils/fs.ts';
 import {readFile} from 'node:fs/promises';
 import type {
     ExtensionAPI,
@@ -19,14 +20,22 @@ export class AutoFormat {
         const autoFormat = new AutoFormat();
 
         // Collect modified files
-        pi.on('tool_result', (event: ToolResultEvent) => {
-            autoFormat.#handle(event);
+        pi.on('tool_result', async (event: ToolResultEvent) => {
+            await autoFormat.#handle(event);
         });
 
         // Format at the end (this way if the LLM modifies multiple times
         // the same file, we only format once)
         pi.on('turn_end', async (_event: TurnEndEvent, ctx: ExtensionContext) => {
-            const files = Array.from(autoFormat.#files);
+            const files: string[] = [];
+
+            for (const file of autoFormat.#files) {
+                // Ignore files that are outside the workspace
+                if (isInDirectory(file, ctx.cwd)) {
+                    files.push(file);
+                }
+            }
+
             autoFormat.#files.clear();
 
             if (files.length === 0) {
@@ -53,13 +62,13 @@ export class AutoFormat {
         });
     }
 
-    #handle(event: ToolResultEvent): void {
+    async #handle(event: ToolResultEvent): Promise<void> {
         // If the tool was blocked by the permission system
         if (event.isError) {
             return;
         }
 
-        const intent = ToolIntent.get(event.toolCallId);
+        const intent = await ToolIntent.get(event.toolCallId);
 
         if (!intent) {
             return;
@@ -67,6 +76,16 @@ export class AutoFormat {
 
         for (const path of intent.paths) {
             if (existsSync(path)) {
+                this.#files.add(path);
+            }
+        }
+
+        if (!intent.bashCommand || intent.bashCommand.error) {
+            return;
+        }
+
+        for (const {path, type} of intent.bashCommand.paths) {
+            if (type === 'file' && existsSync(path)) {
                 this.#files.add(path);
             }
         }

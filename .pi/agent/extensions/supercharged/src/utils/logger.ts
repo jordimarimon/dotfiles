@@ -32,8 +32,9 @@ export class Logger {
             if (file !== filename) {
                 try {
                     unlinkSync(join(this.#dir, file));
-                } catch (_err: unknown) {
+                } catch (err: unknown) {
                     // Silently fail if we can't delete
+                    console.error(err);
                 }
             }
         }

@@ -31,6 +31,7 @@ export function loadConfig(cwd: string): PermissionConfig {
 
         return config;
     } catch (error: unknown) {
+        // oxlint-disable-next-line restrict-template-expressions
         logger.error(LogGroup.Permission, `Failed to load permissions.json: ${error}`);
         return {rules: []};
     }

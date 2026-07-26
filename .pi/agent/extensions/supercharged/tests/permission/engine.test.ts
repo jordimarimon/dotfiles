@@ -5,9 +5,9 @@ import {fromPartial} from '#tests/utils.ts';
 import {describe, test} from 'node:test';
 import * as assert from 'node:assert';
 
-describe('PermissionEngine', () => {
-    describe('Check', () => {
-        test('should allow if no rules match (fallback)', () => {
+void describe('PermissionEngine', () => {
+    void describe('Check', () => {
+        void test('should allow if no rules match (fallback)', () => {
             const engine = new PermissionEngine([]);
             const intent = fromPartial<AccessIntent>({paths: ['/some/path']});
 
@@ -16,7 +16,7 @@ describe('PermissionEngine', () => {
             assert.strictEqual(result.rule, undefined);
         });
 
-        test('should return the action of the first matching rule', () => {
+        void test('should return the action of the first matching rule', () => {
             const rules: PermissionRuleConfig[] = [
                 {type: 'path', pattern: '/deny/path', action: 'deny'},
                 {type: 'path', pattern: '/deny/path', action: 'ask'},
@@ -30,8 +30,8 @@ describe('PermissionEngine', () => {
         });
     });
 
-    describe('Session Caching', () => {
-        test('should cache and return previous results for the same intent', () => {
+    void describe('Session Caching', () => {
+        void test('should cache and return previous results for the same intent', () => {
             const rules: PermissionRuleConfig[] = [
                 {type: 'path', pattern: '/ask/path', action: 'ask'},
             ];
@@ -48,8 +48,8 @@ describe('PermissionEngine', () => {
         });
     });
 
-    describe('Key Generation for Caching', () => {
-        test('should distinguish keys by agent name', () => {
+    void describe('Key Generation for Caching', () => {
+        void test('should distinguish keys by agent name', () => {
             const rules: PermissionRuleConfig[] = [
                 {type: 'path', agent: 'AgentA', pattern: '/path', action: 'deny'},
             ];
@@ -62,13 +62,26 @@ describe('PermissionEngine', () => {
             assert.strictEqual(engine.check(intentB).action, 'allow');
         });
 
-        test('should generate keys for bash commands', () => {
+        void test('should generate keys for bash commands', () => {
             const rules: PermissionRuleConfig[] = [
                 {type: 'tool', name: 'bash', pattern: 'rm *', action: 'deny'},
             ];
             const engine = new PermissionEngine(rules);
 
-            const intent = fromPartial<AccessIntent>({toolName: 'bash', bashCommand: 'rm *'});
+            const intent = fromPartial<AccessIntent>({
+                toolName: 'bash',
+                paths: [],
+                bashCommand: {
+                    raw: 'rm *',
+                    cwd: '/tmp',
+                    names: ['rm'],
+                    paths: [],
+                    globs: ['*'],
+                    type: 'w',
+                    error: false,
+                },
+            });
+
             assert.strictEqual(engine.check(intent).action, 'deny');
 
             engine.remember(intent, {action: 'allow'});
@@ -76,7 +89,7 @@ describe('PermissionEngine', () => {
             assert.strictEqual(engine.check(intent).action, 'allow');
         });
 
-        test('should generate keys for tool invocations without paths or bash', () => {
+        void test('should generate keys for tool invocations without paths or bash', () => {
             const rules: PermissionRuleConfig[] = [
                 {type: 'tool', name: 'ls', pattern: '*', action: 'ask'},
             ];

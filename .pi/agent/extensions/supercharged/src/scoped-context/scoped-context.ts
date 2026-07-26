@@ -20,15 +20,24 @@ export class ScopedContext {
         });
     }
 
-    #handle(event: ToolResultEvent, ctx: ExtensionContext): AgentToolResult<unknown> {
+    async #handle(
+        event: ToolResultEvent,
+        ctx: ExtensionContext,
+    ): Promise<AgentToolResult<unknown>> {
         if (event.isError) {
             return event;
         }
 
-        const intent = ToolIntent.get(event.toolCallId);
+        const intent = await ToolIntent.get(event.toolCallId);
 
-        if (!intent?.paths.length) {
+        if (!intent) {
             return event;
+        }
+
+        const paths = [...intent.paths];
+
+        if (intent.bashCommand && !intent.bashCommand.error) {
+            paths.push(...intent.bashCommand.paths.map(({path}) => path));
         }
 
         const newContent: ToolResultEvent['content'] = [];

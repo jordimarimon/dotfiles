@@ -23,10 +23,17 @@ export class PermissionGate {
     async #handle(ev: ToolCallEvent, ctx: ExtensionContext): Promise<ToolCallEventResult | void> {
         this.#engine ??= new PermissionEngine(loadConfig(ctx.cwd).rules);
 
-        const intent = ToolIntent.get(ev.toolCallId);
+        const intent = await ToolIntent.get(ev.toolCallId);
 
         if (!intent) {
             return;
+        }
+
+        if (intent.bashCommand && intent.bashCommand.error) {
+            return {
+                block: true,
+                reason: 'The bash command could not be parsed. Please write the command in a standard way or split it into simpler parts.',
+            };
         }
 
         const result = this.#engine!.check(intent);
@@ -43,7 +50,7 @@ export class PermissionGate {
         }
 
         if (result.action === 'ask') {
-            const bashCommand = intent.bashCommand ? `: ${intent.bashCommand}` : '';
+            const bashCommand = intent.bashCommand ? `: ${intent.bashCommand.raw}` : '';
             const reason = result.reason ? `\nReason: ${result.reason}` : '';
 
             const ok = await ctx.ui.confirm(

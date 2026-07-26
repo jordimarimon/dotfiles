@@ -25,9 +25,14 @@ export class PermissionRule {
             return false;
         }
 
+        const paths = [...intent.paths];
+        if (intent.bashCommand && !intent.bashCommand.error) {
+            paths.push(...intent.bashCommand.paths.map(({path}) => path));
+        }
+
         // If it's a path
         if (this.#config.type === 'path') {
-            return intent.paths.some(path => this.#isMatch(path));
+            return paths.some(path => this.#isMatch(path));
         }
 
         // It's tool
@@ -37,9 +42,9 @@ export class PermissionRule {
 
         // If it's bash, match against the command.
         if (intent.toolName === 'bash') {
-            return intent.bashCommand ? this.#isMatch(intent.bashCommand) : false;
+            return intent.bashCommand ? this.#isMatch(intent.bashCommand.raw) : false;
         }
 
-        return intent.paths.some(path => this.#isMatch(path));
+        return paths.some(path => this.#isMatch(path));
     }
 }
