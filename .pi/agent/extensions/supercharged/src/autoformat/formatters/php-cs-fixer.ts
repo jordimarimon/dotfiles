@@ -8,24 +8,36 @@ const execFileAsync = promisify(execFile);
 export class PhpCodeStandardFixerFormatter extends BaseFormatter {
     readonly #configFiles = ['.php-cs-fixer.php', '.php-cs-fixer.dist.php'];
 
-    getBinary(cwd: string): string | null {
+    #execPath: string | null = '';
+
+    hasBinary(cwd: string): boolean {
+        if (this.#execPath) {
+            return true;
+        }
+
         if (!this.hasConfig(cwd, this.#configFiles)) {
-            return null;
+            return false;
         }
 
-        let localPath: string | null = join(cwd, 'vendor', 'bin', 'php-cs-fixer');
-        localPath = this.check(localPath);
+        const localPath: string | null = join(cwd, 'vendor', 'bin', 'php-cs-fixer');
+        this.#execPath = this.check(localPath);
 
-        if (localPath) {
-            return localPath;
+        if (this.#execPath) {
+            return true;
         }
 
-        return this.which('php-cs-fixer');
+        this.#execPath = this.which('php-cs-fixer');
+
+        return !!this.#execPath;
     }
 
-    async format(filePaths: string[], binaryPath: string, cwd: string): Promise<FormatterResult> {
+    async format(paths: string[], cwd: string): Promise<FormatterResult> {
+        if (!this.#execPath) {
+            return {success: false, error: 'No binary available'};
+        }
+
         try {
-            await execFileAsync(binaryPath, ['fix', ...filePaths], {cwd, timeout: FORMAT_TIMEOUT});
+            await execFileAsync(this.#execPath, ['fix', ...paths], {cwd, timeout: FORMAT_TIMEOUT});
             return {success: true};
         } catch (error: unknown) {
             return {success: false, error};

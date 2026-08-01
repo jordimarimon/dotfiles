@@ -13,12 +13,12 @@ export abstract class BaseFormatter {
      * Discovery logic: returns the absolute path to the binary if available or the command name
      * and only if a config file is present in the project.
      */
-    abstract getBinary(cwd: string): string | null;
+    abstract hasBinary(cwd: string): boolean;
 
     /**
      * The actual formatting execution. Supports multiple files for batching.
      */
-    abstract format(filePaths: string[], binaryPath: string, cwd: string): Promise<FormatterResult>;
+    abstract format(filePaths: string[], cwd: string): Promise<FormatterResult>;
 
     /**
      * Helper to check if any of the config files exist in the cwd.

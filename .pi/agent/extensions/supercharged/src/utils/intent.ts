@@ -16,6 +16,8 @@ export interface AccessIntent {
     bashCommand?: BashCommand | undefined;
 }
 
+type ToolEvent = ToolCallEvent | ToolResultEvent;
+
 export class ToolIntent {
     static #intents = new Map<string, AccessIntent>();
 
@@ -33,10 +35,7 @@ export class ToolIntent {
         });
     }
 
-    async create(
-        event: ToolCallEvent | ToolResultEvent,
-        ctx: ExtensionContext,
-    ): Promise<AccessIntent> {
+    async create(event: ToolEvent, ctx: ExtensionContext): Promise<AccessIntent> {
         let bashCommand: BashCommand | undefined;
 
         if (event.toolName === 'bash' && typeof event.input.command === 'string') {

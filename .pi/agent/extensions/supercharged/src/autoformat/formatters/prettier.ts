@@ -14,24 +14,36 @@ export class PrettierFormatter extends BaseFormatter {
         'prettier.config.mjs',
     ];
 
-    getBinary(cwd: string): string | null {
+    #execPath: string | null = '';
+
+    hasBinary(cwd: string): boolean {
+        if (this.#execPath) {
+            return true;
+        }
+
         if (!this.hasConfig(cwd, this.#configFiles)) {
-            return null;
+            return false;
         }
 
-        let localPath: string | null = join(cwd, 'node_modules', '.bin', 'prettier');
-        localPath = this.check(localPath);
+        const localPath: string | null = join(cwd, 'node_modules', '.bin', 'prettier');
+        this.#execPath = this.check(localPath);
 
-        if (localPath) {
-            return localPath;
+        if (this.#execPath) {
+            return true;
         }
 
-        return this.which('prettier');
+        this.#execPath = this.which('prettier');
+
+        return !!this.#execPath;
     }
 
-    async format(filePaths: string[], binaryPath: string, cwd: string): Promise<FormatterResult> {
+    async format(paths: string[], cwd: string): Promise<FormatterResult> {
+        if (!this.#execPath) {
+            return {success: false, error: 'No binary available'};
+        }
+
         try {
-            await execFileAsync(binaryPath, ['--write', ...filePaths], {
+            await execFileAsync(this.#execPath, ['--write', ...paths], {
                 cwd,
                 timeout: FORMAT_TIMEOUT,
             });

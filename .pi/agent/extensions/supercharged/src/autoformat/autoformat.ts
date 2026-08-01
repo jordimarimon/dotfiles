@@ -126,8 +126,7 @@ export class AutoFormat {
                     continue;
                 }
 
-                const binary = formatter.getBinary(cwd);
-                if (!binary) {
+                if (!formatter.hasBinary(cwd)) {
                     logger.debug(
                         LogGroup.AutoFormat,
                         `Formatter ${formatterName} not available for cwd: ${cwd}`,
@@ -137,7 +136,7 @@ export class AutoFormat {
 
                 logger.info(LogGroup.AutoFormat, `Running ${formatterName}`, {files: batch});
 
-                const result = await formatter.format(batch, binary, cwd);
+                const result = await formatter.format(batch, cwd);
 
                 if (result.success) {
                     successfulTools.push(formatterName);

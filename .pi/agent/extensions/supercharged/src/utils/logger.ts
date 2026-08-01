@@ -15,7 +15,7 @@ export const LogGroup = {
 export class Logger {
     readonly #dir: string = join(getExtensionsDir(), '.logs');
 
-    #file: string;
+    readonly #file: string;
 
     constructor() {
         if (!existsSync(this.#dir)) {
@@ -24,6 +24,7 @@ export class Logger {
 
         const today = new Date().toISOString().split('T')[0];
         const filename = `${today}.log`;
+
         this.#file = join(this.#dir, filename);
 
         const files = readdirSync(this.#dir);
