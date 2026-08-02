@@ -27,16 +27,7 @@ export class AutoFormat {
         // Format at the end (this way if the LLM modifies multiple times
         // the same file, we only format once)
         pi.on('turn_end', async (_event: TurnEndEvent, ctx: ExtensionContext) => {
-            const files: string[] = [];
-
-            for (const file of autoFormat.#files) {
-                // Ignore files that are outside the workspace
-                if (isInDirectory(file, ctx.cwd)) {
-                    files.push(file);
-                }
-            }
-
-            autoFormat.#files.clear();
+            const files = autoFormat.#flush(ctx.cwd);
 
             if (files.length === 0) {
                 return;
@@ -171,5 +162,20 @@ export class AutoFormat {
         } catch {
             return null;
         }
+    }
+
+    #flush(cwd: string): string[] {
+        const files: string[] = [];
+
+        for (const file of this.#files) {
+            // Ignore files that are outside the workspace
+            if (isInDirectory(file, cwd)) {
+                files.push(file);
+            }
+        }
+
+        this.#files.clear();
+
+        return files;
     }
 }

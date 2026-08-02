@@ -20,8 +20,8 @@ return {
                 "phpantom_lsp",
                 "ruff",
                 "rust-analyzer",
-                "tsgo",
-                "typescript-language-server",
+                -- "tsgo", TODO: Use TypeScript 7 when available in Mason
+                -- "typescript-language-server",
                 "yaml-language-server",
             }
 
