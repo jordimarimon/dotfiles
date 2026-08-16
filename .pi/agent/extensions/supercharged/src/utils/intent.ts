@@ -6,13 +6,19 @@ import type {
     ToolCallEvent,
     ToolResultEvent,
 } from '@earendil-works/pi-coding-agent';
-import {normalizePath} from './fs.ts';
+import {normalizePath, isGitIgnored, isInDirectory} from './fs.ts';
+
+interface PathInfo {
+    path: string;
+    external: boolean;
+    ignored: boolean;
+}
 
 export interface AccessIntent {
     agentName?: string | undefined;
     toolName?: string | undefined;
     input: unknown;
-    paths: string[];
+    paths: PathInfo[];
     bashCommand?: BashCommand | undefined;
 }
 
@@ -42,12 +48,20 @@ export class ToolIntent {
             bashCommand = await ToolIntent.#parser.parse(event.input.command, ctx.cwd);
         }
 
-        const paths: string[] = [];
+        const paths: AccessIntent['paths'] = [];
+
         if (
             PATH_BEARING_TOOLS.has(event.toolName) &&
             typeof (event.input as Record<string, string>)['path'] === 'string'
         ) {
-            paths.push(normalizePath((event.input as Record<string, string>)['path']!, ctx.cwd));
+            const path = normalizePath((event.input as Record<string, string>)['path']!, ctx.cwd);
+            const ignoredSet = await isGitIgnored([path], ctx.cwd);
+
+            paths.push({
+                path,
+                external: !isInDirectory(path, ctx.cwd),
+                ignored: !!ignoredSet?.has(path),
+            });
         }
 
         return {

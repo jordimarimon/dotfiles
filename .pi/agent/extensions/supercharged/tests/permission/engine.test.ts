@@ -9,7 +9,9 @@ void describe('PermissionEngine', () => {
     void describe('Check', () => {
         void test('should allow if no rules match (fallback)', () => {
             const engine = new PermissionEngine([]);
-            const intent = fromPartial<AccessIntent>({paths: ['/some/path']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [{path: '/some/path', external: false, ignored: false}],
+            });
 
             const result = engine.check(intent);
             assert.strictEqual(result.action, 'allow');
@@ -22,7 +24,9 @@ void describe('PermissionEngine', () => {
                 {type: 'path', pattern: '/deny/path', action: 'ask'},
             ];
             const engine = new PermissionEngine(rules);
-            const intent = fromPartial<AccessIntent>({paths: ['/deny/path']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [{path: '/deny/path', external: false, ignored: false}],
+            });
             const result = engine.check(intent);
 
             assert.strictEqual(result.action, 'deny');
@@ -36,7 +40,9 @@ void describe('PermissionEngine', () => {
                 {type: 'path', pattern: '/ask/path', action: 'ask'},
             ];
             const engine = new PermissionEngine(rules);
-            const intent = fromPartial<AccessIntent>({paths: ['/ask/path']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [{path: '/ask/path', external: false, ignored: false}],
+            });
 
             const result1 = engine.check(intent);
             assert.strictEqual(result1.action, 'ask');
@@ -55,8 +61,14 @@ void describe('PermissionEngine', () => {
             ];
             const engine = new PermissionEngine(rules);
 
-            const intentA = fromPartial<AccessIntent>({agentName: 'AgentA', paths: ['/path']});
-            const intentB = fromPartial<AccessIntent>({agentName: 'AgentB', paths: ['/path']});
+            const intentA = fromPartial<AccessIntent>({
+                agentName: 'AgentA',
+                paths: [{path: '/path', external: false, ignored: false}],
+            });
+            const intentB = fromPartial<AccessIntent>({
+                agentName: 'AgentB',
+                paths: [{path: '/path', external: false, ignored: false}],
+            });
 
             assert.strictEqual(engine.check(intentA).action, 'deny');
             assert.strictEqual(engine.check(intentB).action, 'allow');

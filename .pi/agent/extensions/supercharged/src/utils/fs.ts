@@ -1,5 +1,6 @@
 import {join, resolve, isAbsolute, sep, relative} from 'node:path';
 import {getAgentDir} from '@earendil-works/pi-coding-agent';
+import {execFileSync} from 'node:child_process';
 import {existsSync, lstatSync} from 'node:fs';
 import {homedir} from 'node:os';
 
@@ -65,4 +66,29 @@ export function expandHomePath(pattern: string): string {
     }
 
     return pattern;
+}
+
+/**
+ * Checks which of the provided paths are ignored by Git.
+ * Returns a Set of the ignored paths or null.
+ */
+export async function isGitIgnored(paths: string[], cwd: string): Promise<Set<string> | null> {
+    if (paths.filter(Boolean).length === 0) {
+        return null;
+    }
+
+    try {
+        const ignoredPaths = execFileSync('git', ['check-ignore', '-z', '--stdin'], {
+            cwd,
+            input: paths.join('\0') + '\0',
+            encoding: 'utf-8',
+            stdio: ['pipe', 'ignore'], // ignore stderr
+        });
+
+        // Split by null terminator and filter out empty strings
+        return new Set(ignoredPaths.split('\0').filter(Boolean));
+    } catch (_error: unknown) {
+        // On fatal error (like not a git repo), assume nothing is git-ignored
+        return null;
+    }
 }

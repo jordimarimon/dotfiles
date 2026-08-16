@@ -1,13 +1,20 @@
-import {getPathType, normalizePath} from './fs.ts';
+import {getPathType, normalizePath, isGitIgnored, isInDirectory} from './fs.ts';
 import {Parser, Language} from 'web-tree-sitter';
 import type {Node} from 'web-tree-sitter';
 import {createRequire} from 'node:module';
+
+interface PathInfo {
+    path: string;
+    type: 'directory' | 'file' | null;
+    external: boolean;
+    ignored: boolean;
+}
 
 export interface BashCommand {
     raw: string;
     cwd: string;
     names: string[]; // shell command names
-    paths: {path: string; type: 'directory' | 'file' | null}[]; // static paths
+    paths: PathInfo[]; // static paths
     globs: string[]; // dynamic paths (have wildcards)
     type: 'r' | 'w' | 'rw' | undefined; // if the command only reads files/input or if it writes to a file or standard output
     error: boolean; // if there is an error parsing the command
@@ -70,6 +77,18 @@ export class BashParser {
         }
 
         this.#walk(tree.rootNode, result);
+
+        if (result.paths.length > 0) {
+            const ignoredSet = await isGitIgnored(
+                result.paths.map(p => p.path),
+                cwd,
+            );
+
+            for (const p of result.paths) {
+                p.ignored = !!ignoredSet?.has(p.path);
+                p.external = !isInDirectory(p.path, cwd);
+            }
+        }
 
         result.type ??= 'r';
 
@@ -148,7 +167,12 @@ export class BashParser {
         path = normalizePath(path, result.cwd);
 
         if (!result.paths.some(p => p.path === path) && !path.includes('*')) {
-            result.paths.push({path, type: getPathType(path)});
+            result.paths.push({
+                path,
+                type: getPathType(path),
+                external: false,
+                ignored: false,
+            });
         }
     }
 
@@ -209,7 +233,12 @@ export class BashParser {
                     text = normalizePath(text, result.cwd);
 
                     if (!result.paths.some(p => p.path === text)) {
-                        result.paths.push({path: text, type: getPathType(text)});
+                        result.paths.push({
+                            path: text,
+                            type: getPathType(text),
+                            external: false,
+                            ignored: false,
+                        });
                     }
                 }
             }

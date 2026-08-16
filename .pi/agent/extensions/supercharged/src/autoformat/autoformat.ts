@@ -1,7 +1,6 @@
 import {EXTENSION_TO_FILETYPE, FORMATTERS, FORMATTERS_BY_FILETYPE} from './registry.ts';
 import {logger, LogGroup} from '#src/utils/logger.ts';
 import {ToolIntent} from '#src/utils/intent.ts';
-import {isInDirectory} from '#src/utils/fs.ts';
 import {readFile} from 'node:fs/promises';
 import type {
     ExtensionAPI,
@@ -27,15 +26,17 @@ export class AutoFormat {
         // Format at the end (this way if the LLM modifies multiple times
         // the same file, we only format once)
         pi.on('turn_end', async (_event: TurnEndEvent, ctx: ExtensionContext) => {
-            const files = autoFormat.#flush(ctx.cwd);
+            const files = autoFormat.#files;
 
-            if (files.length === 0) {
+            if (files.size === 0) {
                 return;
             }
 
-            logger.debug(LogGroup.AutoFormat, 'Checking files: ', {files});
+            logger.debug(LogGroup.AutoFormat, 'Checking files: ', {files: [...files]});
 
             const result = await autoFormat.#format(ctx.cwd, files);
+
+            autoFormat.#files.clear();
 
             if (!result.length) {
                 return;
@@ -65,8 +66,8 @@ export class AutoFormat {
             return;
         }
 
-        for (const path of intent.paths) {
-            if (existsSync(path)) {
+        for (const {path, external, ignored} of intent.paths) {
+            if (!external && !ignored && existsSync(path)) {
                 this.#files.add(path);
             }
         }
@@ -75,14 +76,14 @@ export class AutoFormat {
             return;
         }
 
-        for (const {path, type} of intent.bashCommand.paths) {
-            if (type === 'file' && existsSync(path)) {
+        for (const {path, type, external, ignored} of intent.bashCommand.paths) {
+            if (type === 'file' && !external && !ignored && existsSync(path)) {
                 this.#files.add(path);
             }
         }
     }
 
-    async #format(cwd: string, files: string[]): Promise<string[]> {
+    async #format(cwd: string, files: Set<string>): Promise<string[]> {
         const filesByType: Record<string, string[]> = {};
 
         for (const file of files) {
@@ -162,20 +163,5 @@ export class AutoFormat {
         } catch {
             return null;
         }
-    }
-
-    #flush(cwd: string): string[] {
-        const files: string[] = [];
-
-        for (const file of this.#files) {
-            // Ignore files that are outside the workspace
-            if (isInDirectory(file, cwd)) {
-                files.push(file);
-            }
-        }
-
-        this.#files.clear();
-
-        return files;
     }
 }

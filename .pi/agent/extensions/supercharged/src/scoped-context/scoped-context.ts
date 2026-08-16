@@ -34,7 +34,7 @@ export class ScopedContext {
             return event;
         }
 
-        const paths = [...intent.paths];
+        const paths = intent.paths.map(p => p.path);
 
         if (intent.bashCommand && !intent.bashCommand.error) {
             paths.push(...intent.bashCommand.paths.map(({path}) => path));
@@ -42,7 +42,7 @@ export class ScopedContext {
 
         const newContent: ToolResultEvent['content'] = [];
 
-        for (const path of intent.paths) {
+        for (const {path} of intent.paths) {
             const newContextFiles = this.#search(path, ctx.cwd);
 
             if (!newContextFiles.length) {

@@ -27,7 +27,10 @@ void describe('PermissionRule', () => {
                 action: 'allow',
             });
 
-            const intent = fromPartial<AccessIntent>({agentName: 'Alice', paths: ['/foo/bar']});
+            const intent = fromPartial<AccessIntent>({
+                agentName: 'Alice',
+                paths: [{path: '/foo/bar', external: false, ignored: false}],
+            });
 
             assert.strictEqual(rule.matches(intent), true);
         });
@@ -41,7 +44,12 @@ void describe('PermissionRule', () => {
                 action: 'allow',
             });
 
-            const intent = fromPartial<AccessIntent>({paths: ['/docs/readme.md', '/src/index.ts']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [
+                    {path: '/docs/readme.md', external: false, ignored: false},
+                    {path: '/src/index.ts', external: false, ignored: false},
+                ],
+            });
 
             assert.strictEqual(rule.matches(intent), true);
         });
@@ -53,7 +61,12 @@ void describe('PermissionRule', () => {
                 action: 'allow',
             });
 
-            const intent = fromPartial<AccessIntent>({paths: ['/docs/readme.md', '/src/index.js']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [
+                    {path: '/docs/readme.md', external: false, ignored: false},
+                    {path: '/src/index.js', external: false, ignored: false},
+                ],
+            });
 
             assert.strictEqual(rule.matches(intent), false);
         });
@@ -62,7 +75,9 @@ void describe('PermissionRule', () => {
             const rule1 = new PermissionRule({type: 'path', pattern: '*', action: 'allow'});
             const rule2 = new PermissionRule({type: 'path', pattern: '**', action: 'allow'});
 
-            const intent = fromPartial<AccessIntent>({paths: ['/anything/really.txt']});
+            const intent = fromPartial<AccessIntent>({
+                paths: [{path: '/anything/really.txt', external: false, ignored: false}],
+            });
 
             assert.strictEqual(rule1.matches(intent), true);
             assert.strictEqual(rule2.matches(intent), true);
@@ -78,7 +93,10 @@ void describe('PermissionRule', () => {
                 action: 'allow',
             });
 
-            const intent = fromPartial<AccessIntent>({toolName: 'write', paths: ['/foo/bar.txt']});
+            const intent = fromPartial<AccessIntent>({
+                toolName: 'write',
+                paths: [{path: '/foo/bar.txt', external: false, ignored: false}],
+            });
             assert.strictEqual(rule.matches(intent), false);
         });
 
@@ -129,7 +147,10 @@ void describe('PermissionRule', () => {
                 action: 'deny',
             });
 
-            const intent = fromPartial<AccessIntent>({toolName: 'read', paths: ['/etc/shadow']});
+            const intent = fromPartial<AccessIntent>({
+                toolName: 'read',
+                paths: [{path: '/etc/shadow', external: false, ignored: false}],
+            });
 
             assert.strictEqual(rule.matches(intent), true);
         });

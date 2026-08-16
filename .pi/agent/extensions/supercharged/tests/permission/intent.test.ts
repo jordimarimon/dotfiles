@@ -25,7 +25,9 @@ void describe('IntentFactory', () => {
                 });
 
                 const result = await factory.create(event, ctx);
-                assert.deepStrictEqual(result.paths, [resolve(dir, 'relative/file.txt')]);
+                assert.deepStrictEqual(result.paths, [
+                    {path: resolve(dir, 'relative/file.txt'), external: false, ignored: false},
+                ]);
                 assert.strictEqual(result.toolName, tool);
             });
         }
@@ -44,7 +46,9 @@ void describe('IntentFactory', () => {
 
             const result = await factory.create(event, ctx);
             const expectedPath = resolve(homedir(), 'docs/readme.md');
-            assert.deepStrictEqual(result.paths, [expectedPath]);
+            assert.deepStrictEqual(result.paths, [
+                {path: expectedPath, external: true, ignored: false},
+            ]);
         });
 
         void test('should handle already absolute paths', async () => {
@@ -55,7 +59,9 @@ void describe('IntentFactory', () => {
             });
 
             const result = await factory.create(event, ctx);
-            assert.deepStrictEqual(result.paths, [absolutePath]);
+            assert.deepStrictEqual(result.paths, [
+                {path: absolutePath, external: true, ignored: false},
+            ]);
         });
     });
 

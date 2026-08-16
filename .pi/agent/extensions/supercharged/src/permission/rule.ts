@@ -25,7 +25,7 @@ export class PermissionRule {
             return false;
         }
 
-        const paths = [...intent.paths];
+        const paths = intent.paths.map(p => p.path);
         if (intent.bashCommand && !intent.bashCommand.error) {
             paths.push(...intent.bashCommand.paths.map(({path}) => path));
         }

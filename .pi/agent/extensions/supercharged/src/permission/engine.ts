@@ -64,7 +64,7 @@ export class PermissionEngine {
         }
 
         if (intent.paths.length > 0) {
-            return `${agentPrefix}:paths:${intent.paths.join(',')}`;
+            return `${agentPrefix}:paths:${intent.paths.map(p => p.path).join(',')}`;
         }
 
         return `${agentPrefix}:tool:${intent.toolName}`;
