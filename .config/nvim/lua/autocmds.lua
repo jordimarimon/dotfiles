@@ -326,13 +326,6 @@ vim.api.nvim_create_user_command("PackLog", function()
     vim.cmd("tabe " .. logpath)
 end, { nargs = 0, desc = "Package manager logs" })
 
--- restart preserving session
-vim.api.nvim_create_user_command("Restart", function()
-    local session = vim.fn.stdpath("state") .. "/restart_session.vim"
-    vim.cmd("mksession! " .. vim.fn.fnameescape(session))
-    vim.cmd("restart source " .. vim.fn.fnameescape(session))
-end, { nargs = 0, desc = "Restart Neovim" })
-
 -- convert to scratch buffer
 vim.api.nvim_create_user_command("ScratchBuffer", function()
     local active_buff = vim.api.nvim_get_current_buf()
