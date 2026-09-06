@@ -2,7 +2,7 @@
 return {
     {
         src = "https://github.com/saghen/blink.cmp",
-        version = vim.version.range("*"),
+        version = vim.version.range("1.*"),
         setup = function()
             require("blink.cmp").setup({
                 -- "default" for mappings similar to built-in completion

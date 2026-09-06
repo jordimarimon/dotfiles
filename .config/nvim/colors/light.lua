@@ -132,6 +132,8 @@ vim.api.nvim_set_hl(0, "PmenuThumb", { fg = fg, bg = fg })
 vim.api.nvim_set_hl(0, "qfFilename", { fg = fg })
 vim.api.nvim_set_hl(0, "qfText", { fg = fg })
 vim.api.nvim_set_hl(0, "qfLineNr", { fg = fg_number })
+vim.api.nvim_set_hl(0, "MCursor", { bg = bg_light_blue })
+vim.api.nvim_set_hl(0, "MCursorVisual", { bg = bg_light_blue })
 
 -- MiniHighlight
 vim.api.nvim_set_hl(0, "MiniHipatternsFixme", { fg = fg_light, bg = fg_error })
