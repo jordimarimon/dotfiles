@@ -2,7 +2,8 @@ return {
     {
         src = "https://github.com/nvim-mini/mini.nvim",
         setup = function()
-            require("mini.ai").setup({ n_lines = 500 })
+            -- TODO: Investigate how to work with multiple cursors or with new text objects "il" and "al"
+            -- require("mini.ai").setup({ n_lines = 500 })
 
             require("mini.surround").setup({
                 custom_surroundings = {

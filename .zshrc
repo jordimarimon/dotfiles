@@ -103,4 +103,3 @@ alias myip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias myip2="curl ifconfig.me"
 alias pi="~/Projects/pi/packages/coding-agent/dist/cli.js"
 alias chafa2sixels="chafa --format=sixels"
-

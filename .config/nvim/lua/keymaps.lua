@@ -51,7 +51,13 @@ vim.keymap.set(
     { "n", "v" },
     "<leader>p",
     '"0p',
-    { desc = "Pastes from yank buffer", silent = true }
+    { desc = "Pastes most recent yank command", silent = true }
+)
+vim.keymap.set(
+    { "n", "v" },
+    "<leader>y",
+    '"+y',
+    { desc = "Yank to clipboard register", silent = true }
 )
 
 -- Keybinds to make split navigation easier.

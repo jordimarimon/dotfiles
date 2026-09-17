@@ -101,7 +101,7 @@ export GOPATH="$HOME/go"
 
 # pnpm
 export PNPM_HOME="/home/jmarimon/.local/share/pnpm"
-export PATH="$PNPM_HOME:$PATH"
+export PATH="$PNPM_HOME/bin:$PATH"
 
 # Rust
 . "$HOME/.cargo/env"
