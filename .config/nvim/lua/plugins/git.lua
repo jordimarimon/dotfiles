@@ -7,7 +7,7 @@ return {
         src = "https://github.com/tpope/vim-fugitive",
     },
     {
-        src = "https://github.com/barrettruth/diffs.nvim",
+        src = "https://forge.barrettruth.com/barrettruth/diffs.nvim",
         setup = function()
             vim.g.diffs = {
                 integrations = {

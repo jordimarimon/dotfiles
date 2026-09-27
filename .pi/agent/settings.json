@@ -1,7 +1,7 @@
 {
-  "lastChangelogVersion": "0.85.1",
+  "lastChangelogVersion": "0.87.1",
   "defaultProvider": "google",
-  "defaultModel": "gemini-3.7-flash",
+  "defaultModel": "gemini-3.8-flash",
   "defaultThinkingLevel": "medium",
   "theme": "light-contrast",
   "shellCommandPrefix": "shopt -s expand_aliases\neval \"$(grep '^alias ' ~/.zshrc)\""
