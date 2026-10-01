@@ -3,6 +3,8 @@ import {Parser, Language} from 'web-tree-sitter';
 import type {Node} from 'web-tree-sitter';
 import {createRequire} from 'node:module';
 
+// TODO: Investigate https://github.com/juliangruber/brace-expansion
+
 interface PathInfo {
     path: string;
     type: 'directory' | 'file' | null;

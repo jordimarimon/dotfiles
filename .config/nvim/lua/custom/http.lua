@@ -14,7 +14,7 @@ local fs = require("custom.fs")
 ---@field method string|nil
 ---@field url string|nil
 ---@field headers table
----@field body string[]
+---@field body string
 ---@field curl_cmd string[]
 ---@filed http_version string|nil
 
@@ -22,9 +22,9 @@ local fs = require("custom.fs")
 ---@field status integer
 ---@field headers table
 ---@field filename string|nil
----@field body string[]
+---@field body string
 
----@class CachedRequest
+---@class RequestView
 ---@field request Request
 ---@field response Response
 
@@ -49,6 +49,8 @@ local parse_stages = {
     HEADERS = "headers",
     BODY = "body",
 }
+
+local READ_ONLY = 00444 -- `:Man 2 open`
 
 local function read_env()
     if state.env.available ~= nil then
@@ -82,8 +84,8 @@ local function read_env()
         return
     end
 
-    local READ_ONLY = 00444 -- `:Man 2 open`
     local fd, open_err, open_err_name = vim.uv.fs_open(env_path, "r", READ_ONLY)
+
     if not fd then
         vim.notify(
             "Error opening env file " .. " (" .. open_err_name .. "): " .. open_err,
@@ -149,6 +151,38 @@ local function toggle_floating_window()
     end, { buffer = state.buffer_id, noremap = true })
 end
 
+---@param headers table
+---@param name string
+---@return string[]|nil
+local function get_header(headers, name)
+    if headers[name] then
+        return headers[name]
+    end
+
+    local lower_name = name:lower()
+    for k, v in pairs(headers) do
+        if k:lower() == lower_name then
+            return v
+        end
+    end
+
+    return nil
+end
+
+---@param content_type string
+---@return string
+local function get_mime_type(content_type)
+    local mime_type = content_type:match("^([^;]+)")
+
+    if mime_type then
+        mime_type = mime_type:match("^%s*(.-)%s*$"):lower()
+    else
+        mime_type = content_type:lower()
+    end
+
+    return mime_type
+end
+
 ---@param value string
 ---@return string[]
 local function format_json(value)
@@ -156,15 +190,19 @@ local function format_json(value)
     local result = job:wait()
 
     if result.code ~= 0 then
-        return String.split(value, "\n")
+        return vim.split(value, "\n", { plain = true })
     end
 
-    return String.split(result.stdout, "\n")
+    return vim.split(result.stdout, "\n", { plain = true })
 end
 
----@param mime_type string
+---@param mime_type string|nil
 ---@return string|nil
 local function get_file_extension(mime_type)
+    if not mime_type or mime_type == "" then
+        return nil
+    end
+
     if mime_type == "application/pdf" then
         return "pdf"
     end
@@ -173,7 +211,7 @@ local function get_file_extension(mime_type)
         return "zip"
     end
 
-    if mime_type == "application/xml" then
+    if mime_type == "application/xml" or mime_type == "text/xml" then
         return "xml"
     end
 
@@ -199,12 +237,12 @@ local function get_cookie_value(cookie)
 end
 
 ---@param mime_type string
----@param lines string[]
+---@param content string
 ---@param filename string|nil
 ---@return string[]
-local function format_lines(mime_type, lines, filename)
+local function format_lines(mime_type, content, filename)
     if mime_type == "application/json" then
-        return format_json(table.concat(lines, "\n"))
+        return format_json(content)
     end
 
     -- TODO: Handle "text/html" responses
@@ -215,16 +253,21 @@ local function format_lines(mime_type, lines, filename)
         local tmpdir = vim.uv.os_tmpdir()
         local name = filename or ("curl_response_" .. String.random_word(5) .. "." .. extension)
         local filepath = fs.join_paths(tmpdir, name)
-        fs.write_file(filepath, table.concat(lines, "\n"), false, false)
+        fs.write_file(filepath, content, false, true)
         return { filepath }
     end
 
-    return lines
+    -- TODO: Return body split by newline
+    return {}
 end
 
----@param mime_type string
+---@param mime_type string|nil
 ---@return string
 local function get_code_block_type(mime_type)
+    if not mime_type or mime_type == "" then
+        return ""
+    end
+
     if mime_type == "application/json" then
         return "json"
     end
@@ -249,24 +292,16 @@ local function format_headers(headers)
     return format_json(json_str)
 end
 
----@param cached_request CachedRequest
-local function render_markdown(cached_request)
+---@param request_view RequestView
+local function render_markdown(request_view)
     local output = {}
-    local request, response = cached_request.request, cached_request.response
+    local request, response = request_view.request, request_view.response
 
-    local req_body_mime_type = request.headers["Content-Type"]
-    if req_body_mime_type ~= nil then
-        req_body_mime_type = req_body_mime_type[1]
-    else
-        req_body_mime_type = ""
-    end
+    local req_content_type = get_header(request.headers, "Content-Type")
+    local req_body_mime_type = get_mime_type(req_content_type and req_content_type[1] or "")
 
-    local res_body_mime_type = response.headers["Content-Type"]
-    if res_body_mime_type ~= nil then
-        res_body_mime_type = res_body_mime_type[1]
-    else
-        res_body_mime_type = ""
-    end
+    local res_content_type = get_header(response.headers, "Content-Type")
+    local res_body_mime_type = get_mime_type(res_content_type and res_content_type[1] or "")
 
     table.insert(output, "# HTTP RESULT")
     table.insert(output, "")
@@ -319,6 +354,35 @@ local function render_markdown(cached_request)
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
 end
 
+---Splits raw curl -i output into headers string and body string
+---@param raw string
+---@return string header_str, string body_str
+local function split_response(raw)
+    local pos = 1
+    local header_str = ""
+    local body_str = ""
+
+    while true do
+        local s, e = raw:find("\r?\n\r?\n", pos)
+        if not s then
+            header_str = raw
+            body_str = ""
+            break
+        end
+
+        local rest = raw:sub(e + 1)
+        if rest:match("^HTTP/%d") then
+            pos = e + 1
+        else
+            header_str = raw:sub(pos, s - 1)
+            body_str = rest
+            break
+        end
+    end
+
+    return header_str, body_str
+end
+
 ---@param request Request
 ---@param response vim.SystemCompleted
 local function process_response(request, response)
@@ -339,19 +403,19 @@ local function process_response(request, response)
 
     vim.notify("Parsing response...", vim.log.levels.INFO)
 
-    local header_str, body_str = response.stdout:match("^(.-)\n\n(.*)$")
+    local header_str, body_str = split_response(response.stdout)
 
     local status = -1
     local headers = {}
-    local header_lines = header_str:gmatch("[^\n]+")
+    local header_lines = header_str:gmatch("[^\r\n]+")
     for line in header_lines do
         if vim.startswith(line, "HTTP") then
-            status = line:match("HTTP/%d+%.?%d*%s*(%d+)%s*")
-            status = status ~= nil and math.floor(status) or -1
+            local parsed_status = line:match("HTTP/[%d%.]+%s*(%d+)")
+            status = parsed_status ~= nil and tonumber(parsed_status) or -1
             goto continue
         end
 
-        local key, value = line:match("^(.-):%s*(.*)$")
+        local key, value = line:match("^([^:]+):%s*(.-)%s*$")
         if key and value then
             if headers[key] ~= nil then
                 table.insert(headers[key], value)
@@ -363,37 +427,45 @@ local function process_response(request, response)
         ::continue::
     end
 
-    if headers["Set-Cookie"] then
+    local set_cookie = get_header(headers, "Set-Cookie")
+    if set_cookie then
         state.cookie = state.cookie ~= nil and state.cookie or {}
 
-        for _, cookie in ipairs(headers["Set-Cookie"]) do
+        for _, cookie in ipairs(set_cookie) do
             local cookie_pair = String.split(get_cookie_value(cookie), "=")
             state.cookie[cookie_pair[1]] = cookie_pair[2]
         end
     end
 
     local filename = nil
-    if headers["Content-Disposition"] then
-        filename = headers["Content-Disposition"][1]:match('^.*filename="([^"]+)".*$')
+    local cd = get_header(headers, "Content-Disposition")
+    if cd and cd[1] then
+        filename = cd[1]:match("filename%*%s*=%s*[^%s\039;]+%s*\039\039%s*([^%s;]+)")
+        if not filename then
+            filename = cd[1]:match('filename%s*=%s*"([^"]+)"')
+        end
+        if not filename then
+            filename = cd[1]:match("filename%s*=%s*([^%s;]+)")
+        end
     end
 
-    ---@type CachedRequest
-    local cached_request = {
+    ---@type RequestView
+    local request_view = {
         request = request,
         response = {
             status = status,
             headers = headers,
             filename = filename,
-            body = String.split(tostring(body_str), "\n"),
+            body = body_str,
         },
     }
 
     state.cache[request.url] = state.cache[request.url] or {}
-    state.cache[request.url][request.method] = cached_request
+    state.cache[request.url][request.method] = request_view
 
     toggle_floating_window()
 
-    render_markdown(cached_request)
+    render_markdown(request_view)
 
     vim.notify("Response parsed!", vim.log.levels.INFO)
 end
@@ -407,7 +479,7 @@ local function execute_curl(request)
 
     vim.notify("Making HTTP request...", vim.log.levels.INFO)
 
-    vim.system(request.curl_cmd, { text = true }, function(response)
+    vim.system(request.curl_cmd, { text = false }, function(response)
         vim.schedule(function()
             process_response(request, response)
         end)
@@ -424,7 +496,7 @@ local function parse_request(options)
         url = nil,
         http_version = nil,
         headers = {},
-        body = {},
+        body = "",
         curl_cmd = {},
     }
 
@@ -502,7 +574,7 @@ local function parse_request(options)
                 request.headers[name] = { value }
             end
         elseif parse_stage == parse_stages.BODY then
-            table.insert(request.body, line)
+            request.body = request.body .. line
         end
 
         ::continue::
@@ -573,32 +645,21 @@ local function parse_request(options)
         end
     end
 
-    if #request.body ~= 0 then
-        local new_body_lines = {}
-
-        for _, body_line in ipairs(request.body) do
-            local new_body_line = body_line:gsub("{{(.-)}}", function(key)
-                if state.env.available ~= nil and state.env.selected ~= nil then
-                    return state.env.available[state.env.selected][key]
-                end
-
-                missing_env = true
-                return ""
-            end)
-
-            table.insert(new_body_lines, new_body_line)
+    request.body = request.body:gsub("{{(.-)}}", function(key)
+        if state.env.available ~= nil and state.env.selected ~= nil then
+            return state.env.available[state.env.selected][key]
         end
 
-        request.body = new_body_lines
+        missing_env = true
+        return ""
+    end)
 
+    if request.body ~= "" then
         if options.shell then
-            table.insert(
-                request.curl_cmd,
-                "--data @- << EOF\n" .. table.concat(new_body_lines, "\n") .. "\nEOF"
-            )
+            table.insert(request.curl_cmd, "--data @- << EOF\n" .. request.body .. "\nEOF")
         else
             table.insert(request.curl_cmd, "--data")
-            table.insert(request.curl_cmd, table.concat(new_body_lines, "\n"))
+            table.insert(request.curl_cmd, request.body)
         end
     end
 
