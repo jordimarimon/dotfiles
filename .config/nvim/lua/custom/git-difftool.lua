@@ -36,27 +36,25 @@ function M.get_branches()
     return branches
 end
 
-function M.review(query)
+---@param review_branch string
+function M.review(review_branch)
+    -- We assume that for reviewing a branch we want all commits reachable from
+    -- that branch and not reachable from well known trunck branches
+    local trunk_branches = { "main", "dev", "master", "next" }
     local branches = M.get_branches()
-    local review_branch = nil
-    local other_branches = {}
+    local ignore_branches = {}
 
     for _, branch_name in ipairs(branches) do
-        if review_branch == nil and branch_name:find(query, 1, true) ~= nil then
-            review_branch = branch_name
-        else
-            table.insert(other_branches, branch_name)
+        for _, trunk_branch in ipairs(trunk_branches) do
+            if branch_name:find(trunk_branch, 1, true) ~= nil then
+                table.insert(ignore_branches, branch_name)
+            end
         end
     end
 
-    if review_branch == nil then
-        vim.notify("Unable to find branch to review", vim.log.levels.ERROR)
-        return
-    end
-
     local git_log_cmd = { "git", "log", "--pretty=format:'%h'", review_branch }
-    for _, other_branch in ipairs(other_branches) do
-        table.insert(git_log_cmd, "^" .. other_branch)
+    for _, ignored_branch in ipairs(ignore_branches) do
+        table.insert(git_log_cmd, "^" .. ignored_branch)
     end
 
     -- The last one is the oldest commit
@@ -111,12 +109,6 @@ function M.diff()
         return
     end
 
-    -- Make sure the current entry is a valid git file
-    if not git_file_exists(qf_current.module) then
-        vim.notify("Current entry in quickfix list is not a git file", vim.log.levels.ERROR)
-        return
-    end
-
     -- Set focus to a random window and clear the others
     if #windows_in_tabpage ~= 0 then
         local new_focused = table.remove(windows_in_tabpage, 1)
@@ -129,9 +121,13 @@ function M.diff()
         vim.cmd("leftabove new")
     end
 
+    -- If it's not a valid git file => it has been deleted.
     -- Create a new empty buffer and open current entry
-    -- and add it to the diff mode
-    vim.cmd("Gedit " .. qf_current.module)
+    -- and add it to the diff mode.
+    if git_file_exists(qf_current.module) then
+        vim.cmd("Gedit " .. qf_current.module)
+    end
+
     vim.cmd("diffthis")
 
     -- We only care about the first entry because we assume
