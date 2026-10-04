@@ -1,7 +1,8 @@
 -- Other plugins for inspiration:
 -- https://github.com/darrenburns/posting
--- https://github.com/mistweaverco/kulala.nvim
+-- https://github.com/dont-be-evil-company/kulala.nvim
 -- https://github.com/oysandvik94/curl.nvim
+-- https://github.com/rest-nvim/rest.nvim
 
 -- More information about the syntax:
 -- https://www.jetbrains.com/help/idea/exploring-http-syntax.html
@@ -16,7 +17,7 @@ local fs = require("custom.fs")
 ---@field headers table
 ---@field body string
 ---@field curl_cmd string[]
----@filed http_version string|nil
+---@field http_version string|nil
 
 ---@class Response
 ---@field status integer
@@ -30,6 +31,14 @@ local fs = require("custom.fs")
 
 ---@class ParseOptions
 ---@field shell boolean
+
+---@class MultipartPart
+---@field name string
+---@field filename string|nil
+---@field content_type string|nil
+---@field is_file boolean
+---@field file_path string|nil
+---@field data string|nil
 
 local M = {}
 
@@ -245,8 +254,6 @@ local function format_lines(mime_type, content, filename)
         return format_json(content)
     end
 
-    -- TODO: Handle "text/html" responses
-
     local extension = get_file_extension(mime_type)
 
     if extension ~= nil then
@@ -257,23 +264,23 @@ local function format_lines(mime_type, content, filename)
         return { filepath }
     end
 
-    -- TODO: Return body split by newline
-    return {}
+    -- HTML or plain text
+    return vim.split(content, "\n", { plain = true })
 end
 
 ---@param mime_type string|nil
 ---@return string
 local function get_code_block_type(mime_type)
-    if not mime_type or mime_type == "" then
-        return ""
-    end
-
     if mime_type == "application/json" then
         return "json"
     end
 
     if mime_type == "text/html" then
         return "html"
+    end
+
+    if mime_type == "multipart/form-data" then
+        return "http"
     end
 
     return ""
@@ -298,10 +305,10 @@ local function render_markdown(request_view)
     local request, response = request_view.request, request_view.response
 
     local req_content_type = get_header(request.headers, "Content-Type")
-    local req_body_mime_type = get_mime_type(req_content_type and req_content_type[1] or "")
+    local req_mime_type = get_mime_type(req_content_type and req_content_type[1] or "")
 
     local res_content_type = get_header(response.headers, "Content-Type")
-    local res_body_mime_type = get_mime_type(res_content_type and res_content_type[1] or "")
+    local res_mime_type = get_mime_type(res_content_type and res_content_type[1] or "")
 
     table.insert(output, "# HTTP RESULT")
     table.insert(output, "")
@@ -326,8 +333,8 @@ local function render_markdown(request_view)
     if #request.body ~= 0 then
         table.insert(output, "## REQUEST BODY")
         table.insert(output, "")
-        table.insert(output, "```" .. get_code_block_type(req_body_mime_type))
-        vim.list_extend(output, format_lines(req_body_mime_type, request.body, nil))
+        table.insert(output, "```" .. get_code_block_type(req_mime_type))
+        vim.list_extend(output, format_lines(req_mime_type, request.body, nil))
         table.insert(output, "```")
         table.insert(output, "")
     end
@@ -347,8 +354,8 @@ local function render_markdown(request_view)
 
     table.insert(output, "## RESPONSE BODY")
     table.insert(output, "")
-    table.insert(output, "```" .. get_code_block_type(res_body_mime_type))
-    vim.list_extend(output, format_lines(res_body_mime_type, response.body, response.filename))
+    table.insert(output, "```" .. get_code_block_type(res_mime_type))
+    vim.list_extend(output, format_lines(res_mime_type, response.body, response.filename))
     table.insert(output, "```")
 
     vim.api.nvim_buf_set_lines(state.buffer_id, 0, -1, false, output)
@@ -486,6 +493,189 @@ local function execute_curl(request)
     end)
 end
 
+---@param content_type string|nil
+---@return string|nil
+local function extract_boundary(content_type)
+    if not content_type then
+        return nil
+    end
+
+    local boundary = content_type:match('boundary%s*=%s*"([^"]+)"')
+    if not boundary then
+        boundary = content_type:match("boundary%s*=%s*([^;%s]+)")
+    end
+
+    return boundary
+end
+
+---@param disposition string
+---@param param string
+---@return string|nil
+local function extract_disposition_param(disposition, param)
+    local val = disposition:match(param .. '%s*=%s*"([^"]+)"')
+    if not val then
+        val = disposition:match(param .. "%s*=%s*'([^']+)'")
+    end
+    if not val then
+        val = disposition:match(param .. "%s*=%s*([^;%s]+)")
+    end
+    return val
+end
+
+---@param part MultipartPart
+---@return string
+local function build_part_spec(part)
+    local spec
+    if part.is_file then
+        local escaped_path = part.file_path:gsub("\\", "\\\\"):gsub('"', '\\"')
+        spec = string.format('%s=@"%s"', part.name, escaped_path)
+    else
+        local escaped_data = part.data:gsub("\\", "\\\\"):gsub('"', '\\"')
+        spec = string.format('%s="%s"', part.name, escaped_data)
+    end
+
+    if part.content_type then
+        spec = spec .. ";type=" .. part.content_type
+    end
+
+    if part.filename then
+        local escaped_filename = part.filename:gsub("\\", "\\\\"):gsub('"', '\\"')
+        spec = spec .. string.format(';filename="%s"', escaped_filename)
+    end
+
+    return spec
+end
+
+---@param body string
+---@param boundary string|nil
+---@return boolean ok, MultipartPart[]|string parts_or_error
+local function parse_multipart_body(body, boundary)
+    local lines = vim.split(body, "\n", { plain = true })
+
+    if not boundary or boundary == "" then
+        for _, line in ipairs(lines) do
+            local clean = line:gsub("\r$", "")
+            local candidate = clean:match("^%-%-([^\r\n]+)")
+            if candidate and not vim.endswith(candidate, "--") then
+                boundary = candidate
+                break
+            end
+        end
+    end
+
+    if not boundary or boundary == "" then
+        return false, "Unable to determine multipart boundary."
+    end
+
+    local delimiter = "--" .. boundary
+    local closing_delimiter = "--" .. boundary .. "--"
+
+    local parts_raw_lines = {}
+    local current_part = nil
+    local in_multipart = false
+
+    for _, line in ipairs(lines) do
+        local trimmed = line:gsub("\r$", "")
+        if trimmed == closing_delimiter then
+            if current_part then
+                table.insert(parts_raw_lines, current_part)
+                current_part = nil
+            end
+            break
+        elseif trimmed == delimiter then
+            if current_part then
+                table.insert(parts_raw_lines, current_part)
+            end
+            current_part = {}
+            in_multipart = true
+        elseif in_multipart and current_part then
+            table.insert(current_part, line)
+        end
+    end
+
+    if current_part and #current_part > 0 then
+        table.insert(parts_raw_lines, current_part)
+    end
+
+    if #parts_raw_lines == 0 then
+        return false, "No multipart parts found."
+    end
+
+    local parsed_parts = {}
+
+    for _, part_lines in ipairs(parts_raw_lines) do
+        local part_headers = {}
+        local part_body_lines = {}
+        local is_header = true
+
+        for _, line in ipairs(part_lines) do
+            local clean = line:gsub("\r$", "")
+            if is_header then
+                if clean:match("^%s*$") then
+                    is_header = false
+                else
+                    local k, v = clean:match("^%s*([^:]+)%s*:%s*(.-)%s*$")
+                    if k and v then
+                        part_headers[k:lower()] = v
+                    end
+                end
+            else
+                table.insert(part_body_lines, line)
+            end
+        end
+
+        local cd = part_headers["content-disposition"]
+        if not cd then
+            return false, "Multipart part missing Content-Disposition header."
+        end
+
+        local name = extract_disposition_param(cd, "name")
+        if not name then
+            return false, "Multipart part missing name in Content-Disposition."
+        end
+
+        local filename = extract_disposition_param(cd, "filename")
+        local content_type = part_headers["content-type"]
+
+        while #part_body_lines > 0 and part_body_lines[#part_body_lines]:match("^%s*$") do
+            table.remove(part_body_lines)
+        end
+        while #part_body_lines > 0 and part_body_lines[1]:match("^%s*$") do
+            table.remove(part_body_lines, 1)
+        end
+
+        local part_body_raw = table.concat(part_body_lines, "\n")
+        local file_path = part_body_raw:match("^%s*<%s*@?%s*(.+)%s*$")
+
+        if file_path then
+            file_path = file_path:match('^"(.*)"$') or file_path:match("^'(.*)'$") or file_path
+            file_path = file_path:match("^%s*(.-)%s*$")
+            local resolved = fs.resolve_file_path(file_path)
+            if not resolved then
+                return false, "File not found: " .. file_path
+            end
+
+            table.insert(parsed_parts, {
+                name = name,
+                filename = filename,
+                content_type = content_type,
+                is_file = true,
+                file_path = resolved,
+            })
+        else
+            table.insert(parsed_parts, {
+                name = name,
+                filename = filename,
+                content_type = content_type,
+                is_file = false,
+                data = part_body_raw,
+            })
+        end
+    end
+
+    return true, parsed_parts
+end
+
 ---@param options ParseOptions
 ---@return Request
 local function parse_request(options)
@@ -508,9 +698,6 @@ local function parse_request(options)
 
     -- TODO: Support to be able to have the cursor in any place of the request
 
-    -- TODO: Support uploading files using "multipart/form-data":
-    --       https://www.jetbrains.com/help/idea/exploring-http-syntax.html#use-multipart-form-data
-
     -- Cursor is expected to be at the first line of the HTTP request
     local cursor = vim.api.nvim_win_get_cursor(0)
     local start_line = cursor[1]
@@ -523,6 +710,7 @@ local function parse_request(options)
     end
 
     local parse_stage = parse_stages.METHOD_URL
+    local body_lines = {}
 
     -- More information about lua patterns:
     -- https://www.lua.org/pil/20.2.html
@@ -532,19 +720,21 @@ local function parse_request(options)
             break
         end
 
-        -- ignore comment lines
-        if vim.startswith(line, "#") or vim.startswith(line, "//") then
-            goto continue
-        end
-
-        local is_blank_line = line:match("^%s*$")
-
-        if is_blank_line then
-            -- the request body is preceded by a blank line
-            if parse_stage == parse_stages.HEADERS then
-                parse_stage = parse_stages.BODY
+        if parse_stage ~= parse_stages.BODY then
+            -- ignore comment lines only before or in headers
+            if vim.startswith(line, "#") or vim.startswith(line, "//") then
+                goto continue
             end
-            goto continue
+
+            local is_blank_line = line:match("^%s*$")
+
+            if is_blank_line then
+                -- the request body is preceded by a blank line
+                if parse_stage == parse_stages.HEADERS then
+                    parse_stage = parse_stages.BODY
+                end
+                goto continue
+            end
         end
 
         if parse_stage == parse_stages.METHOD_URL then
@@ -574,11 +764,13 @@ local function parse_request(options)
                 request.headers[name] = { value }
             end
         elseif parse_stage == parse_stages.BODY then
-            request.body = request.body .. line
+            table.insert(body_lines, line)
         end
 
         ::continue::
     end
+
+    request.body = table.concat(body_lines, "\n")
 
     if not request.url then
         vim.notify("Unable to parse URL of request", vim.log.levels.ERROR)
@@ -587,16 +779,55 @@ local function parse_request(options)
 
     local missing_env = false
 
-    request.url = request.url:gsub("{{(.-)}}", function(key)
-        if state.env.available ~= nil and state.env.selected ~= nil then
-            return state.env.available[state.env.selected][key]
+    local function substitute_env(str)
+        return str:gsub("{{(.-)}}", function(key)
+            if state.env.available ~= nil and state.env.selected ~= nil then
+                local env_map = state.env.available[state.env.selected]
+                if env_map and env_map[key] ~= nil then
+                    return tostring(env_map[key])
+                end
+            end
+
+            missing_env = true
+            return ""
+        end)
+    end
+
+    request.url = substitute_env(request.url)
+
+    for header_name, header_values in pairs(request.headers) do
+        for index, value in ipairs(header_values) do
+            request.headers[header_name][index] = substitute_env(value)
+        end
+    end
+
+    request.body = substitute_env(request.body)
+
+    if missing_env then
+        vim.notify("Found variables not present in the environment file.", vim.log.levels.ERROR)
+        return request
+    end
+
+    local content_type_headers = get_header(request.headers, "Content-Type")
+    local raw_content_type = content_type_headers and content_type_headers[1] or ""
+    local req_mime_type = get_mime_type(raw_content_type)
+    local is_multipart = req_mime_type == "multipart/form-data"
+
+    local multipart_parts = {}
+    if is_multipart then
+        if request.body == "" then
+            vim.notify("Multipart request body is empty.", vim.log.levels.ERROR)
+            return request
         end
 
-        missing_env = true
-        return ""
-    end)
-
-    request.url = request.url
+        local boundary = extract_boundary(raw_content_type)
+        local ok, parts_or_err = parse_multipart_body(request.body, boundary)
+        if not ok then
+            vim.notify(parts_or_err, vim.log.levels.ERROR)
+            return request
+        end
+        multipart_parts = parts_or_err
+    end
 
     -- "-i" => Show HTTP response headers in the output
     request.curl_cmd = { "curl", "-i" }
@@ -623,49 +854,40 @@ local function parse_request(options)
     end
 
     for header_name, header_values in pairs(request.headers) do
-        for index, value in ipairs(header_values) do
-            local new_value = value:gsub("{{(.-)}}", function(key)
-                if state.env.available ~= nil and state.env.selected ~= nil then
-                    return state.env.available[state.env.selected][key]
-                end
+        if is_multipart and header_name:lower() == "content-type" then
+            goto continue_header
+        end
 
-                missing_env = true
-                return ""
-            end)
-
-            request.headers[header_name][index] = new_value
-
+        for _, value in ipairs(header_values) do
             if options.shell then
-                local arg = string.format("%s: %s", header_name, new_value)
+                local arg = string.format("%s: %s", header_name, value)
                 table.insert(request.curl_cmd, "-H " .. '"' .. arg .. '"')
             else
                 table.insert(request.curl_cmd, "-H")
-                table.insert(request.curl_cmd, string.format("%s: %s", header_name, new_value))
+                table.insert(request.curl_cmd, string.format("%s: %s", header_name, value))
             end
         end
+
+        ::continue_header::
     end
 
-    request.body = request.body:gsub("{{(.-)}}", function(key)
-        if state.env.available ~= nil and state.env.selected ~= nil then
-            return state.env.available[state.env.selected][key]
+    if is_multipart then
+        for _, part in ipairs(multipart_parts) do
+            local spec = build_part_spec(part)
+            if options.shell then
+                table.insert(request.curl_cmd, "-F " .. vim.fn.shellescape(spec))
+            else
+                table.insert(request.curl_cmd, "-F")
+                table.insert(request.curl_cmd, spec)
+            end
         end
-
-        missing_env = true
-        return ""
-    end)
-
-    if request.body ~= "" then
+    elseif request.body ~= "" then
         if options.shell then
             table.insert(request.curl_cmd, "--data @- << EOF\n" .. request.body .. "\nEOF")
         else
             table.insert(request.curl_cmd, "--data")
             table.insert(request.curl_cmd, request.body)
         end
-    end
-
-    if missing_env then
-        vim.notify("Found variables not present in the environment file.", vim.log.levels.ERROR)
-        return request
     end
 
     request.ok = true

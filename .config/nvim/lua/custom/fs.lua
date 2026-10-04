@@ -17,7 +17,7 @@ end
 --- @param files table
 --- @return string?
 function M.root_files(files)
-    return vim.fs.root(0, files)
+    return vim.M.root(0, files)
 end
 
 ---Join path segments
@@ -120,6 +120,46 @@ M.read_file = function(filename, is_binary)
     file:close()
 
     return content
+end
+
+---Resolves a file path relative to HTTP buffer dir, git repo, or absolute
+---@param path string
+---@return string|nil resolved_path
+function M.resolve_file_path(path)
+    local expanded = vim.fn.expand(path)
+    if expanded and expanded ~= "" then
+        path = expanded
+    end
+
+    if M.is_absolute_path(path) then
+        if M.file_exists(path) then
+            return vim.uv.fs_realpath(path) or path
+        end
+        return nil
+    end
+
+    -- Clean leading ./
+    local clean_path = path:match("^%./(.*)$") or path
+
+    -- Try relative to current buffer dir
+    local buffer_dir = M.get_current_buffer_dir()
+    if buffer_dir then
+        local candidate = M.join_paths(buffer_dir, clean_path)
+        if M.file_exists(candidate) then
+            return vim.uv.fs_realpath(candidate) or candidate
+        end
+    end
+
+    -- Try relative to git root
+    local git_dir = M.root_files({ ".git" })
+    if git_dir then
+        local candidate = M.join_paths(git_dir, clean_path)
+        if M.file_exists(candidate) then
+            return vim.uv.fs_realpath(candidate) or candidate
+        end
+    end
+
+    return nil
 end
 
 return M
