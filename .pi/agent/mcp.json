@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "youtrack": {
+      "url": "https://interactiu.youtrack.cloud/mcp",
+      "headers": {
+        "Authorization": "Bearer ${TOKEN}"
+      },
+      "description": "Youtrack",
+      "enabled": false
+    }
+  }
+}
