@@ -3,7 +3,7 @@
     "youtrack": {
       "url": "https://interactiu.youtrack.cloud/mcp",
       "headers": {
-        "Authorization": "Bearer ${TOKEN}"
+        "Authorization": "Bearer ${YOUTRACK_TOKEN}"
       },
       "description": "Youtrack",
       "enabled": false

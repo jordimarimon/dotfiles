@@ -11,6 +11,7 @@ local plugins = {
     "markdown",
     "database",
     "git",
+    "obsidian",
 }
 
 local specs = {}

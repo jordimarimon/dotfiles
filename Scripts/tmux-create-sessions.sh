@@ -12,6 +12,7 @@ PATHS=(
     "$HOME/Hooba/erp-infrastructure"
     "$HOME/Hooba/web-api"
     "$HOME/Hooba/web-fonts"
+    "$HOME/Hooba/docs"
 )
 
 # Loop through each session and creates it
