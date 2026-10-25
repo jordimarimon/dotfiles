@@ -133,7 +133,7 @@ end, { noremap = true, expr = true })
 -- Open current file directory
 vim.keymap.set("n", "-", "<cmd>Oil<CR>")
 
--- Search inside a visual selection
+-- Search inside a visual selection ("\%V" allows to search inside a visual selection)
 vim.keymap.set("x", "g/", "<Esc>/\\%V")
 
 -- Jumps between buffers in the jumplist
