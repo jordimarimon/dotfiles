@@ -14,9 +14,7 @@ return {
                     fugitive = true,
                     gitsigns = true,
                 },
-                conflict = {
-                    enabled = false,
-                },
+                conflict = false,
             }
         end,
     },
